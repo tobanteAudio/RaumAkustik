@@ -24,8 +24,10 @@ private:
     juce::UndoManager _undoManager;
     juce::ValueTree _roomTree {"RaumAkustik"};
 
-    juce::TextButton _load {"Load"};
-    juce::TextButton _save {"Save"};
+    juce::DrawableButton _undo {"Undo", juce::DrawableButton::ImageFitted};
+    juce::DrawableButton _redo {"Redo", juce::DrawableButton::ImageFitted};
+    juce::DrawableButton _load {"Load", juce::DrawableButton::ImageFitted};
+    juce::DrawableButton _save {"Save", juce::DrawableButton::ImageFitted};
 
     std::unique_ptr<juce::Drawable> _speakerIcon {
         juce::Drawable::createFromImageData(mcbd::speaker_svg, mcbd::speaker_svgSize)};

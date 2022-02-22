@@ -45,8 +45,12 @@ juce_add_binary_data(RaumAkustik_BinaryData
     NAMESPACE
         mcbd
     SOURCES
+        Resources/svg/folder_open.svg
         Resources/svg/insert_emoticon.svg
+        Resources/svg/redo.svg
+        Resources/svg/save.svg
         Resources/svg/speaker.svg
+        Resources/svg/undo.svg
 )
 
 juce_add_gui_app(RaumAkustik
