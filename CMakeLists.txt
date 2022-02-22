@@ -39,6 +39,16 @@ add_subdirectory(3rd_party/JUCE)
 set_directory_properties(PROPERTIES JUCE_COMPANY_COPYRIGHT "Copyright 2022 Modern Circuits UG (haftungsbeschränkt). All rights reserved.")
 set_directory_properties(PROPERTIES JUCE_COMPANY_NAME "Modern Circuits UG (haftungsbeschränkt)")
 
+juce_add_binary_data(RaumAkustik_BinaryData
+    HEADER_NAME
+        "BinaryData.hpp"
+    NAMESPACE
+        mcbd
+    SOURCES
+        Resources/svg/insert_emoticon.svg
+        Resources/svg/speaker.svg
+)
+
 juce_add_gui_app(RaumAkustik
     PRODUCT_NAME "Raum Akustik"
 )
@@ -62,6 +72,7 @@ target_link_libraries(RaumAkustik
     PRIVATE
         juce::juce_gui_extra
     PUBLIC
+        RaumAkustik_BinaryData
         juce::juce_recommended_config_flags
         juce::juce_recommended_lto_flags
         juce::juce_recommended_warning_flags
