@@ -96,45 +96,67 @@ void MainComponent::paint(juce::Graphics& g)
         },
     };
 
+    auto const iconSize = std::max(static_cast<double>(_iconSize.getValue()), 1.0);
+    auto const iconRect = juce::Rectangle {0.0, 0.0, iconSize, iconSize};
+
     if (room.dimensions.length == 0.0) { return; }
     if (room.dimensions.width == 0.0) { return; }
     if (room.dimensions.height == 0.0) { return; }
 
     g.fillAll(getLookAndFeel().findColour(juce::ResizableWindow::backgroundColourId));
 
-    auto const area            = _drawArea.toDouble();
-    auto const scaleFactor     = room.dimensions.length / (area.getHeight() * 0.9);
-    auto const roomLengthPixel = room.dimensions.length / scaleFactor;
-    auto const roomWidthPixel  = room.dimensions.width / scaleFactor;
-    auto const roomArea        = juce::Rectangle {area.getX(), area.getY(), roomWidthPixel, roomLengthPixel}.withCentre(
-               _drawArea.getCentre().toDouble());
+    auto totalArea          = _drawArea;
+    auto const topViewArea  = totalArea.removeFromTop(totalArea.proportionOfHeight(0.66));
+    auto const area         = topViewArea.toDouble();
+    auto const scaleFactor  = room.dimensions.length / (area.getHeight() * 0.9);
+    auto const roomLengthPx = room.dimensions.length / scaleFactor;
+    auto const roomWidthPx  = room.dimensions.width / scaleFactor;
+    auto const topViewRoom  = juce::Rectangle {area.getX(), area.getY(), roomWidthPx, roomLengthPx}.withCentre(
+         topViewArea.getCentre().toDouble());
 
     g.setColour(juce::Colours::black);
-    g.drawRect(roomArea.toFloat(), 2.0f);
+    g.drawRect(topViewRoom.toFloat(), 8.0f);
 
-    auto const iconSize = static_cast<double>(_iconSize.getValue());
-
-    auto const leftX    = roomArea.getX() + room.leftSpeaker.x / scaleFactor;
-    auto const leftY    = roomArea.getY() + room.leftSpeaker.y / scaleFactor;
-    auto const leftArea = juce::Rectangle {0.0, 0.0, iconSize, iconSize}.withCentre({leftX, leftY});
+    auto const leftX    = topViewRoom.getX() + room.leftSpeaker.x / scaleFactor;
+    auto const leftY    = topViewRoom.getY() + room.leftSpeaker.y / scaleFactor;
+    auto const leftArea = iconRect.withCentre({leftX, leftY});
     _speakerIcon->drawWithin(g, leftArea.toFloat(), juce::RectanglePlacement::centred, 1.0f);
 
-    auto const rightX    = roomArea.getX() + room.rightSpeaker.x / scaleFactor;
-    auto const rightY    = roomArea.getY() + room.rightSpeaker.y / scaleFactor;
-    auto const rightArea = juce::Rectangle {0.0, 0.0, iconSize, iconSize}.withCentre({rightX, rightY});
+    auto const rightX    = topViewRoom.getX() + room.rightSpeaker.x / scaleFactor;
+    auto const rightY    = topViewRoom.getY() + room.rightSpeaker.y / scaleFactor;
+    auto const rightArea = iconRect.withCentre({rightX, rightY});
     _speakerIcon->drawWithin(g, rightArea.toFloat(), juce::RectanglePlacement::centred, 1.0f);
 
-    auto const listenX    = roomArea.getX() + room.listenPosition.x / scaleFactor;
-    auto const listenY    = roomArea.getY() + room.listenPosition.y / scaleFactor;
-    auto const listenArea = juce::Rectangle {0.0, 0.0, iconSize, iconSize}.withCentre({listenX, listenY});
+    auto const listenX    = topViewRoom.getX() + room.listenPosition.x / scaleFactor;
+    auto const listenY    = topViewRoom.getY() + room.listenPosition.y / scaleFactor;
+    auto const listenArea = iconRect.withCentre({listenX, listenY});
     _headIcon->drawWithin(g, listenArea.toFloat(), juce::RectanglePlacement::centred, 1.0f);
 
     auto const reflectionLeftClose = reflectionLeftSpeaker(room);
-    auto const toWall = juce::Line {leftX, leftY, roomArea.getX(), roomArea.getY() + reflectionLeftClose / scaleFactor};
+    auto const toWall
+        = juce::Line {leftX, leftY, topViewRoom.getX(), topViewRoom.getY() + reflectionLeftClose / scaleFactor};
     auto const toListen
-        = juce::Line {roomArea.getX(), roomArea.getY() + reflectionLeftClose / scaleFactor, listenX, listenY};
+        = juce::Line {topViewRoom.getX(), topViewRoom.getY() + reflectionLeftClose / scaleFactor, listenX, listenY};
     g.drawLine(toWall.toFloat());
     g.drawLine(toListen.toFloat());
+
+    ///////////////////////////////////////// FRONT
+    auto const frontArea    = totalArea.toDouble();
+    auto const roomHeightPx = room.dimensions.height / scaleFactor;
+    auto const frontView    = juce::Rectangle {0.0, 0.0, roomWidthPx, roomHeightPx}.withCentre(frontArea.getCentre());
+    g.drawRect(frontView.toFloat(), 8.0f);
+
+    auto const leftZ         = frontView.getBottom() - room.leftSpeaker.z / scaleFactor;
+    auto const frontLeftArea = iconRect.withCentre({leftX, leftZ});
+    _speakerIcon->drawWithin(g, frontLeftArea.toFloat(), juce::RectanglePlacement::centred, 1.0f);
+
+    auto const rightZ         = frontView.getBottom() - room.rightSpeaker.z / scaleFactor;
+    auto const frontRightArea = iconRect.withCentre({rightX, rightZ});
+    _speakerIcon->drawWithin(g, frontRightArea.toFloat(), juce::RectanglePlacement::centred, 1.0f);
+
+    auto const listenZ         = frontView.getBottom() - room.listenPosition.z / scaleFactor;
+    auto const frontListenArea = iconRect.withCentre({listenX, listenZ});
+    _headIcon->drawWithin(g, frontListenArea.toFloat(), juce::RectanglePlacement::centred, 1.0f);
 
     // DBG("Reflection (right): " + juce::String {reflectionRightSpeaker(room)});
     // DBG("Reflection Far (left): " + juce::String {reflectionLeftSpeakerFar(room)});
