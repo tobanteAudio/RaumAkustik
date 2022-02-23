@@ -92,6 +92,8 @@ target_sources(RaumAkustik
         Source/Main.cpp
         Source/MainComponent.cpp
         Source/MainComponent.hpp
+        Source/RoomSimulationView.cpp
+        Source/RoomSimulationView.hpp
 )
 
 target_compile_definitions(RaumAkustik
