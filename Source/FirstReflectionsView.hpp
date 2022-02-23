@@ -8,7 +8,7 @@ namespace mc
 {
 struct FirstReflectionsView final
     : juce::Component
-    , juce::Value::Listener
+    , juce::ValueTree::Listener
 {
     FirstReflectionsView(juce::ValueTree vt);
     ~FirstReflectionsView() override = default;
@@ -17,19 +17,32 @@ struct FirstReflectionsView final
     void resized() override;
 
 private:
+    auto valueTreePropertyChanged(juce::ValueTree& tree, juce::Identifier const& property) -> void override;
     auto connectValuesToTree() -> void;
-    auto save() -> void;
-    auto load() -> void;
-
-    auto valueChanged(juce::Value& /*value*/) -> void override;
 
     juce::UndoManager _undoManager;
     juce::ValueTree _roomTree;
 
-    juce::DrawableButton _undo {"Undo", juce::DrawableButton::ImageFitted};
-    juce::DrawableButton _redo {"Redo", juce::DrawableButton::ImageFitted};
-    juce::DrawableButton _load {"Load", juce::DrawableButton::ImageFitted};
-    juce::DrawableButton _save {"Save", juce::DrawableButton::ImageFitted};
+    juce::CachedValue<double> _iconSize {_roomTree, "icon_size", &_undoManager};
+
+    juce::CachedValue<double> _roomLength {_roomTree, "room_length", &_undoManager};
+    juce::CachedValue<double> _roomWidth {_roomTree, "room_width", &_undoManager};
+    juce::CachedValue<double> _roomHeight {_roomTree, "room_height", &_undoManager};
+
+    juce::CachedValue<double> _listenX {_roomTree, "listen_x", &_undoManager};
+    juce::CachedValue<double> _listenY {_roomTree, "listen_y", &_undoManager};
+    juce::CachedValue<double> _listenZ {_roomTree, "listen_z", &_undoManager};
+
+    juce::CachedValue<double> _leftX {_roomTree, "left_x", &_undoManager};
+    juce::CachedValue<double> _leftY {_roomTree, "left_y", &_undoManager};
+    juce::CachedValue<double> _leftZ {_roomTree, "left_z", &_undoManager};
+
+    juce::CachedValue<double> _rightX {_roomTree, "right_x", &_undoManager};
+    juce::CachedValue<double> _rightY {_roomTree, "right_y", &_undoManager};
+    juce::CachedValue<double> _rightZ {_roomTree, "right_z", &_undoManager};
+
+    juce::CachedValue<bool> _renderLeftReflections {_roomTree, "render_left_reflections", &_undoManager};
+    juce::CachedValue<bool> _renderRightReflections {_roomTree, "render_right_reflections", &_undoManager};
 
     std::unique_ptr<juce::Drawable> _speakerIcon {
         juce::Drawable::createFromImageData(mcbd::speaker_svg, mcbd::speaker_svgSize)};
@@ -38,27 +51,6 @@ private:
 
     juce::PropertyPanel _roomProperties {};
     juce::PropertyPanel _renderProperties {};
-
-    juce::Value _iconSize {};
-
-    juce::Value _roomLength {};
-    juce::Value _roomWidth {};
-    juce::Value _roomHeight {};
-
-    juce::Value _listenX {};
-    juce::Value _listenY {};
-    juce::Value _listenZ {};
-
-    juce::Value _leftX {};
-    juce::Value _leftY {};
-    juce::Value _leftZ {};
-
-    juce::Value _rightX {};
-    juce::Value _rightY {};
-    juce::Value _rightZ {};
-
-    juce::Value _renderLeftReflections {};
-    juce::Value _renderRightReflections {};
 
     juce::Rectangle<int> _drawArea {};
 

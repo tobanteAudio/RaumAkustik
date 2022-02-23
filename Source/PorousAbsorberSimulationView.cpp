@@ -121,8 +121,6 @@ auto PorousAbsorberSimulationView::paint(juce::Graphics& g) -> void
     withAirGapPath = withAirGapPath.createPathWithRoundedCorners(5.0f);
     g.setColour(juce::Colours::red);
     g.strokePath(withAirGapPath, juce::PathStrokeType {2.0f});
-
-    DBG(_valueTree.toXmlString());
 }
 
 auto PorousAbsorberSimulationView::resized() -> void

@@ -63,22 +63,10 @@ auto reflectionRightSpeakerFar(RoomLayout const& room) -> double
 FirstReflectionsView::FirstReflectionsView(juce::ValueTree vt)
     : _roomTree {vt.getOrCreateChildWithName("FirstReflections", nullptr)}
 {
-    addAndMakeVisible(_undo);
-    addAndMakeVisible(_redo);
-    addAndMakeVisible(_load);
-    addAndMakeVisible(_save);
+    _iconSize.setDefault(20.0);
+
     addAndMakeVisible(_roomProperties);
     addAndMakeVisible(_renderProperties);
-
-    _undo.onClick = [this] { _undoManager.undo(); };
-    _redo.onClick = [this] { _undoManager.redo(); };
-    _save.onClick = [this] { save(); };
-    _load.onClick = [this] { load(); };
-
-    _undo.setImages(juce::Drawable::createFromImageData(mcbd::undo_svg, mcbd::undo_svgSize).get());
-    _redo.setImages(juce::Drawable::createFromImageData(mcbd::redo_svg, mcbd::redo_svgSize).get());
-    _save.setImages(juce::Drawable::createFromImageData(mcbd::save_svg, mcbd::save_svgSize).get());
-    _load.setImages(juce::Drawable::createFromImageData(mcbd::folder_open_svg, mcbd::folder_open_svgSize).get());
 
     connectValuesToTree();
     setSize(600, 400);
@@ -88,28 +76,28 @@ void FirstReflectionsView::paint(juce::Graphics& g)
 {
     auto const room = RoomLayout {
         RoomDimensions {
-            static_cast<double>(_roomLength.getValue()),
-            static_cast<double>(_roomWidth.getValue()),
-            static_cast<double>(_roomHeight.getValue()),
+            _roomLength,
+            _roomWidth,
+            _roomHeight,
         },
         Point {
-            static_cast<double>(_leftX.getValue()),
-            static_cast<double>(_leftY.getValue()),
-            static_cast<double>(_leftZ.getValue()),
+            _leftX,
+            _leftY,
+            _leftZ,
         },
         Point {
-            static_cast<double>(_rightX.getValue()),
-            static_cast<double>(_rightY.getValue()),
-            static_cast<double>(_rightZ.getValue()),
+            _rightX,
+            _rightY,
+            _rightZ,
         },
         Point {
-            static_cast<double>(_listenX.getValue()),
-            static_cast<double>(_listenY.getValue()),
-            static_cast<double>(_listenZ.getValue()),
+            _listenX,
+            _listenY,
+            _listenZ,
         },
     };
 
-    auto const iconSize = std::max(static_cast<double>(_iconSize.getValue()), 1.0);
+    auto const iconSize = std::max<double>(_iconSize, 1.0);
     auto const iconRect = juce::Rectangle {0.0, 0.0, iconSize, iconSize};
 
     if (room.dimensions.length == 0.0) { return; }
@@ -143,7 +131,7 @@ void FirstReflectionsView::paint(juce::Graphics& g)
     auto const listenArea = iconRect.withCentre({listenX, listenY});
     _headIcon->drawWithin(g, listenArea.toFloat(), juce::RectanglePlacement::centred, 1.0f);
 
-    if (static_cast<bool>(_renderLeftReflections.getValue()))
+    if (_renderLeftReflections)
     {
         auto const reflectionLeftClose = reflectionLeftSpeaker(room);
         auto const leftCloseToWall
@@ -191,12 +179,6 @@ void FirstReflectionsView::resized()
     _drawArea = area.removeFromRight(area.proportionOfWidth(0.5)).reduced(10);
 
     area.reduce(10, 10);
-    auto buttonArea        = area.removeFromTop(area.proportionOfHeight(0.1));
-    auto const buttonWidth = buttonArea.proportionOfWidth(0.25);
-    _undo.setBounds(buttonArea.removeFromLeft(buttonWidth).reduced(5));
-    _redo.setBounds(buttonArea.removeFromLeft(buttonWidth).reduced(5));
-    _load.setBounds(buttonArea.removeFromLeft(buttonWidth).reduced(5));
-    _save.setBounds(buttonArea.reduced(5));
 
     _renderProperties.setBounds(area.removeFromBottom(area.proportionOfHeight(0.2)).reduced(5));
     _roomProperties.setBounds(area.reduced(5));
@@ -204,125 +186,75 @@ void FirstReflectionsView::resized()
 
 auto FirstReflectionsView::connectValuesToTree() -> void
 {
-    _iconSize.removeListener(this);
+    _iconSize.getValueTree().addListener(this);
 
-    _roomLength.removeListener(this);
-    _roomWidth.removeListener(this);
-    _roomHeight.removeListener(this);
+    _roomLength.getValueTree().addListener(this);
+    _roomWidth.getValueTree().addListener(this);
+    _roomHeight.getValueTree().addListener(this);
 
-    _listenX.removeListener(this);
-    _listenY.removeListener(this);
-    _listenZ.removeListener(this);
+    _listenX.getValueTree().addListener(this);
+    _listenY.getValueTree().addListener(this);
+    _listenZ.getValueTree().addListener(this);
 
-    _leftX.removeListener(this);
-    _leftY.removeListener(this);
-    _leftZ.removeListener(this);
+    _leftX.getValueTree().addListener(this);
+    _leftY.getValueTree().addListener(this);
+    _leftZ.getValueTree().addListener(this);
 
-    _rightX.removeListener(this);
-    _rightY.removeListener(this);
-    _rightZ.removeListener(this);
+    _rightX.getValueTree().addListener(this);
+    _rightY.getValueTree().addListener(this);
+    _rightZ.getValueTree().addListener(this);
 
-    _renderLeftReflections.removeListener(this);
-    _renderRightReflections.removeListener(this);
-
-    _iconSize.referTo(_roomTree.getPropertyAsValue("icon_size", &_undoManager));
-
-    _roomLength.referTo(_roomTree.getPropertyAsValue("room_length", &_undoManager));
-    _roomWidth.referTo(_roomTree.getPropertyAsValue("room_width", &_undoManager));
-    _roomHeight.referTo(_roomTree.getPropertyAsValue("room_height", &_undoManager));
-
-    _listenX.referTo(_roomTree.getPropertyAsValue("listen_x", &_undoManager));
-    _listenY.referTo(_roomTree.getPropertyAsValue("listen_y", &_undoManager));
-    _listenZ.referTo(_roomTree.getPropertyAsValue("listen_z", &_undoManager));
-
-    _leftX.referTo(_roomTree.getPropertyAsValue("left_x", &_undoManager));
-    _leftY.referTo(_roomTree.getPropertyAsValue("left_y", &_undoManager));
-    _leftZ.referTo(_roomTree.getPropertyAsValue("left_z", &_undoManager));
-
-    _rightX.referTo(_roomTree.getPropertyAsValue("right_x", &_undoManager));
-    _rightY.referTo(_roomTree.getPropertyAsValue("right_y", &_undoManager));
-    _rightZ.referTo(_roomTree.getPropertyAsValue("right_z", &_undoManager));
-
-    _renderLeftReflections.referTo(_roomTree.getPropertyAsValue("render_left_reflections", &_undoManager));
-    _renderRightReflections.referTo(_roomTree.getPropertyAsValue("render_right_reflections", &_undoManager));
-
-    _iconSize.addListener(this);
-
-    _roomLength.addListener(this);
-    _roomWidth.addListener(this);
-    _roomHeight.addListener(this);
-
-    _listenX.addListener(this);
-    _listenY.addListener(this);
-    _listenZ.addListener(this);
-
-    _leftX.addListener(this);
-    _leftY.addListener(this);
-    _leftZ.addListener(this);
-
-    _rightX.addListener(this);
-    _rightY.addListener(this);
-    _rightZ.addListener(this);
-
-    _renderLeftReflections.addListener(this);
-    _renderRightReflections.addListener(this);
+    _renderLeftReflections.getValueTree().addListener(this);
+    _renderRightReflections.getValueTree().addListener(this);
 
     _roomProperties.clear();
     _renderProperties.clear();
 
-    _roomProperties.addSection("General",
-                               juce::Array<juce::PropertyComponent*> {
-                                   new juce::SliderPropertyComponent {_iconSize, "Icon Size", 20.0, 100.0, 1.0},
-                               });
+    _roomProperties.addSection(
+        "General", juce::Array<juce::PropertyComponent*> {
+                       new juce::SliderPropertyComponent {_iconSize.getPropertyAsValue(), "Icon Size", 0.0, 100.0, 1.0},
+                   });
 
-    _roomProperties.addSection("Room Dimensions",
-                               juce::Array<juce::PropertyComponent*> {
-                                   new juce::SliderPropertyComponent {_roomLength, "Length", 0.0, 1000.0, 1.0},
-                                   new juce::SliderPropertyComponent {_roomWidth, "Width", 0.0, 1000.0, 1.0},
-                                   new juce::SliderPropertyComponent {_roomHeight, "Height", 0.0, 1000.0, 1.0},
-                               });
+    _roomProperties.addSection(
+        "Room Dimensions",
+        juce::Array<juce::PropertyComponent*> {
+            new juce::SliderPropertyComponent {_roomLength.getPropertyAsValue(), "Length", 0.0, 1000.0, 1.0},
+            new juce::SliderPropertyComponent {_roomWidth.getPropertyAsValue(), "Width", 0.0, 1000.0, 1.0},
+            new juce::SliderPropertyComponent {_roomHeight.getPropertyAsValue(), "Height", 0.0, 1000.0, 1.0},
+        });
 
-    _roomProperties.addSection("Listen Position",
-                               juce::Array<juce::PropertyComponent*> {
-                                   new juce::SliderPropertyComponent {_listenX, "X", 0.0, 1000.0, 1.0},
-                                   new juce::SliderPropertyComponent {_listenY, "Y", 0.0, 1000.0, 1.0},
-                                   new juce::SliderPropertyComponent {_listenZ, "Z", 0.0, 1000.0, 1.0},
-                               });
+    _roomProperties.addSection(
+        "Listen Position", juce::Array<juce::PropertyComponent*> {
+                               new juce::SliderPropertyComponent {_listenX.getPropertyAsValue(), "X", 0.0, 1000.0, 1.0},
+                               new juce::SliderPropertyComponent {_listenY.getPropertyAsValue(), "Y", 0.0, 1000.0, 1.0},
+                               new juce::SliderPropertyComponent {_listenZ.getPropertyAsValue(), "Z", 0.0, 1000.0, 1.0},
+                           });
 
-    _roomProperties.addSection("Left Speaker", juce::Array<juce::PropertyComponent*> {
-                                                   new juce::SliderPropertyComponent {_leftX, "X", 0.0, 1000.0, 1.0},
-                                                   new juce::SliderPropertyComponent {_leftY, "Y", 0.0, 1000.0, 1.0},
-                                                   new juce::SliderPropertyComponent {_leftZ, "Z", 0.0, 1000.0, 1.0},
-                                               });
+    _roomProperties.addSection(
+        "Left Speaker", juce::Array<juce::PropertyComponent*> {
+                            new juce::SliderPropertyComponent {_leftX.getPropertyAsValue(), "X", 0.0, 1000.0, 1.0},
+                            new juce::SliderPropertyComponent {_leftY.getPropertyAsValue(), "Y", 0.0, 1000.0, 1.0},
+                            new juce::SliderPropertyComponent {_leftZ.getPropertyAsValue(), "Z", 0.0, 1000.0, 1.0},
+                        });
 
-    _roomProperties.addSection("Right Speaker", juce::Array<juce::PropertyComponent*> {
-                                                    new juce::SliderPropertyComponent {_rightX, "X", 0.0, 1000.0, 1.0},
-                                                    new juce::SliderPropertyComponent {_rightY, "Y", 0.0, 1000.0, 1.0},
-                                                    new juce::SliderPropertyComponent {_rightZ, "Z", 0.0, 1000.0, 1.0},
-                                                });
+    _roomProperties.addSection(
+        "Right Speaker", juce::Array<juce::PropertyComponent*> {
+                             new juce::SliderPropertyComponent {_rightX.getPropertyAsValue(), "X", 0.0, 1000.0, 1.0},
+                             new juce::SliderPropertyComponent {_rightY.getPropertyAsValue(), "Y", 0.0, 1000.0, 1.0},
+                             new juce::SliderPropertyComponent {_rightZ.getPropertyAsValue(), "Z", 0.0, 1000.0, 1.0},
+                         });
 
-    _renderProperties.addSection("First Reflections",
-                                 juce::Array<juce::PropertyComponent*> {
-                                     new juce::BooleanPropertyComponent {_renderLeftReflections, "Left", "Draw"},
-                                     new juce::BooleanPropertyComponent {_renderRightReflections, "Right", "Draw"},
-                                 });
+    _renderProperties.addSection(
+        "First Reflections",
+        juce::Array<juce::PropertyComponent*> {
+            new juce::BooleanPropertyComponent {_renderLeftReflections.getPropertyAsValue(), "Left", "Draw"},
+            new juce::BooleanPropertyComponent {_renderRightReflections.getPropertyAsValue(), "Right", "Draw"},
+        });
 }
 
-auto FirstReflectionsView::save() -> void
+auto FirstReflectionsView::valueTreePropertyChanged(juce::ValueTree& /*tree*/, juce::Identifier const& /*property*/)
+    -> void
 {
-    auto file   = juce::File {juce::File::getSpecialLocation(juce::File::userHomeDirectory)}.getChildFile("test.mcra");
-    auto stream = juce::FileOutputStream {file};
-    _roomTree.writeToStream(stream);
-}
-
-auto FirstReflectionsView::load() -> void
-{
-    auto file   = juce::File {juce::File::getSpecialLocation(juce::File::userHomeDirectory)}.getChildFile("test.mcra");
-    auto stream = juce::FileInputStream {file};
-    _roomTree   = juce::ValueTree::readFromStream(stream);
-    connectValuesToTree();
     repaint();
 }
-
-auto FirstReflectionsView::valueChanged(juce::Value& /*value*/) -> void { repaint(); }
 }  // namespace mc

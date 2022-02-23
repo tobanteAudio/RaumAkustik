@@ -14,11 +14,21 @@ struct MainComponent final : juce::Component
     void resized() override;
 
 private:
+    auto saveSession() -> void;
+    auto loadSession() -> void;
+    auto reloadUI() -> void;
+
+    juce::UndoManager _undoManager;
     juce::ValueTree _valueTree {"RaumAkustik"};
 
+    juce::DrawableButton _undo {"Undo", juce::DrawableButton::ImageFitted};
+    juce::DrawableButton _redo {"Redo", juce::DrawableButton::ImageFitted};
+    juce::DrawableButton _load {"Load", juce::DrawableButton::ImageFitted};
+    juce::DrawableButton _save {"Save", juce::DrawableButton::ImageFitted};
+
     juce::TabbedComponent _tabs {juce::TabbedButtonBar::TabsAtTop};
-    mc::FirstReflectionsView _firstReflectionsView {_valueTree};
-    mc::PorousAbsorberSimulationView _absorberSimulationView {_valueTree};
+    std::unique_ptr<mc::FirstReflectionsView> _firstReflectionsView {};
+    std::unique_ptr<mc::PorousAbsorberSimulationView> _absorberSimulationView {};
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(MainComponent)
 };
