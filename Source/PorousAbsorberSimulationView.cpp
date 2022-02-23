@@ -5,6 +5,15 @@
 namespace mc
 {
 
+namespace
+{
+auto positionForFrequency(double const freq) noexcept -> double
+{
+    return (std::log(freq / 20.0) / std::log(2.0)) / 10.0;
+}
+
+}  // namespace
+
 PorousAbsorberSimulationView::PorousAbsorberSimulationView()
 {
     addAndMakeVisible(_table);
@@ -32,13 +41,35 @@ PorousAbsorberSimulationView::PorousAbsorberSimulationView()
     _absorberAngleOfIncidence.addListener(this);
 }
 
-auto PorousAbsorberSimulationView::paint(juce::Graphics& g) -> void { (void)g; }
+auto PorousAbsorberSimulationView::paint(juce::Graphics& g) -> void
+{
+    g.setColour(juce::Colours::white);
+    g.fillRect(_plotArea);
+
+    auto path = juce::Path {};
+    path.startNewSubPath(_plotArea.getBottomLeft().toFloat());
+    for (auto const& p : _props)
+    {
+        auto posX = _plotArea.getX() + _plotArea.getWidth() * positionForFrequency(p.first);
+        auto posY = _plotArea.getBottom() - _plotArea.getHeight() * p.second.absorptionFactorNoAirGap;
+        path.lineTo(juce::Point {posX, posY}.toFloat());
+    }
+
+    DBG("TOPLEFT: " + _plotArea.getTopLeft().toString());
+    DBG("BOTTOMRIGHT: " + _plotArea.getBottomRight().toString());
+
+    path = path.createPathWithRoundedCorners(5.0f);
+    g.setColour(juce::Colours::black);
+    g.strokePath(path, juce::PathStrokeType {2.0f});
+}
 
 auto PorousAbsorberSimulationView::resized() -> void
 {
     auto area = getLocalBounds();
     _absorberSpecs.setBounds(area.removeFromTop(area.proportionOfHeight(0.3)));
-    _table.setBounds(area);
+
+    _plotArea = area.removeFromLeft(area.proportionOfWidth(0.5)).reduced(10);
+    _table.setBounds(area.reduced(10));
 }
 
 auto PorousAbsorberSimulationView::valueChanged(juce::Value& /*value*/) -> void
@@ -53,9 +84,9 @@ auto PorousAbsorberSimulationView::valueChanged(juce::Value& /*value*/) -> void
     auto const env   = AtmosphericEnvironment {20.0, 1.0};
     auto const angle = static_cast<double>(_absorberAngleOfIncidence.getValue());
 
-    for (auto i {0U}; i < 20U; ++i)
+    for (auto i {0U}; i < 48U; ++i)
     {
-        auto const frequency = oactaveSubdivision(50.0, 6, i);
+        auto const frequency = oactaveSubdivision(40.0, 6, i);
         _props.push_back(std::make_pair(frequency, propertiesOfAbsorber(specs, env, frequency, angle)));
     }
 

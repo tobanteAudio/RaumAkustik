@@ -28,6 +28,7 @@ private:
 
     juce::TableListBox _table {"Table", this};
     juce::PropertyPanel _absorberSpecs {};
+    juce::Rectangle<int> _plotArea;
 
     juce::Value _absorberThickness {};
     juce::Value _absorberFlowResisitivity {};
