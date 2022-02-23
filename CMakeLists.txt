@@ -50,9 +50,14 @@ add_library(libRaumAkustik INTERFACE)
 target_include_directories(libRaumAkustik INTERFACE "${PROJECT_SOURCE_DIR}/Source")
 
 add_executable(libRaumAkustik_Tests)
-target_sources(libRaumAkustik_Tests PRIVATE Source/mc/RaumAkustik/FirstReflection.test.cpp)
-target_link_libraries(libRaumAkustik_Tests PRIVATE libRaumAkustik Catch2::Catch2WithMain)
 catch_discover_tests(libRaumAkustik_Tests)
+target_link_libraries(libRaumAkustik_Tests PRIVATE libRaumAkustik Catch2::Catch2WithMain)
+target_sources(libRaumAkustik_Tests
+    PRIVATE
+        Source/mc/RaumAkustik/Air.test.cpp
+        Source/mc/RaumAkustik/FirstReflection.test.cpp
+        Source/mc/RaumAkustik/PorousAbsorber.test.cpp
+)
 
 juce_add_binary_data(RaumAkustik_BinaryData
     HEADER_NAME
