@@ -92,6 +92,8 @@ target_sources(RaumAkustik
         Source/Main.cpp
         Source/MainComponent.cpp
         Source/MainComponent.hpp
+        Source/PorousAbsorberSimulationView.cpp
+        Source/PorousAbsorberSimulationView.hpp
         Source/RoomSimulationView.cpp
         Source/RoomSimulationView.hpp
 )

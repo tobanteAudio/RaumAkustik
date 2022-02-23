@@ -114,8 +114,6 @@ void RoomSimulationView::paint(juce::Graphics& g)
     if (room.dimensions.width == 0.0) { return; }
     if (room.dimensions.height == 0.0) { return; }
 
-    g.fillAll(getLookAndFeel().findColour(juce::ResizableWindow::backgroundColourId));
-
     auto totalArea          = _drawArea;
     auto const topViewArea  = totalArea.removeFromTop(totalArea.proportionOfHeight(0.66));
     auto const area         = topViewArea.toDouble();
