@@ -42,7 +42,7 @@ struct PorousAbsorberProperties
     double betaPorous {0};
 
     /// Ratio of wavenumbers (k:kx)
-    double ratiooOfWaveNumbers {0};
+    std::complex<double> ratiooOfWaveNumbers {0};
 };
 
 [[nodiscard]] auto propertiesOfAbsorber(PorousAbsorberSpecs specs, AtmosphericEnvironment env, double frequency,
@@ -58,37 +58,5 @@ namespace detail
 [[nodiscard]] auto angleOfPropagation(std::complex<double> k, double ky) -> double;
 
 }  // namespace detail
-
-inline auto oactaveSubdivision(double startFrequencyHertz, std::size_t octaveSubdivisions, std::size_t idx) -> double
-{
-    return std::pow(2.0, std::log2(startFrequencyHertz)
-                             + static_cast<double>(idx) / static_cast<double>(octaveSubdivisions));
-}
-
-inline auto complexWaveNumber(double temperature, double pressure, double frequency, double flowResistivity)
-    -> std::complex<double>
-{
-    // Eq 5.10
-    // =IMPRODUCT(TwoPiByC,frequency,COMPLEX(1+0.0978*(X^-0.7),-0.189*(X^-0.595),"j"))
-    auto const X      = detail::delanyBazleyTerm(densityOfAir(temperature, pressure), frequency, flowResistivity);
-    auto const twoPiC = (2.0 * M_PI) / soundVelocity(temperature);
-    return twoPiC * frequency * std::complex {1 + 0.0978 * std::pow(X, -0.7), -0.189 * std::pow(X, -0.595)};
-}
-
-inline auto xComponentOfWaveNumber(double temperature, double pressure, double frequency, double flowResistivity,
-                                   double angle)
-{
-    auto const zca = complexWaveNumber(temperature, pressure, frequency, flowResistivity);
-    auto const y   = detail::yComponentOfWaveNumber(detail::waveNumber(temperature, frequency), angle);
-    return std::sqrt((zca * zca) - std::pow(y, 2.0));
-};
-
-inline auto ratioOfWaveNumbers(double temperature, double pressure, double frequency, double flowResistivity,
-                               double angle)
-{
-    auto const zca = complexWaveNumber(temperature, pressure, frequency, flowResistivity);
-    auto const y   = xComponentOfWaveNumber(temperature, pressure, frequency, flowResistivity, angle);
-    return zca / y;
-};
 
 }  // namespace mc

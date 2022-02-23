@@ -54,6 +54,8 @@ target_sources(libRaumAkustik
         Source/mc/RaumAkustik/FirstReflection.hpp
         Source/mc/RaumAkustik/PorousAbsorber.cpp
         Source/mc/RaumAkustik/PorousAbsorber.hpp
+        Source/mc/RaumAkustik/Utility.cpp
+        Source/mc/RaumAkustik/Utility.hpp
 )
 
 add_executable(libRaumAkustik_Tests)
@@ -64,6 +66,7 @@ target_sources(libRaumAkustik_Tests
         Source/mc/RaumAkustik/Air.test.cpp
         Source/mc/RaumAkustik/FirstReflection.test.cpp
         Source/mc/RaumAkustik/PorousAbsorber.test.cpp
+        Source/mc/RaumAkustik/Utility.test.cpp
 )
 
 juce_add_binary_data(RaumAkustik_BinaryData

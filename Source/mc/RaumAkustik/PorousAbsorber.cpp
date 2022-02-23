@@ -14,7 +14,8 @@ auto propertiesOfAbsorber(PorousAbsorberSpecs specs, AtmosphericEnvironment env,
     p.k    = twoPiC * frequency * std::complex {1 + 0.0978 * std::pow(p.X, -0.7), -0.189 * std::pow(p.X, -0.595)};
     p.ky   = detail::yComponentOfWaveNumber(detail::waveNumber(env.temperature, frequency), angle);
     p.kx   = std::sqrt((p.k * p.k) - std::pow(p.ky, 2));
-    p.betaPorous = detail::angleOfPropagation(p.k, p.ky);
+    p.betaPorous          = detail::angleOfPropagation(p.k, p.ky);
+    p.ratiooOfWaveNumbers = p.k / p.kx;
 
     return p;
 }
