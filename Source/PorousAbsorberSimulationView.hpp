@@ -36,6 +36,7 @@ private:
     juce::Value _absorberThickness {};
     juce::Value _absorberFlowResisitivity {};
     juce::Value _absorberAngleOfIncidence {};
+    juce::Value _absorberAirGap {};
 
     juce::Value _plotNumPoints {};
     juce::Value _plotStartFrequency {};

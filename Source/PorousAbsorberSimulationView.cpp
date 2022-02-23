@@ -20,8 +20,8 @@ PorousAbsorberSimulationView::PorousAbsorberSimulationView()
     addAndMakeVisible(_absorberSpecs);
 
     _table.getHeader().addColumn("Frequency", 1, 100, 100);
-    _table.getHeader().addColumn("Reflection", 2, 100, 100);
-    _table.getHeader().addColumn("Absorption", 3, 100, 100);
+    _table.getHeader().addColumn("Absorption No Gap", 2, 150, 150);
+    _table.getHeader().addColumn("Absorption With Gap", 3, 150, 150);
 
     _temperature.setValue(20.0);
     _pressure.setValue(1.0);
@@ -29,6 +29,7 @@ PorousAbsorberSimulationView::PorousAbsorberSimulationView()
     _absorberThickness.setValue(100.0);
     _absorberFlowResisitivity.setValue(8000.0);
     _absorberAngleOfIncidence.setValue(0.0);
+    _absorberAirGap.setValue(100.0);
 
     _plotNumPoints.setValue(48.0);
     _plotStartFrequency.setValue(20.0);
@@ -46,6 +47,7 @@ PorousAbsorberSimulationView::PorousAbsorberSimulationView()
             new juce::SliderPropertyComponent {_absorberThickness, "Thickness (mm)", 0.0, 1000.0, 1.0},
             new juce::SliderPropertyComponent {_absorberFlowResisitivity, "Flow Resisitivity", 0.0, 10'000.0, 1.0},
             new juce::SliderPropertyComponent {_absorberAngleOfIncidence, "Angle Of Incidence", 0.0, 90.0, 1.0},
+            new juce::SliderPropertyComponent {_absorberAirGap, "Air Gap (mm)", 0.0, 1000.0, 1.0},
 
         });
 
@@ -62,6 +64,7 @@ PorousAbsorberSimulationView::PorousAbsorberSimulationView()
     _absorberThickness.addListener(this);
     _absorberFlowResisitivity.addListener(this);
     _absorberAngleOfIncidence.addListener(this);
+    _absorberAirGap.addListener(this);
     _plotNumPoints.addListener(this);
     _plotStartFrequency.addListener(this);
     _plotOctaveSubdivision.addListener(this);
@@ -88,24 +91,34 @@ auto PorousAbsorberSimulationView::paint(juce::Graphics& g) -> void
         g.drawLine(x, topY, x, bottomY, 3.0f);
     }
 
-    auto path = juce::Path {};
-    path.startNewSubPath(_plotArea.getBottomLeft().toFloat());
+    auto noAirGapPath = juce::Path {};
+    noAirGapPath.startNewSubPath(_plotArea.getBottomLeft().toFloat());
+
+    auto withAirGapPath = juce::Path {};
+    withAirGapPath.startNewSubPath(_plotArea.getBottomLeft().toFloat());
+
     for (auto const& p : _props)
     {
-        auto posX = _plotArea.getX() + _plotArea.getWidth() * positionForFrequency(p.first);
-        auto posY = _plotArea.getBottom() - _plotArea.getHeight() * p.second.absorptionFactorNoAirGap;
-        path.lineTo(juce::Point {posX, posY}.toFloat());
+        auto posX     = _plotArea.getX() + _plotArea.getWidth() * positionForFrequency(p.first);
+        auto noGapY   = _plotArea.getBottom() - _plotArea.getHeight() * p.second.absorptionFactorNoAirGap;
+        auto withGapY = _plotArea.getBottom() - _plotArea.getHeight() * p.second.absorptionFactorWithAirGap;
+        noAirGapPath.lineTo(juce::Point {posX, noGapY}.toFloat());
+        withAirGapPath.lineTo(juce::Point {posX, withGapY}.toFloat());
     }
 
-    path = path.createPathWithRoundedCorners(5.0f);
+    noAirGapPath = noAirGapPath.createPathWithRoundedCorners(5.0f);
     g.setColour(juce::Colours::black);
-    g.strokePath(path, juce::PathStrokeType {2.0f});
+    g.strokePath(noAirGapPath, juce::PathStrokeType {2.0f});
+
+    withAirGapPath = withAirGapPath.createPathWithRoundedCorners(5.0f);
+    g.setColour(juce::Colours::red);
+    g.strokePath(withAirGapPath, juce::PathStrokeType {2.0f});
 }
 
 auto PorousAbsorberSimulationView::resized() -> void
 {
     auto area = getLocalBounds();
-    _absorberSpecs.setBounds(area.removeFromTop(area.proportionOfHeight(0.3)));
+    _absorberSpecs.setBounds(area.removeFromTop(area.proportionOfHeight(0.4)));
 
     _plotArea = area.removeFromLeft(area.proportionOfWidth(0.5)).reduced(10);
     _table.setBounds(area.reduced(10));
@@ -118,6 +131,7 @@ auto PorousAbsorberSimulationView::valueChanged(juce::Value& /*value*/) -> void
     auto const specs = PorousAbsorberSpecs {
         static_cast<double>(_absorberThickness.getValue()),
         static_cast<double>(_absorberFlowResisitivity.getValue()),
+        static_cast<double>(_absorberAirGap.getValue()),
     };
 
     auto const env = AtmosphericEnvironment {
@@ -162,19 +176,19 @@ auto PorousAbsorberSimulationView::paintCell(juce::Graphics& g, int rowNumber, i
 
     if (columnId == 1)
     {
-        auto const absorptionFactor = juce::String {_props[rowNumber].first};
-        g.drawText(absorptionFactor, 2, 0, width - 4, height, juce::Justification::centredLeft, true);
+        auto const frequency = juce::String {_props[rowNumber].first};
+        g.drawText(frequency, 2, 0, width - 4, height, juce::Justification::centredLeft, true);
     }
 
     if (columnId == 2)
     {
-        auto const reflectionFactor = juce::String {_props[rowNumber].second.reflectionFactorNoAirGap.real()};
-        g.drawText(reflectionFactor, 2, 0, width - 4, height, juce::Justification::centredLeft, true);
+        auto const absorptionFactor = juce::String {_props[rowNumber].second.absorptionFactorNoAirGap};
+        g.drawText(absorptionFactor, 2, 0, width - 4, height, juce::Justification::centredLeft, true);
     }
 
     if (columnId == 3)
     {
-        auto const absorptionFactor = juce::String {_props[rowNumber].second.absorptionFactorNoAirGap};
+        auto const absorptionFactor = juce::String {_props[rowNumber].second.absorptionFactorWithAirGap};
         g.drawText(absorptionFactor, 2, 0, width - 4, height, juce::Justification::centredLeft, true);
     }
 

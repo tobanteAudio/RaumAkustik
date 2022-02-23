@@ -13,6 +13,9 @@ struct PorousAbsorberSpecs
 
     /// Absorber flow resisitivity
     double flowResisitivity {0};
+
+    /// Gap between absorber and rigid surface (mm)
+    double airGap {0};
 };
 
 struct PorousAbsorberImpedance
@@ -57,6 +60,17 @@ struct PorousAbsorberProperties
 
     std::complex<double> reflectionFactorNoAirGap {};
     double absorptionFactorNoAirGap {};
+
+    std::complex<double> kAirY {0.0};
+    std::complex<double> kAirX {0.0};
+    double betaAir {0};
+    std::complex<double> kAirRatio {0};
+    std::complex<double> zAir {0};
+    std::complex<double> ki {0};
+    std::complex<double> zaAir {0};
+
+    std::complex<double> reflectionFactorWithAirGap {};
+    double absorptionFactorWithAirGap {};
 };
 
 [[nodiscard]] auto propertiesOfAbsorber(PorousAbsorberSpecs specs, AtmosphericEnvironment env, double frequency,
