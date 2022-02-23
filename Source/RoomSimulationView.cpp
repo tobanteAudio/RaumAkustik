@@ -59,7 +59,8 @@ auto reflectionRightSpeakerFar(RoomLayout const& room) -> double
     return room.listenPosition.y - tmp;
 };
 
-RoomSimulationView::RoomSimulationView()
+RoomSimulationView::RoomSimulationView(juce::ValueTree vt)
+    : _roomTree {vt.getOrCreateChildWithName("RoomSimulation", nullptr)}
 {
     addAndMakeVisible(_undo);
     addAndMakeVisible(_redo);

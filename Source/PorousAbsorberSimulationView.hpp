@@ -9,16 +9,16 @@ namespace mc
 struct PorousAbsorberSimulationView final
     : juce::Component
     , juce::TableListBoxModel
-    , juce::Value::Listener
+    , juce::ValueTree::Listener
 {
-    PorousAbsorberSimulationView();
+    PorousAbsorberSimulationView(juce::ValueTree vt);
     ~PorousAbsorberSimulationView() override = default;
 
     auto paint(juce::Graphics&) -> void override;
     auto resized() -> void override;
 
 private:
-    auto valueChanged(juce::Value& /*value*/) -> void override;
+    auto valueTreePropertyChanged(juce::ValueTree& tree, juce::Identifier const& property) -> void override;
 
     auto getNumRows() -> int override;
     auto paintRowBackground(juce::Graphics&, int rowNumber, int width, int height, bool rowIsSelected) -> void override;
@@ -26,21 +26,26 @@ private:
     auto paintCell(juce::Graphics&, int rowNumber, int columnId, int width, int height, bool rowIsSelected)
         -> void override;
 
+    auto updateSimulation() -> void;
+
     juce::TableListBox _table {"Table", this};
     juce::PropertyPanel _absorberSpecs {};
     juce::Rectangle<int> _plotArea;
 
-    juce::Value _temperature {};
-    juce::Value _pressure {};
+    juce::UndoManager _undoManager {};
+    juce::ValueTree _valueTree;
 
-    juce::Value _absorberThickness {};
-    juce::Value _absorberFlowResisitivity {};
-    juce::Value _absorberAngleOfIncidence {};
-    juce::Value _absorberAirGap {};
+    juce::CachedValue<double> _temperature {_valueTree, "temperature", &_undoManager};
+    juce::CachedValue<double> _pressure {_valueTree, "pressure", &_undoManager};
 
-    juce::Value _plotNumPoints {};
-    juce::Value _plotStartFrequency {};
-    juce::Value _plotOctaveSubdivision {};
+    juce::CachedValue<double> _absorberThickness {_valueTree, "absorberThickness", &_undoManager};
+    juce::CachedValue<double> _absorberFlowResisitivity {_valueTree, "absorberFlowResisitivity", &_undoManager};
+    juce::CachedValue<double> _absorberAngleOfIncidence {_valueTree, "absorberAngleOfIncidence", &_undoManager};
+    juce::CachedValue<double> _absorberAirGap {_valueTree, "absorberAirGap", &_undoManager};
+
+    juce::CachedValue<double> _plotNumPoints {_valueTree, "plotNumPoints", &_undoManager};
+    juce::CachedValue<double> _plotStartFrequency {_valueTree, "plotStartFrequency", &_undoManager};
+    juce::CachedValue<double> _plotOctaveSubdivision {_valueTree, "plotOctaveSubdivision", &_undoManager};
 
     std::vector<std::pair<double, PorousAbsorberProperties>> _props;
 

@@ -8,15 +8,17 @@
 struct MainComponent final : juce::Component
 {
     MainComponent();
-    ~MainComponent() override = default;
+    ~MainComponent() override;
 
     void paint(juce::Graphics&) override;
     void resized() override;
 
 private:
-    juce::TabbedComponent _tabs {juce::TabbedButtonBar::TabsAtTop};
+    juce::ValueTree _valueTree {"RaumAkustik"};
 
-    mc::RoomSimulationView _roomSimulationView;
-    mc::PorousAbsorberSimulationView _absorberSimulationView;
+    juce::TabbedComponent _tabs {juce::TabbedButtonBar::TabsAtTop};
+    mc::RoomSimulationView _roomSimulationView {_valueTree};
+    mc::PorousAbsorberSimulationView _absorberSimulationView {_valueTree};
+
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(MainComponent)
 };

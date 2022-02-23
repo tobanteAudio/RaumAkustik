@@ -9,6 +9,8 @@ MainComponent::MainComponent()
     setSize(1280, 720);
 }
 
+MainComponent::~MainComponent() { DBG(_valueTree.toXmlString()); }
+
 auto MainComponent::paint(juce::Graphics& g) -> void
 {
     g.fillAll(getLookAndFeel().findColour(juce::ResizableWindow::backgroundColourId));

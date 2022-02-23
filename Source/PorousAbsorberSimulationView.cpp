@@ -14,7 +14,8 @@ auto positionForFrequency(double const freq) noexcept -> double
 
 }  // namespace
 
-PorousAbsorberSimulationView::PorousAbsorberSimulationView()
+PorousAbsorberSimulationView::PorousAbsorberSimulationView(juce::ValueTree vt)
+    : _valueTree {vt.getOrCreateChildWithName("PorousAbsorber", nullptr)}
 {
     addAndMakeVisible(_table);
     addAndMakeVisible(_absorberSpecs);
@@ -23,53 +24,60 @@ PorousAbsorberSimulationView::PorousAbsorberSimulationView()
     _table.getHeader().addColumn("Absorption No Gap", 2, 150, 150);
     _table.getHeader().addColumn("Absorption With Gap", 3, 150, 150);
 
-    _temperature.setValue(20.0);
-    _pressure.setValue(1.0);
+    _temperature = 20.0;
+    _pressure    = 1.0;
 
-    _absorberThickness.setValue(100.0);
-    _absorberFlowResisitivity.setValue(8000.0);
-    _absorberAngleOfIncidence.setValue(0.0);
-    _absorberAirGap.setValue(100.0);
+    _absorberThickness        = 100.0;
+    _absorberFlowResisitivity = 8000.0;
+    _absorberAngleOfIncidence = 0.0;
+    _absorberAirGap           = 100.0;
 
-    _plotNumPoints.setValue(48.0);
-    _plotStartFrequency.setValue(20.0);
-    _plotOctaveSubdivision.setValue(6.0);
+    _plotNumPoints         = 48.0;
+    _plotStartFrequency    = 20.0;
+    _plotOctaveSubdivision = 6.0;
 
-    _absorberSpecs.addSection("Atmospheric Environment",
-                              juce::Array<juce::PropertyComponent*> {
-                                  new juce::SliderPropertyComponent {_temperature, "Temperature (C)", 0.0, 100.0, 1.0},
-                                  new juce::SliderPropertyComponent {_pressure, "Pressure (Bar)", 0.0, 2.0, 0.01},
-                              });
+    _absorberSpecs.addSection(
+        "Atmospheric Environment",
+        juce::Array<juce::PropertyComponent*> {
+            new juce::SliderPropertyComponent {_temperature.getPropertyAsValue(), "Temperature (C)", 0.0, 100.0, 1.0},
+            new juce::SliderPropertyComponent {_pressure.getPropertyAsValue(), "Pressure (Bar)", 0.0, 2.0, 0.01},
+        });
 
     _absorberSpecs.addSection(
         "Absorber Dimensions",
         juce::Array<juce::PropertyComponent*> {
-            new juce::SliderPropertyComponent {_absorberThickness, "Thickness (mm)", 0.0, 1000.0, 1.0},
-            new juce::SliderPropertyComponent {_absorberFlowResisitivity, "Flow Resisitivity", 0.0, 10'000.0, 1.0},
-            new juce::SliderPropertyComponent {_absorberAngleOfIncidence, "Angle Of Incidence", 0.0, 90.0, 1.0},
-            new juce::SliderPropertyComponent {_absorberAirGap, "Air Gap (mm)", 0.0, 1000.0, 1.0},
+            new juce::SliderPropertyComponent {_absorberThickness.getPropertyAsValue(), "Thickness (mm)", 0.0, 1000.0,
+                                               1.0},
+            new juce::SliderPropertyComponent {_absorberFlowResisitivity.getPropertyAsValue(), "Flow Resisitivity", 0.0,
+                                               10'000.0, 1.0},
+            new juce::SliderPropertyComponent {_absorberAngleOfIncidence.getPropertyAsValue(), "Angle Of Incidence",
+                                               0.0, 90.0, 1.0},
+            new juce::SliderPropertyComponent {_absorberAirGap.getPropertyAsValue(), "Air Gap (mm)", 0.0, 1000.0, 1.0},
 
         });
 
     _absorberSpecs.addSection(
-        "Plot", juce::Array<juce::PropertyComponent*> {
-                    new juce::SliderPropertyComponent {_plotNumPoints, "Num Points", 0.0, 256.0, 1.0},
-                    new juce::SliderPropertyComponent {_plotStartFrequency, "Start Frequency", 0.0, 60.0, 1.0},
-                    new juce::SliderPropertyComponent {_plotOctaveSubdivision, "Octave Subdivisions", 0.0, 12.0, 1.0},
+        "Plot",
+        juce::Array<juce::PropertyComponent*> {
+            new juce::SliderPropertyComponent {_plotNumPoints.getPropertyAsValue(), "Num Points", 0.0, 256.0, 1.0},
+            new juce::SliderPropertyComponent {_plotStartFrequency.getPropertyAsValue(), "Start Frequency", 0.0, 60.0,
+                                               1.0},
+            new juce::SliderPropertyComponent {_plotOctaveSubdivision.getPropertyAsValue(), "Octave Subdivisions", 0.0,
+                                               12.0, 1.0},
 
-                });
+        });
 
-    _temperature.addListener(this);
-    _pressure.addListener(this);
-    _absorberThickness.addListener(this);
-    _absorberFlowResisitivity.addListener(this);
-    _absorberAngleOfIncidence.addListener(this);
-    _absorberAirGap.addListener(this);
-    _plotNumPoints.addListener(this);
-    _plotStartFrequency.addListener(this);
-    _plotOctaveSubdivision.addListener(this);
+    _temperature.getValueTree().addListener(this);
+    _pressure.getValueTree().addListener(this);
+    _absorberThickness.getValueTree().addListener(this);
+    _absorberFlowResisitivity.getValueTree().addListener(this);
+    _absorberAngleOfIncidence.getValueTree().addListener(this);
+    _absorberAirGap.getValueTree().addListener(this);
+    _plotNumPoints.getValueTree().addListener(this);
+    _plotStartFrequency.getValueTree().addListener(this);
+    _plotOctaveSubdivision.getValueTree().addListener(this);
 
-    valueChanged(_temperature);
+    updateSimulation();
 }
 
 auto PorousAbsorberSimulationView::paint(juce::Graphics& g) -> void
@@ -113,6 +121,8 @@ auto PorousAbsorberSimulationView::paint(juce::Graphics& g) -> void
     withAirGapPath = withAirGapPath.createPathWithRoundedCorners(5.0f);
     g.setColour(juce::Colours::red);
     g.strokePath(withAirGapPath, juce::PathStrokeType {2.0f});
+
+    DBG(_valueTree.toXmlString());
 }
 
 auto PorousAbsorberSimulationView::resized() -> void
@@ -124,34 +134,10 @@ auto PorousAbsorberSimulationView::resized() -> void
     _table.setBounds(area.reduced(10));
 }
 
-auto PorousAbsorberSimulationView::valueChanged(juce::Value& /*value*/) -> void
+auto PorousAbsorberSimulationView::valueTreePropertyChanged(juce::ValueTree& /*tree*/,
+                                                            juce::Identifier const& /*property*/) -> void
 {
-    _props.clear();
-
-    auto const specs = PorousAbsorberSpecs {
-        static_cast<double>(_absorberThickness.getValue()),
-        static_cast<double>(_absorberFlowResisitivity.getValue()),
-        static_cast<double>(_absorberAirGap.getValue()),
-    };
-
-    auto const env = AtmosphericEnvironment {
-        static_cast<double>(_temperature.getValue()),
-        static_cast<double>(_pressure.getValue()),
-    };
-
-    auto const angle = static_cast<double>(_absorberAngleOfIncidence.getValue());
-
-    auto const startFrequency = static_cast<double>(_plotStartFrequency.getValue());
-    auto const subDivisions   = static_cast<double>(_plotOctaveSubdivision.getValue());
-
-    for (auto i {0}; i < static_cast<int>(_plotNumPoints.getValue()); ++i)
-    {
-        auto const frequency = oactaveSubdivision(startFrequency, static_cast<size_t>(subDivisions), i);
-        _props.push_back(std::make_pair(frequency, propertiesOfAbsorber(specs, env, frequency, angle)));
-    }
-
-    _table.updateContent();
-    repaint();
+    updateSimulation();
 }
 
 auto PorousAbsorberSimulationView::getNumRows() -> int { return static_cast<int>(_props.size()); }
@@ -194,5 +180,31 @@ auto PorousAbsorberSimulationView::paintCell(juce::Graphics& g, int rowNumber, i
 
     g.setColour(getLookAndFeel().findColour(juce::ListBox::backgroundColourId));
     g.fillRect(width - 1, 0, 1, height);
+}
+
+auto PorousAbsorberSimulationView::updateSimulation() -> void
+{
+    _props.clear();
+
+    auto const specs = PorousAbsorberSpecs {
+        static_cast<double>(_absorberThickness),
+        static_cast<double>(_absorberFlowResisitivity),
+        static_cast<double>(_absorberAirGap),
+    };
+
+    auto const env   = AtmosphericEnvironment {_temperature, _pressure};
+    auto const angle = static_cast<double>(_absorberAngleOfIncidence);
+
+    auto const startFrequency = static_cast<double>(_plotStartFrequency);
+    auto const subDivisions   = static_cast<double>(_plotOctaveSubdivision);
+
+    for (auto i {0}; i < static_cast<int>(_plotNumPoints); ++i)
+    {
+        auto const frequency = oactaveSubdivision(startFrequency, static_cast<size_t>(subDivisions), i);
+        _props.push_back(std::make_pair(frequency, propertiesOfAbsorber(specs, env, frequency, angle)));
+    }
+
+    _table.updateContent();
+    repaint();
 }
 }  // namespace mc

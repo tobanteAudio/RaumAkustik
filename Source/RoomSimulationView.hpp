@@ -10,7 +10,7 @@ struct RoomSimulationView final
     : juce::Component
     , juce::Value::Listener
 {
-    RoomSimulationView();
+    RoomSimulationView(juce::ValueTree vt);
     ~RoomSimulationView() override = default;
 
     void paint(juce::Graphics&) override;
@@ -24,7 +24,7 @@ private:
     auto valueChanged(juce::Value& /*value*/) -> void override;
 
     juce::UndoManager _undoManager;
-    juce::ValueTree _roomTree {"RaumAkustik"};
+    juce::ValueTree _roomTree;
 
     juce::DrawableButton _undo {"Undo", juce::DrawableButton::ImageFitted};
     juce::DrawableButton _redo {"Redo", juce::DrawableButton::ImageFitted};
