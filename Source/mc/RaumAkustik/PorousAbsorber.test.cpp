@@ -16,6 +16,15 @@ TEST_CASE("RaumAkustik: propertiesOfAbsorber", "[RaumAkustik]")
         REQUIRE(props.ky == Catch::Approx(0));
         REQUIRE(props.kx.real() == Catch::Approx(3.65727296960812));
         REQUIRE(props.kx.imag() == Catch::Approx(-3.17166651642184));
+
+        REQUIRE(props.impedance.intermediateTerm.real() == Catch::Approx(1.4401025724));
+        REQUIRE(props.impedance.intermediateTerm.imag() == Catch::Approx(1.4611988329));
+        REQUIRE(props.impedance.atSurface.real() == Catch::Approx(124.3456259498));
+        REQUIRE(props.impedance.atSurface.imag() == Catch::Approx(-3836.20));
+
+        REQUIRE(props.reflectionFactorNoAirGap.real() == Catch::Approx(+0.970361524973876));
+        REQUIRE(props.reflectionFactorNoAirGap.imag() == Catch::Approx(-0.211408253330928));
+        REQUIRE(props.absorptionFactorNoAirGap == Catch::Approx(0.0137050613));
     }
 
     {

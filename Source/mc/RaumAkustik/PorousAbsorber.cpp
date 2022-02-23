@@ -17,6 +17,16 @@ auto propertiesOfAbsorber(PorousAbsorberSpecs specs, AtmosphericEnvironment env,
     p.betaPorous          = detail::angleOfPropagation(p.k, p.ky);
     p.ratiooOfWaveNumbers = p.k / p.kx;
 
+    // Impedance
+    auto const tmp               = p.k * specs.thickness / 1'000.0;
+    p.impedance.intermediateTerm = std::cos(tmp) / std::sin(tmp);
+    p.impedance.atSurface = std::complex {0.0, -1.0} * p.zca * p.ratiooOfWaveNumbers * p.impedance.intermediateTerm;
+
+    // No air gap
+    auto const tap             = (p.impedance.atSurface / airIm) * std::cos(angle * M_PI / 180.0);
+    p.reflectionFactorNoAirGap = (tap - 1.0) / (tap + 1.0);
+    p.absorptionFactorNoAirGap = 1.0 - std::pow(std::abs(p.reflectionFactorNoAirGap), 2.0);
+
     return p;
 }
 

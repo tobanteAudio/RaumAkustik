@@ -15,6 +15,15 @@ struct PorousAbsorberSpecs
     double flowResisitivity {0};
 };
 
+struct PorousAbsorberImpedance
+{
+    // Intermediate term cot(k*ta)
+    std::complex<double> intermediateTerm {};
+
+    // Impedance at absorber surface (zsa)
+    std::complex<double> atSurface {};
+};
+
 struct PorousAbsorberProperties
 {
     /// Delany & Bazley's term (X)
@@ -43,6 +52,11 @@ struct PorousAbsorberProperties
 
     /// Ratio of wavenumbers (k:kx)
     std::complex<double> ratiooOfWaveNumbers {0};
+
+    PorousAbsorberImpedance impedance {};
+
+    std::complex<double> reflectionFactorNoAirGap {};
+    double absorptionFactorNoAirGap {};
 };
 
 [[nodiscard]] auto propertiesOfAbsorber(PorousAbsorberSpecs specs, AtmosphericEnvironment env, double frequency,
