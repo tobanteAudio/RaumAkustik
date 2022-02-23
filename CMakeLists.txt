@@ -35,9 +35,24 @@ if (CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
     set(CMAKE_OSX_DEPLOYMENT_TARGET "10.14")
 endif ()
 
+add_subdirectory(3rd_party/Catch2 EXCLUDE_FROM_ALL)
+enable_testing()
+include(CTest)
+list (APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/3rd_party/Catch2/extras)
+include(Catch)
+
+
 add_subdirectory(3rd_party/JUCE)
 set_directory_properties(PROPERTIES JUCE_COMPANY_COPYRIGHT "Copyright 2022 Modern Circuits UG (haftungsbeschränkt). All rights reserved.")
 set_directory_properties(PROPERTIES JUCE_COMPANY_NAME "Modern Circuits UG (haftungsbeschränkt)")
+
+add_library(libRaumAkustik INTERFACE)
+target_include_directories(libRaumAkustik INTERFACE "${PROJECT_SOURCE_DIR}/Source")
+
+add_executable(libRaumAkustik_Tests)
+target_sources(libRaumAkustik_Tests PRIVATE Source/mc/RaumAkustik/FirstReflection.test.cpp)
+target_link_libraries(libRaumAkustik_Tests PRIVATE libRaumAkustik Catch2::Catch2WithMain)
+catch_discover_tests(libRaumAkustik_Tests)
 
 juce_add_binary_data(RaumAkustik_BinaryData
     HEADER_NAME
@@ -76,8 +91,10 @@ target_link_libraries(RaumAkustik
     PRIVATE
         juce::juce_gui_extra
     PUBLIC
+        libRaumAkustik
         RaumAkustik_BinaryData
         juce::juce_recommended_config_flags
         juce::juce_recommended_lto_flags
         juce::juce_recommended_warning_flags
 )
+
