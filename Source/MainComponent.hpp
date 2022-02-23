@@ -1,7 +1,7 @@
 #pragma once
 
+#include "FirstReflectionsView.hpp"
 #include "PorousAbsorberSimulationView.hpp"
-#include "RoomSimulationView.hpp"
 
 #include <juce_gui_extra/juce_gui_extra.h>
 
@@ -17,7 +17,7 @@ private:
     juce::ValueTree _valueTree {"RaumAkustik"};
 
     juce::TabbedComponent _tabs {juce::TabbedButtonBar::TabsAtTop};
-    mc::RoomSimulationView _roomSimulationView {_valueTree};
+    mc::FirstReflectionsView _firstReflectionsView {_valueTree};
     mc::PorousAbsorberSimulationView _absorberSimulationView {_valueTree};
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(MainComponent)

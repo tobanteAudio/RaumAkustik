@@ -3,7 +3,7 @@
 MainComponent::MainComponent()
 {
     auto const color = getLookAndFeel().findColour(juce::ResizableWindow::backgroundColourId);
-    _tabs.addTab("Room", color, &_roomSimulationView, false);
+    _tabs.addTab("Room", color, &_firstReflectionsView, false);
     _tabs.addTab("Porous Absorber", color, &_absorberSimulationView, false);
     addAndMakeVisible(_tabs);
     setSize(1280, 720);

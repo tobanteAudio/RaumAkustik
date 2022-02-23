@@ -6,12 +6,12 @@
 
 namespace mc
 {
-struct RoomSimulationView final
+struct FirstReflectionsView final
     : juce::Component
     , juce::Value::Listener
 {
-    RoomSimulationView(juce::ValueTree vt);
-    ~RoomSimulationView() override = default;
+    FirstReflectionsView(juce::ValueTree vt);
+    ~FirstReflectionsView() override = default;
 
     void paint(juce::Graphics&) override;
     void resized() override;
@@ -62,6 +62,6 @@ private:
 
     juce::Rectangle<int> _drawArea {};
 
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(RoomSimulationView)
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(FirstReflectionsView)
 };
 }  // namespace mc

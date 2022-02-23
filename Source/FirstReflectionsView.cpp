@@ -1,4 +1,5 @@
-#include "RoomSimulationView.hpp"
+#include "FirstReflectionsView.hpp"
+
 namespace mc
 {
 struct Point
@@ -59,8 +60,8 @@ auto reflectionRightSpeakerFar(RoomLayout const& room) -> double
     return room.listenPosition.y - tmp;
 };
 
-RoomSimulationView::RoomSimulationView(juce::ValueTree vt)
-    : _roomTree {vt.getOrCreateChildWithName("RoomSimulation", nullptr)}
+FirstReflectionsView::FirstReflectionsView(juce::ValueTree vt)
+    : _roomTree {vt.getOrCreateChildWithName("FirstReflections", nullptr)}
 {
     addAndMakeVisible(_undo);
     addAndMakeVisible(_redo);
@@ -83,7 +84,7 @@ RoomSimulationView::RoomSimulationView(juce::ValueTree vt)
     setSize(600, 400);
 }
 
-void RoomSimulationView::paint(juce::Graphics& g)
+void FirstReflectionsView::paint(juce::Graphics& g)
 {
     auto const room = RoomLayout {
         RoomDimensions {
@@ -184,7 +185,7 @@ void RoomSimulationView::paint(juce::Graphics& g)
     // DBG("Reflection Far (right): " + juce::String {reflectionRightSpeakerFar(room)});
 }
 
-void RoomSimulationView::resized()
+void FirstReflectionsView::resized()
 {
     auto area = getLocalBounds().reduced(10);
     _drawArea = area.removeFromRight(area.proportionOfWidth(0.5)).reduced(10);
@@ -201,7 +202,7 @@ void RoomSimulationView::resized()
     _roomProperties.setBounds(area.reduced(5));
 }
 
-auto RoomSimulationView::connectValuesToTree() -> void
+auto FirstReflectionsView::connectValuesToTree() -> void
 {
     _iconSize.removeListener(this);
 
@@ -307,14 +308,14 @@ auto RoomSimulationView::connectValuesToTree() -> void
                                  });
 }
 
-auto RoomSimulationView::save() -> void
+auto FirstReflectionsView::save() -> void
 {
     auto file   = juce::File {juce::File::getSpecialLocation(juce::File::userHomeDirectory)}.getChildFile("test.mcra");
     auto stream = juce::FileOutputStream {file};
     _roomTree.writeToStream(stream);
 }
 
-auto RoomSimulationView::load() -> void
+auto FirstReflectionsView::load() -> void
 {
     auto file   = juce::File {juce::File::getSpecialLocation(juce::File::userHomeDirectory)}.getChildFile("test.mcra");
     auto stream = juce::FileInputStream {file};
@@ -323,5 +324,5 @@ auto RoomSimulationView::load() -> void
     repaint();
 }
 
-auto RoomSimulationView::valueChanged(juce::Value& /*value*/) -> void { repaint(); }
+auto FirstReflectionsView::valueChanged(juce::Value& /*value*/) -> void { repaint(); }
 }  // namespace mc
