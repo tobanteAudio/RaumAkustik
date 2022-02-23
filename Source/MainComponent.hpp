@@ -35,6 +35,7 @@ private:
         juce::Drawable::createFromImageData(mcbd::insert_emoticon_svg, mcbd::insert_emoticon_svgSize)};
 
     juce::PropertyPanel _roomProperties {};
+    juce::PropertyPanel _renderProperties {};
 
     juce::Value _iconSize {};
 
@@ -53,6 +54,9 @@ private:
     juce::Value _rightX {};
     juce::Value _rightY {};
     juce::Value _rightZ {};
+
+    juce::Value _renderLeftReflections {};
+    juce::Value _renderRightReflections {};
 
     juce::Rectangle<int> _drawArea {};
 

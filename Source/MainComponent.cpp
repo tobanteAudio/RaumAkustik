@@ -65,6 +65,7 @@ MainComponent::MainComponent()
     addAndMakeVisible(_load);
     addAndMakeVisible(_save);
     addAndMakeVisible(_roomProperties);
+    addAndMakeVisible(_renderProperties);
 
     _undo.onClick = [this] { _undoManager.undo(); };
     _redo.onClick = [this] { _undoManager.redo(); };
@@ -141,13 +142,24 @@ void MainComponent::paint(juce::Graphics& g)
     auto const listenArea = iconRect.withCentre({listenX, listenY});
     _headIcon->drawWithin(g, listenArea.toFloat(), juce::RectanglePlacement::centred, 1.0f);
 
-    auto const reflectionLeftClose = reflectionLeftSpeaker(room);
-    auto const toWall
-        = juce::Line {leftX, leftY, topViewRoom.getX(), topViewRoom.getY() + reflectionLeftClose / scaleFactor};
-    auto const toListen
-        = juce::Line {topViewRoom.getX(), topViewRoom.getY() + reflectionLeftClose / scaleFactor, listenX, listenY};
-    g.drawLine(toWall.toFloat());
-    g.drawLine(toListen.toFloat());
+    if (static_cast<bool>(_renderLeftReflections.getValue()))
+    {
+        auto const reflectionLeftClose = reflectionLeftSpeaker(room);
+        auto const leftCloseToWall
+            = juce::Line {leftX, leftY, topViewRoom.getX(), topViewRoom.getY() + reflectionLeftClose / scaleFactor};
+        auto const leftCloseToListen
+            = juce::Line {topViewRoom.getX(), topViewRoom.getY() + reflectionLeftClose / scaleFactor, listenX, listenY};
+        g.drawLine(leftCloseToWall.toFloat());
+        g.drawLine(leftCloseToListen.toFloat());
+
+        auto const reflectionLeftFar = reflectionLeftSpeakerFar(room);
+        auto const leftFarToWall
+            = juce::Line {leftX, leftY, topViewRoom.getRight(), topViewRoom.getY() + reflectionLeftFar / scaleFactor};
+        auto const leftFarToListen = juce::Line {
+            topViewRoom.getRight(), topViewRoom.getY() + reflectionLeftFar / scaleFactor, listenX, listenY};
+        g.drawLine(leftFarToWall.toFloat());
+        g.drawLine(leftFarToListen.toFloat());
+    }
 
     ///////////////////////////////////////// FRONT
     auto const frontArea    = totalArea.toDouble();
@@ -185,7 +197,8 @@ void MainComponent::resized()
     _load.setBounds(buttonArea.removeFromLeft(buttonWidth).reduced(5));
     _save.setBounds(buttonArea.reduced(5));
 
-    _roomProperties.setBounds(area);
+    _renderProperties.setBounds(area.removeFromBottom(area.proportionOfHeight(0.2)).reduced(5));
+    _roomProperties.setBounds(area.reduced(5));
 }
 
 auto MainComponent::connectValuesToTree() -> void
@@ -208,6 +221,9 @@ auto MainComponent::connectValuesToTree() -> void
     _rightY.removeListener(this);
     _rightZ.removeListener(this);
 
+    _renderLeftReflections.removeListener(this);
+    _renderRightReflections.removeListener(this);
+
     _iconSize.referTo(_roomTree.getPropertyAsValue("icon_size", &_undoManager));
 
     _roomLength.referTo(_roomTree.getPropertyAsValue("room_length", &_undoManager));
@@ -225,6 +241,9 @@ auto MainComponent::connectValuesToTree() -> void
     _rightX.referTo(_roomTree.getPropertyAsValue("right_x", &_undoManager));
     _rightY.referTo(_roomTree.getPropertyAsValue("right_y", &_undoManager));
     _rightZ.referTo(_roomTree.getPropertyAsValue("right_z", &_undoManager));
+
+    _renderLeftReflections.referTo(_roomTree.getPropertyAsValue("render_left_reflections", &_undoManager));
+    _renderRightReflections.referTo(_roomTree.getPropertyAsValue("render_right_reflections", &_undoManager));
 
     _iconSize.addListener(this);
 
@@ -244,7 +263,11 @@ auto MainComponent::connectValuesToTree() -> void
     _rightY.addListener(this);
     _rightZ.addListener(this);
 
+    _renderLeftReflections.addListener(this);
+    _renderRightReflections.addListener(this);
+
     _roomProperties.clear();
+    _renderProperties.clear();
 
     _roomProperties.addSection("General",
                                juce::Array<juce::PropertyComponent*> {
@@ -276,6 +299,12 @@ auto MainComponent::connectValuesToTree() -> void
                                                     new juce::SliderPropertyComponent {_rightY, "Y", 0.0, 1000.0, 1.0},
                                                     new juce::SliderPropertyComponent {_rightZ, "Z", 0.0, 1000.0, 1.0},
                                                 });
+
+    _renderProperties.addSection("First Reflections",
+                                 juce::Array<juce::PropertyComponent*> {
+                                     new juce::BooleanPropertyComponent {_renderLeftReflections, "Left", "Draw"},
+                                     new juce::BooleanPropertyComponent {_renderRightReflections, "Right", "Draw"},
+                                 });
 }
 
 auto MainComponent::save() -> void
