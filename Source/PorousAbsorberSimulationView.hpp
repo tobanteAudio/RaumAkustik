@@ -30,9 +30,16 @@ private:
     juce::PropertyPanel _absorberSpecs {};
     juce::Rectangle<int> _plotArea;
 
+    juce::Value _temperature {};
+    juce::Value _pressure {};
+
     juce::Value _absorberThickness {};
     juce::Value _absorberFlowResisitivity {};
     juce::Value _absorberAngleOfIncidence {};
+
+    juce::Value _plotNumPoints {};
+    juce::Value _plotStartFrequency {};
+    juce::Value _plotOctaveSubdivision {};
 
     std::vector<std::pair<double, PorousAbsorberProperties>> _props;
 

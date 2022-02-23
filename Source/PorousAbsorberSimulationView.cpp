@@ -23,9 +23,22 @@ PorousAbsorberSimulationView::PorousAbsorberSimulationView()
     _table.getHeader().addColumn("Reflection", 2, 100, 100);
     _table.getHeader().addColumn("Absorption", 3, 100, 100);
 
-    _absorberThickness.getValue()        = 100.0;
-    _absorberFlowResisitivity.getValue() = 8000.0;
-    _absorberAngleOfIncidence.getValue() = 0.0;
+    _temperature.setValue(20.0);
+    _pressure.setValue(1.0);
+
+    _absorberThickness.setValue(100.0);
+    _absorberFlowResisitivity.setValue(8000.0);
+    _absorberAngleOfIncidence.setValue(0.0);
+
+    _plotNumPoints.setValue(48.0);
+    _plotStartFrequency.setValue(20.0);
+    _plotOctaveSubdivision.setValue(6.0);
+
+    _absorberSpecs.addSection("Atmospheric Environment",
+                              juce::Array<juce::PropertyComponent*> {
+                                  new juce::SliderPropertyComponent {_temperature, "Temperature (C)", 0.0, 100.0, 1.0},
+                                  new juce::SliderPropertyComponent {_pressure, "Pressure (Bar)", 0.0, 2.0, 0.01},
+                              });
 
     _absorberSpecs.addSection(
         "Absorber Dimensions",
@@ -36,15 +49,44 @@ PorousAbsorberSimulationView::PorousAbsorberSimulationView()
 
         });
 
+    _absorberSpecs.addSection(
+        "Plot", juce::Array<juce::PropertyComponent*> {
+                    new juce::SliderPropertyComponent {_plotNumPoints, "Num Points", 0.0, 256.0, 1.0},
+                    new juce::SliderPropertyComponent {_plotStartFrequency, "Start Frequency", 0.0, 60.0, 1.0},
+                    new juce::SliderPropertyComponent {_plotOctaveSubdivision, "Octave Subdivisions", 0.0, 12.0, 1.0},
+
+                });
+
+    _temperature.addListener(this);
+    _pressure.addListener(this);
     _absorberThickness.addListener(this);
     _absorberFlowResisitivity.addListener(this);
     _absorberAngleOfIncidence.addListener(this);
+    _plotNumPoints.addListener(this);
+    _plotStartFrequency.addListener(this);
+    _plotOctaveSubdivision.addListener(this);
+
+    valueChanged(_temperature);
 }
 
 auto PorousAbsorberSimulationView::paint(juce::Graphics& g) -> void
 {
+    juce::Graphics::ScopedSaveState state {g};
+
+    g.reduceClipRegion(_plotArea);
+
     g.setColour(juce::Colours::white);
     g.fillRect(_plotArea);
+
+    g.setColour(juce::Colours::grey.withAlpha(0.5f));
+    for (auto freq : std::vector {20.0, 40.0, 80.0, 160.0, 320.0, 640.0, 1280.0, 2560.0, 5120.0})
+    {
+        auto x = static_cast<float>(_plotArea.getX())
+                 + static_cast<float>(_plotArea.getWidth()) * static_cast<float>(positionForFrequency(freq));
+        auto const topY    = static_cast<float>(_plotArea.getY());
+        auto const bottomY = static_cast<float>(_plotArea.getBottom());
+        g.drawLine(x, topY, x, bottomY, 3.0f);
+    }
 
     auto path = juce::Path {};
     path.startNewSubPath(_plotArea.getBottomLeft().toFloat());
@@ -54,9 +96,6 @@ auto PorousAbsorberSimulationView::paint(juce::Graphics& g) -> void
         auto posY = _plotArea.getBottom() - _plotArea.getHeight() * p.second.absorptionFactorNoAirGap;
         path.lineTo(juce::Point {posX, posY}.toFloat());
     }
-
-    DBG("TOPLEFT: " + _plotArea.getTopLeft().toString());
-    DBG("BOTTOMRIGHT: " + _plotArea.getBottomRight().toString());
 
     path = path.createPathWithRoundedCorners(5.0f);
     g.setColour(juce::Colours::black);
@@ -81,12 +120,19 @@ auto PorousAbsorberSimulationView::valueChanged(juce::Value& /*value*/) -> void
         static_cast<double>(_absorberFlowResisitivity.getValue()),
     };
 
-    auto const env   = AtmosphericEnvironment {20.0, 1.0};
+    auto const env = AtmosphericEnvironment {
+        static_cast<double>(_temperature.getValue()),
+        static_cast<double>(_pressure.getValue()),
+    };
+
     auto const angle = static_cast<double>(_absorberAngleOfIncidence.getValue());
 
-    for (auto i {0U}; i < 48U; ++i)
+    auto const startFrequency = static_cast<double>(_plotStartFrequency.getValue());
+    auto const subDivisions   = static_cast<double>(_plotOctaveSubdivision.getValue());
+
+    for (auto i {0}; i < static_cast<int>(_plotNumPoints.getValue()); ++i)
     {
-        auto const frequency = oactaveSubdivision(40.0, 6, i);
+        auto const frequency = oactaveSubdivision(startFrequency, static_cast<size_t>(subDivisions), i);
         _props.push_back(std::make_pair(frequency, propertiesOfAbsorber(specs, env, frequency, angle)));
     }
 
@@ -96,7 +142,7 @@ auto PorousAbsorberSimulationView::valueChanged(juce::Value& /*value*/) -> void
 
 auto PorousAbsorberSimulationView::getNumRows() -> int { return static_cast<int>(_props.size()); }
 
-auto PorousAbsorberSimulationView::paintRowBackground(juce::Graphics& g, int rowNumber, int width, int height,
+auto PorousAbsorberSimulationView::paintRowBackground(juce::Graphics& g, int rowNumber, int /*width*/, int /*height*/,
                                                       bool rowIsSelected) -> void
 {
     auto alternateColour = getLookAndFeel()
@@ -109,7 +155,7 @@ auto PorousAbsorberSimulationView::paintRowBackground(juce::Graphics& g, int row
 }
 
 auto PorousAbsorberSimulationView::paintCell(juce::Graphics& g, int rowNumber, int columnId, int width, int height,
-                                             bool rowIsSelected) -> void
+                                             bool /*rowIsSelected*/) -> void
 {
     g.setColour(getLookAndFeel().findColour(juce::ListBox::textColourId));
     g.setFont(16.0f);
