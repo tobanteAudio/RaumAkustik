@@ -46,8 +46,15 @@ add_subdirectory(3rd_party/JUCE)
 set_directory_properties(PROPERTIES JUCE_COMPANY_COPYRIGHT "Copyright 2022 Modern Circuits UG (haftungsbeschränkt). All rights reserved.")
 set_directory_properties(PROPERTIES JUCE_COMPANY_NAME "Modern Circuits UG (haftungsbeschränkt)")
 
-add_library(libRaumAkustik INTERFACE)
-target_include_directories(libRaumAkustik INTERFACE "${PROJECT_SOURCE_DIR}/Source")
+add_library(libRaumAkustik STATIC)
+target_include_directories(libRaumAkustik PUBLIC "${PROJECT_SOURCE_DIR}/Source")
+target_sources(libRaumAkustik
+    PRIVATE
+        Source/mc/RaumAkustik/Air.hpp
+        Source/mc/RaumAkustik/FirstReflection.hpp
+        Source/mc/RaumAkustik/PorousAbsorber.cpp
+        Source/mc/RaumAkustik/PorousAbsorber.hpp
+)
 
 add_executable(libRaumAkustik_Tests)
 catch_discover_tests(libRaumAkustik_Tests)

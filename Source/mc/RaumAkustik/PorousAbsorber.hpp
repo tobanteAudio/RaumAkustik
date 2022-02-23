@@ -23,11 +23,11 @@ struct PorousAbsorberProperties
 
     /// Characteristic absorber impedance (zca)
     /// Eq 5.9
-    double zca {0};
+    std::complex<double> zca {0};
 
     /// Complex wavenumber (k)
     /// Eq 5.10
-    double k {0};
+    std::complex<double> k {0};
 
     /// Y component of wavenumber (ky)
     /// Eq 5.28
@@ -35,7 +35,7 @@ struct PorousAbsorberProperties
 
     /// X component of wavenumber (kx)
     /// Eq 5.29
-    double kx {0};
+    std::complex<double> kx {0};
 
     /// Angle of propagation in porous layer (bporous)
     /// Eq 5.28
@@ -45,81 +45,46 @@ struct PorousAbsorberProperties
     double ratiooOfWaveNumbers {0};
 };
 
-template<typename T>
-constexpr auto hertzToAngular(T hertz) -> T
+[[nodiscard]] auto propertiesOfAbsorber(PorousAbsorberSpecs specs, AtmosphericEnvironment env, double frequency,
+                                        double angle) -> PorousAbsorberProperties;
+
+namespace detail
 {
-    // 2pf
-    return (T(2) * static_cast<T>(M_PI)) * hertz;
-}
-template<typename T>
-constexpr auto oactaveSubdivision(T startFrequencyHertz, std::size_t octaveSubdivisions, std::size_t idx) -> T
+
+[[nodiscard]] auto hertzToAngular(double hertz) -> double;
+[[nodiscard]] auto waveNumber(double temperature, double frequency) -> double;
+[[nodiscard]] auto delanyBazleyTerm(double airDensity, double frequency, double flowResistivity) -> double;
+[[nodiscard]] auto yComponentOfWaveNumber(double waveNumber, double angle) -> double;
+[[nodiscard]] auto angleOfPropagation(std::complex<double> k, double ky) -> double;
+
+}  // namespace detail
+
+inline auto oactaveSubdivision(double startFrequencyHertz, std::size_t octaveSubdivisions, std::size_t idx) -> double
 {
-    return std::pow(T(2), std::log2(startFrequencyHertz) + static_cast<T>(idx) / static_cast<T>(octaveSubdivisions));
+    return std::pow(2.0, std::log2(startFrequencyHertz)
+                             + static_cast<double>(idx) / static_cast<double>(octaveSubdivisions));
 }
 
-template<typename T>
-constexpr auto waveNumber(T temperature, T frequency) -> T
-{
-    // 2p/l
-    return ((T(2) * static_cast<T>(M_PI)) / soundVelocity(temperature)) * frequency;
-}
-
-template<typename T>
-constexpr auto delanyBazleyTerm(T temperature, T pressure, T frequency, T flowResistivity) -> T
-{
-    // Eq 5.11
-    return (densityOfAir(temperature, pressure) * frequency) / flowResistivity;
-}
-
-template<typename T>
-constexpr auto characteristicAbsorberImpedance(T temperature, T pressure, T frequency, T flowResistivity)
-    -> std::complex<T>
-{
-    // Eq 5.9
-    // =IMPRODUCT(airImpedance,COMPLEX(1+0.0571*(Q13^-0.754),-0.087*(Q13^-0.732),"j"))
-    auto const X = delanyBazleyTerm(temperature, pressure, frequency, flowResistivity);
-    return impedanceOfAir(temperature, pressure)
-           * std::complex {
-               1 + 0.0571 * (std::pow(X, -0.754)),
-               -0.087 * (std::pow(X, -0.732)),
-           };
-}
-
-template<typename T>
-constexpr auto complexWaveNumber(T temperature, T pressure, T frequency, T flowResistivity) -> std::complex<T>
+inline auto complexWaveNumber(double temperature, double pressure, double frequency, double flowResistivity)
+    -> std::complex<double>
 {
     // Eq 5.10
     // =IMPRODUCT(TwoPiByC,frequency,COMPLEX(1+0.0978*(X^-0.7),-0.189*(X^-0.595),"j"))
-    auto const X      = delanyBazleyTerm(temperature, pressure, frequency, flowResistivity);
-    auto const twoPiC = (T(2) * static_cast<T>(M_PI)) / soundVelocity(temperature);
+    auto const X      = detail::delanyBazleyTerm(densityOfAir(temperature, pressure), frequency, flowResistivity);
+    auto const twoPiC = (2.0 * M_PI) / soundVelocity(temperature);
     return twoPiC * frequency * std::complex {1 + 0.0978 * std::pow(X, -0.7), -0.189 * std::pow(X, -0.595)};
 }
 
-template<typename T>
-inline auto yComponentOfWaveNumber(T waveNumber, T angle) -> T
-{
-    // =waveNumber*SIN(angle*PI()/180)
-    return waveNumber * std::sin(angle * static_cast<T>(M_PI) / T(180));
-};
-
-template<typename T>
-inline auto xComponentOfWaveNumber(T temperature, T pressure, T frequency, T flowResistivity, T angle)
+inline auto xComponentOfWaveNumber(double temperature, double pressure, double frequency, double flowResistivity,
+                                   double angle)
 {
     auto const zca = complexWaveNumber(temperature, pressure, frequency, flowResistivity);
-    auto const y   = yComponentOfWaveNumber(waveNumber(temperature, frequency), angle);
-    return std::sqrt((zca * zca) - std::pow(y, T(2)));
+    auto const y   = detail::yComponentOfWaveNumber(detail::waveNumber(temperature, frequency), angle);
+    return std::sqrt((zca * zca) - std::pow(y, 2.0));
 };
 
-template<typename T>
-inline auto angleOfPropagation(T temperature, T pressure, T frequency, T flowResistivity, T angle) -> T
-{
-    auto const zca = complexWaveNumber(temperature, pressure, frequency, flowResistivity);
-    auto const y   = yComponentOfWaveNumber(waveNumber(temperature, frequency), angle);
-    return std::asin(std::abs(y / zca)) * T(180) / static_cast<T>(M_PI);
-};
-
-template<typename T>
-inline auto ratioOfWaveNumbers(T temperature, T pressure, T frequency, T flowResistivity, T angle)
+inline auto ratioOfWaveNumbers(double temperature, double pressure, double frequency, double flowResistivity,
+                               double angle)
 {
     auto const zca = complexWaveNumber(temperature, pressure, frequency, flowResistivity);
     auto const y   = xComponentOfWaveNumber(temperature, pressure, frequency, flowResistivity, angle);

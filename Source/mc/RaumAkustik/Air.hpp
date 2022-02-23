@@ -10,6 +10,12 @@ inline constexpr auto densityAtZeroC    = 1.293;     // Kinsler & Frey, Appendix
 inline constexpr auto specificHeatRatio = 1.402;     // Kinsler & Frey, Appendix A10, Table (c)
 inline constexpr auto oneAtmosphere     = 101325.0;  // Pa
 
+struct AtmosphericEnvironment
+{
+    double temperature {0};
+    double pressure {0};
+};
+
 template<typename T>
 inline auto densityOfAir(T temperature, T pressure) -> T
 {
