@@ -48,14 +48,22 @@ set_directory_properties(PROPERTIES JUCE_COMPANY_NAME "Modern Circuits UG (haftu
 
 add_library(libRaumAkustik STATIC)
 target_include_directories(libRaumAkustik PUBLIC "${PROJECT_SOURCE_DIR}/Source")
+
+target_link_libraries(libRaumAkustik
+    PUBLIC
+        juce::juce_recommended_config_flags
+        juce::juce_recommended_lto_flags
+        juce::juce_recommended_warning_flags
+)
+
 target_sources(libRaumAkustik
-    PRIVATE
-        Source/mc/RaumAkustik/Air.hpp
-        Source/mc/RaumAkustik/FirstReflection.hpp
-        Source/mc/RaumAkustik/PorousAbsorber.cpp
-        Source/mc/RaumAkustik/PorousAbsorber.hpp
-        Source/mc/RaumAkustik/Utility.cpp
-        Source/mc/RaumAkustik/Utility.hpp
+    PUBLIC
+        "Source/mc/RaumAkustik/Air.hpp"
+        "Source/mc/RaumAkustik/FirstReflection.hpp"
+        "Source/mc/RaumAkustik/PorousAbsorber.cpp"
+        "Source/mc/RaumAkustik/PorousAbsorber.hpp"
+        "Source/mc/RaumAkustik/Utility.cpp"
+        "Source/mc/RaumAkustik/Utility.hpp"
 )
 
 add_executable(libRaumAkustik_Tests)
@@ -63,10 +71,10 @@ catch_discover_tests(libRaumAkustik_Tests)
 target_link_libraries(libRaumAkustik_Tests PRIVATE libRaumAkustik Catch2::Catch2WithMain)
 target_sources(libRaumAkustik_Tests
     PRIVATE
-        Source/mc/RaumAkustik/Air.test.cpp
-        Source/mc/RaumAkustik/FirstReflection.test.cpp
-        Source/mc/RaumAkustik/PorousAbsorber.test.cpp
-        Source/mc/RaumAkustik/Utility.test.cpp
+        "Source/mc/RaumAkustik/Air.test.cpp"
+        "Source/mc/RaumAkustik/FirstReflection.test.cpp"
+        "Source/mc/RaumAkustik/PorousAbsorber.test.cpp"
+        "Source/mc/RaumAkustik/Utility.test.cpp"
 )
 
 juce_add_binary_data(RaumAkustik_BinaryData
@@ -75,28 +83,34 @@ juce_add_binary_data(RaumAkustik_BinaryData
     NAMESPACE
         mcbd
     SOURCES
-        Resources/svg/folder_open.svg
-        Resources/svg/insert_emoticon.svg
-        Resources/svg/redo.svg
-        Resources/svg/save.svg
-        Resources/svg/speaker.svg
-        Resources/svg/undo.svg
+        "Resources/png/raum_akustik_logo_black.png"
+
+        "Resources/svg/folder_open.svg"
+        "Resources/svg/insert_emoticon.svg"
+        "Resources/svg/raum_akustik_logo_black.svg"
+        "Resources/svg/redo.svg"
+        "Resources/svg/save.svg"
+        "Resources/svg/speaker.svg"
+        "Resources/svg/undo.svg"
 )
 
 juce_add_gui_app(RaumAkustik
     PRODUCT_NAME "Raum Akustik"
+    ICON_BIG     "Resources/png/raum_akustik_logo_black.png"
 )
 
 target_sources(RaumAkustik
     PRIVATE
-        Source/Main.cpp
-        Source/MainComponent.cpp
-        Source/MainComponent.hpp
+        "Source/Main.cpp"
+        "Source/MainComponent.cpp"
+        "Source/MainComponent.hpp"
 
-        Source/FirstReflectionsView.cpp
-        Source/FirstReflectionsView.hpp
-        Source/PorousAbsorberSimulationView.cpp
-        Source/PorousAbsorberSimulationView.hpp
+        "Source/FirstReflectionsView.cpp"
+        "Source/FirstReflectionsView.hpp"
+        "Source/LookAndFeel.cpp"
+        "Source/LookAndFeel.hpp"
+        "Source/PorousAbsorberSimulationView.cpp"
+        "Source/PorousAbsorberSimulationView.hpp"
 )
 
 target_compile_definitions(RaumAkustik

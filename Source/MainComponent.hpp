@@ -1,6 +1,7 @@
 #pragma once
 
 #include "FirstReflectionsView.hpp"
+#include "LookAndFeel.hpp"
 #include "PorousAbsorberSimulationView.hpp"
 
 #include <juce_gui_extra/juce_gui_extra.h>
@@ -91,6 +92,8 @@ private:
     juce::ApplicationCommandManager _commandManager {};
     juce::UndoManager _undoManager;
     juce::ValueTree _valueTree {"RaumAkustik"};
+
+    mc::LookAndFeel _lnf {};
 
     MenuBar _menuBar {_commandManager};
 

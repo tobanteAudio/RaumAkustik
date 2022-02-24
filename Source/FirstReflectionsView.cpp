@@ -97,6 +97,9 @@ void FirstReflectionsView::paint(juce::Graphics& g)
         },
     };
 
+    auto const lnf = dynamic_cast<juce::LookAndFeel_V4*>(&getLookAndFeel());
+    jassert(lnf != nullptr);
+
     auto const iconSize = std::max<double>(_iconSize, 1.0);
     auto const iconRect = juce::Rectangle {0.0, 0.0, iconSize, iconSize};
 
@@ -104,7 +107,11 @@ void FirstReflectionsView::paint(juce::Graphics& g)
     if (room.dimensions.width == 0.0) { return; }
     if (room.dimensions.height == 0.0) { return; }
 
-    auto totalArea          = _drawArea;
+    auto totalArea = _drawArea;
+    auto bgColor   = lnf->getCurrentColourScheme().getUIColour(juce::LookAndFeel_V4::ColourScheme::widgetBackground);
+    g.setColour(bgColor);
+    g.fillRect(_drawArea);
+
     auto const topViewArea  = totalArea.removeFromTop(totalArea.proportionOfHeight(0.66));
     auto const area         = topViewArea.toDouble();
     auto const scaleFactor  = room.dimensions.length / (area.getHeight() * 0.9);

@@ -9,11 +9,17 @@ MainComponent::MainComponent()
     addKeyListener(_commandManager.getKeyMappings());
     setWantsKeyboardFocus(true);
 
-    reloadUI();
+    setLookAndFeel(&_lnf);
     setSize(1280, 720);
+
+    reloadUI();
 }
 
-MainComponent::~MainComponent() { DBG(_valueTree.toXmlString()); }
+MainComponent::~MainComponent()
+{
+    DBG(_valueTree.toXmlString());
+    setLookAndFeel(nullptr);
+}
 
 auto MainComponent::paint(juce::Graphics& g) -> void
 {
