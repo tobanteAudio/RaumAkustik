@@ -101,14 +101,16 @@ juce_add_gui_app(RaumAkustik
 
 target_sources(RaumAkustik
     PRIVATE
-        "Source/Main.cpp"
-        "Source/MainComponent.cpp"
-        "Source/MainComponent.hpp"
-
+        "Source/CommandIDs.hpp"
         "Source/FirstReflectionsView.cpp"
         "Source/FirstReflectionsView.hpp"
         "Source/LookAndFeel.cpp"
         "Source/LookAndFeel.hpp"
+        "Source/Main.cpp"
+        "Source/MainComponent.cpp"
+        "Source/MainComponent.hpp"
+        "Source/MenuBar.cpp"
+        "Source/MenuBar.hpp"
         "Source/PorousAbsorberSimulationView.cpp"
         "Source/PorousAbsorberSimulationView.hpp"
 )

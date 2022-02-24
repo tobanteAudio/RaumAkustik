@@ -1,5 +1,7 @@
 #include "MainComponent.hpp"
 
+#include "CommandIDs.hpp"
+
 MainComponent::MainComponent()
 {
     addAndMakeVisible(_menuBar);
@@ -40,26 +42,31 @@ auto MainComponent::getNextCommandTarget() -> juce::ApplicationCommandTarget*
 
 auto MainComponent::getAllCommands(juce::Array<juce::CommandID>& c) -> void
 {
-    c.addArray({CommandIDs::redo, CommandIDs::undo, CommandIDs::open, CommandIDs::save});
+    c.addArray({
+        mc::CommandIDs::redo,
+        mc::CommandIDs::undo,
+        mc::CommandIDs::open,
+        mc::CommandIDs::save,
+    });
 }
 
 auto MainComponent::getCommandInfo(juce::CommandID commandID, juce::ApplicationCommandInfo& result) -> void
 {
     switch (commandID)
     {
-        case CommandIDs::open:
+        case mc::CommandIDs::open:
             result.setInfo("Open", "Opens a session file", "File", 0);
             result.addDefaultKeypress('o', juce::ModifierKeys::commandModifier);
             break;
-        case CommandIDs::save:
+        case mc::CommandIDs::save:
             result.setInfo("Save", "Saves a session file", "File", 0);
             result.addDefaultKeypress('s', juce::ModifierKeys::commandModifier);
             break;
-        case CommandIDs::undo:
+        case mc::CommandIDs::undo:
             result.setInfo("Undo", "Undo one step", "Edit", 0);
             result.addDefaultKeypress('z', juce::ModifierKeys::commandModifier);
             break;
-        case CommandIDs::redo:
+        case mc::CommandIDs::redo:
             result.setInfo("Redo", "Redo one step", "Edit", 0);
             result.addDefaultKeypress('z', juce::ModifierKeys::commandModifier | juce::ModifierKeys::shiftModifier);
             break;
@@ -70,10 +77,10 @@ auto MainComponent::perform(juce::ApplicationCommandTarget::InvocationInfo const
 {
     switch (info.commandID)
     {
-        case CommandIDs::open: loadSession(); break;
-        case CommandIDs::save: saveSession(); break;
-        case CommandIDs::undo: _undoManager.undo(); break;
-        case CommandIDs::redo: _undoManager.redo(); break;
+        case mc::CommandIDs::open: loadSession(); break;
+        case mc::CommandIDs::save: saveSession(); break;
+        case mc::CommandIDs::undo: _undoManager.undo(); break;
+        case mc::CommandIDs::redo: _undoManager.redo(); break;
         default: return false;
     }
 
