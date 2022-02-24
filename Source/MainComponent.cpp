@@ -48,14 +48,14 @@ auto MainComponent::saveSession() -> void
     auto file = juce::File {juce::File::getSpecialLocation(juce::File::userHomeDirectory)}.getChildFile("test.mcra");
     if (file.existsAsFile()) { file.deleteFile(); }
     auto stream = juce::FileOutputStream {file};
-    _valueTree.writeToStream(stream);
+    stream.writeText(_valueTree.toXmlString(), false, false, "\n");
 }
 
 auto MainComponent::loadSession() -> void
 {
     auto file   = juce::File {juce::File::getSpecialLocation(juce::File::userHomeDirectory)}.getChildFile("test.mcra");
     auto stream = juce::FileInputStream {file};
-    _valueTree  = juce::ValueTree::readFromStream(stream);
+    _valueTree  = juce::ValueTree::fromXml(stream.readEntireStreamAsString());
     reloadUI();
 }
 
@@ -63,8 +63,8 @@ auto MainComponent::reloadUI() -> void
 {
     _tabs.clearTabs();
 
-    _firstReflectionsView   = std::make_unique<mc::FirstReflectionsView>(_valueTree);
-    _absorberSimulationView = std::make_unique<mc::PorousAbsorberSimulationView>(_valueTree);
+    _firstReflectionsView   = std::make_unique<mc::FirstReflectionsView>(_valueTree, &_undoManager);
+    _absorberSimulationView = std::make_unique<mc::PorousAbsorberSimulationView>(_valueTree, &_undoManager);
 
     auto const color = getLookAndFeel().findColour(juce::ResizableWindow::backgroundColourId);
     _tabs.addTab("First Reflections", color, _firstReflectionsView.get(), false);

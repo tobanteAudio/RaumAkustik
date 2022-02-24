@@ -60,8 +60,8 @@ auto reflectionRightSpeakerFar(RoomLayout const& room) -> double
     return room.listenPosition.y - tmp;
 };
 
-FirstReflectionsView::FirstReflectionsView(juce::ValueTree vt)
-    : _roomTree {vt.getOrCreateChildWithName("FirstReflections", nullptr)}
+FirstReflectionsView::FirstReflectionsView(juce::ValueTree vt, juce::UndoManager* um)
+    : _undoManager {um}, _roomTree {vt.getOrCreateChildWithName("FirstReflections", um)}
 {
     _iconSize.setDefault(20.0);
 

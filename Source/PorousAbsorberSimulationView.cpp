@@ -14,8 +14,8 @@ auto positionForFrequency(double const freq) noexcept -> double
 
 }  // namespace
 
-PorousAbsorberSimulationView::PorousAbsorberSimulationView(juce::ValueTree vt)
-    : _valueTree {vt.getOrCreateChildWithName("PorousAbsorber", nullptr)}
+PorousAbsorberSimulationView::PorousAbsorberSimulationView(juce::ValueTree vt, juce::UndoManager* um)
+    : _undoManager {um}, _valueTree {vt.getOrCreateChildWithName("PorousAbsorber", um)}
 {
     addAndMakeVisible(_table);
     addAndMakeVisible(_absorberSpecs);
@@ -23,18 +23,6 @@ PorousAbsorberSimulationView::PorousAbsorberSimulationView(juce::ValueTree vt)
     _table.getHeader().addColumn("Frequency", 1, 100, 100);
     _table.getHeader().addColumn("Absorption No Gap", 2, 150, 150);
     _table.getHeader().addColumn("Absorption With Gap", 3, 150, 150);
-
-    _temperature = 20.0;
-    _pressure    = 1.0;
-
-    _absorberThickness        = 100.0;
-    _absorberFlowResisitivity = 8000.0;
-    _absorberAngleOfIncidence = 0.0;
-    _absorberAirGap           = 100.0;
-
-    _plotNumPoints         = 48.0;
-    _plotStartFrequency    = 20.0;
-    _plotOctaveSubdivision = 6.0;
 
     _absorberSpecs.addSection(
         "Atmospheric Environment",
