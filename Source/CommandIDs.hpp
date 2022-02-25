@@ -7,10 +7,14 @@ struct CommandIDs
     enum Values
     {
         unknown,
-        undo,
-        redo,
         open,
         save,
+        saveAs,
+        undo,
+        redo,
+        gotoTabLeft,
+        gotoTabRight,
+        about,
     };
 };
 }  // namespace mc

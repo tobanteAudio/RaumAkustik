@@ -43,32 +43,55 @@ auto MainComponent::getNextCommandTarget() -> juce::ApplicationCommandTarget*
 auto MainComponent::getAllCommands(juce::Array<juce::CommandID>& c) -> void
 {
     c.addArray({
-        mc::CommandIDs::redo,
-        mc::CommandIDs::undo,
         mc::CommandIDs::open,
         mc::CommandIDs::save,
+        mc::CommandIDs::saveAs,
+        mc::CommandIDs::redo,
+        mc::CommandIDs::undo,
+        mc::CommandIDs::gotoTabLeft,
+        mc::CommandIDs::gotoTabRight,
+        mc::CommandIDs::about,
     });
 }
 
 auto MainComponent::getCommandInfo(juce::CommandID commandID, juce::ApplicationCommandInfo& result) -> void
 {
+    using juce::KeyPress;
+    using juce::ModifierKeys;
+
     switch (commandID)
     {
         case mc::CommandIDs::open:
-            result.setInfo("Open", "Opens a session file", "File", 0);
-            result.addDefaultKeypress('o', juce::ModifierKeys::commandModifier);
+            result.setInfo("Open", "Opens a project file", "File", 0);
+            result.addDefaultKeypress('o', ModifierKeys::commandModifier);
             break;
         case mc::CommandIDs::save:
-            result.setInfo("Save", "Saves a session file", "File", 0);
-            result.addDefaultKeypress('s', juce::ModifierKeys::commandModifier);
+            result.setInfo("Save", "Saves a project file", "File", 0);
+            result.addDefaultKeypress('s', ModifierKeys::commandModifier);
+            break;
+        case mc::CommandIDs::saveAs:
+            result.setInfo("Save As", "Saves a project file to a new location", "File", 0);
+            result.addDefaultKeypress('s', ModifierKeys::commandModifier | ModifierKeys::shiftModifier);
             break;
         case mc::CommandIDs::undo:
             result.setInfo("Undo", "Undo one step", "Edit", 0);
-            result.addDefaultKeypress('z', juce::ModifierKeys::commandModifier);
+            result.addDefaultKeypress('z', ModifierKeys::commandModifier);
             break;
         case mc::CommandIDs::redo:
             result.setInfo("Redo", "Redo one step", "Edit", 0);
-            result.addDefaultKeypress('z', juce::ModifierKeys::commandModifier | juce::ModifierKeys::shiftModifier);
+            result.addDefaultKeypress('z', ModifierKeys::commandModifier | ModifierKeys::shiftModifier);
+            break;
+        case mc::CommandIDs::gotoTabLeft:
+            result.setInfo("Goto tab left", "Goto tab on the left", "View", 0);
+            result.addDefaultKeypress(KeyPress::tabKey, ModifierKeys::commandModifier);
+            break;
+        case mc::CommandIDs::gotoTabRight:
+            result.setInfo("Goto tab right", "Goto tab on the right", "View", 0);
+            result.addDefaultKeypress(KeyPress::tabKey, ModifierKeys::commandModifier | ModifierKeys::shiftModifier);
+            break;
+        case mc::CommandIDs::about:
+            result.setInfo("About", "Open about page", "Help", 0);
+            result.addDefaultKeypress('?', ModifierKeys::commandModifier);
             break;
         default: break;
     }
@@ -79,6 +102,7 @@ auto MainComponent::perform(juce::ApplicationCommandTarget::InvocationInfo const
     {
         case mc::CommandIDs::open: loadSession(); break;
         case mc::CommandIDs::save: saveSession(); break;
+        case mc::CommandIDs::saveAs: saveSession(); break;
         case mc::CommandIDs::undo: _undoManager.undo(); break;
         case mc::CommandIDs::redo: _undoManager.redo(); break;
         default: return false;

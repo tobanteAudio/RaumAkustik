@@ -85,11 +85,19 @@ juce_add_binary_data(RaumAkustik_BinaryData
     SOURCES
         "Resources/png/raum_akustik_logo_black.png"
 
+        "Resources/svg/add.svg"
+        "Resources/svg/arrow_back.svg"
+        "Resources/svg/arrow_forward.svg"
+        "Resources/svg/delete.svg"
+        "Resources/svg/edit.svg"
         "Resources/svg/folder_open.svg"
+        "Resources/svg/info.svg"
         "Resources/svg/insert_emoticon.svg"
         "Resources/svg/raum_akustik_logo_black.svg"
         "Resources/svg/redo.svg"
+        "Resources/svg/remove.svg"
         "Resources/svg/save.svg"
+        "Resources/svg/settings.svg"
         "Resources/svg/speaker.svg"
         "Resources/svg/undo.svg"
 )
