@@ -23,8 +23,9 @@ struct MainComponent final
     auto perform(juce::ApplicationCommandTarget::InvocationInfo const& info) -> bool;
 
 private:
-    auto saveSession() -> void;
-    auto loadSession() -> void;
+    auto showAboutMessage() -> void;
+    auto saveProject() -> void;
+    auto loadProject() -> void;
     auto reloadUI() -> void;
 
     juce::ApplicationCommandManager _commandManager {};

@@ -11,6 +11,7 @@ MainComponent::MainComponent()
     addKeyListener(_commandManager.getKeyMappings());
     setWantsKeyboardFocus(true);
 
+    juce::LookAndFeel::setDefaultLookAndFeel(&_lnf);
     setLookAndFeel(&_lnf);
     setSize(1280, 720);
 
@@ -21,6 +22,7 @@ MainComponent::~MainComponent()
 {
     DBG(_valueTree.toXmlString());
     setLookAndFeel(nullptr);
+    juce::LookAndFeel::setDefaultLookAndFeel(nullptr);
 }
 
 auto MainComponent::paint(juce::Graphics& g) -> void
@@ -91,7 +93,7 @@ auto MainComponent::getCommandInfo(juce::CommandID commandID, juce::ApplicationC
             break;
         case mc::CommandIDs::about:
             result.setInfo("About", "Open about page", "Help", 0);
-            result.addDefaultKeypress('?', ModifierKeys::commandModifier);
+            result.addDefaultKeypress('h', ModifierKeys::commandModifier);
             break;
         default: break;
     }
@@ -100,18 +102,24 @@ auto MainComponent::perform(juce::ApplicationCommandTarget::InvocationInfo const
 {
     switch (info.commandID)
     {
-        case mc::CommandIDs::open: loadSession(); break;
-        case mc::CommandIDs::save: saveSession(); break;
-        case mc::CommandIDs::saveAs: saveSession(); break;
+        case mc::CommandIDs::open: loadProject(); break;
+        case mc::CommandIDs::save: saveProject(); break;
+        case mc::CommandIDs::saveAs: saveProject(); break;
         case mc::CommandIDs::undo: _undoManager.undo(); break;
         case mc::CommandIDs::redo: _undoManager.redo(); break;
+        case mc::CommandIDs::about: showAboutMessage(); break;
         default: return false;
     }
 
     return true;
 }
 
-auto MainComponent::saveSession() -> void
+auto MainComponent::showAboutMessage() -> void
+{
+    juce::NativeMessageBox::showMessageBoxAsync(juce::MessageBoxIconType::InfoIcon, "About", "Version 0.1.0", this);
+}
+
+auto MainComponent::saveProject() -> void
 {
     auto file = juce::File {juce::File::getSpecialLocation(juce::File::userHomeDirectory)}.getChildFile("test.mcra");
     if (file.existsAsFile()) { file.deleteFile(); }
@@ -119,7 +127,7 @@ auto MainComponent::saveSession() -> void
     stream.writeText(_valueTree.toXmlString(), false, false, "\n");
 }
 
-auto MainComponent::loadSession() -> void
+auto MainComponent::loadProject() -> void
 {
     auto file   = juce::File {juce::File::getSpecialLocation(juce::File::userHomeDirectory)}.getChildFile("test.mcra");
     auto stream = juce::FileInputStream {file};
