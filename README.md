@@ -1,6 +1,10 @@
 # Raum Akustik
 
-![Raum Akustik Logo](Resources/png/raum_akustik_logo_black.png)
+## Status
+
+|                                                                                       macOS                                                                                        |                                                                                           Windows                                                                                            |                                                                                         Linux                                                                                          |
+| :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------: | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------: | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------: |
+| [![macOS](https://github.com/ModernCircuits/RaumAkustik/actions/workflows/build_mac.yml/badge.svg)](https://github.com/ModernCircuits/RaumAkustik/actions/workflows/build_mac.yml) | [![Windows](https://github.com/ModernCircuits/RaumAkustik/actions/workflows/build_windows.yml/badge.svg)](https://github.com/ModernCircuits/RaumAkustik/actions/workflows/build_windows.yml) | [![Linux](https://github.com/ModernCircuits/RaumAkustik/actions/workflows/build_linux.yml/badge.svg)](https://github.com/ModernCircuits/RaumAkustik/actions/workflows/build_linux.yml) |
 
 ## Resources
 
