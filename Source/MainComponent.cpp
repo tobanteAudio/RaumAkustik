@@ -144,6 +144,7 @@ auto MainComponent::loadProject() -> void
 
 auto MainComponent::reloadUI() -> void
 {
+    auto tabIndex = _tabs.getCurrentTabIndex();
     _tabs.clearTabs();
 
     _firstReflectionsView   = std::make_unique<mc::FirstReflectionsView>(_valueTree, &_undoManager);
@@ -152,6 +153,7 @@ auto MainComponent::reloadUI() -> void
     auto const color = getLookAndFeel().findColour(juce::ResizableWindow::backgroundColourId);
     _tabs.addTab("First Reflections", color, _firstReflectionsView.get(), false);
     _tabs.addTab("Porous Absorber", color, _absorberSimulationView.get(), false);
+    if (tabIndex > 0 && tabIndex <= _tabs.getNumTabs()) { _tabs.setCurrentTabIndex(tabIndex, true); }
 }
 
 auto MainComponent::toggleFullscreen() -> void

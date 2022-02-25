@@ -91,6 +91,7 @@ juce_add_binary_data(RaumAkustik_BinaryData
         "Resources/svg/delete.svg"
         "Resources/svg/edit.svg"
         "Resources/svg/folder_open.svg"
+        "Resources/svg/fullscreen.svg"
         "Resources/svg/info.svg"
         "Resources/svg/insert_emoticon.svg"
         "Resources/svg/raum_akustik_logo_black.svg"

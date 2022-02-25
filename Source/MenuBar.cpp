@@ -52,13 +52,14 @@ auto MenuBar::getMenuForIndex(int menuIndex, const juce::String& /*menuName*/) -
 
     if (menuIndex == 2)
     {
-        auto menu        = juce::PopupMenu {};
-        auto backIcon    = juce::Drawable::createFromImageData(mcbd::arrow_back_svg, mcbd::arrow_back_svgSize);
-        auto forwardIcon = juce::Drawable::createFromImageData(mcbd::arrow_forward_svg, mcbd::arrow_forward_svgSize);
+        auto menu           = juce::PopupMenu {};
+        auto backIcon       = juce::Drawable::createFromImageData(mcbd::arrow_back_svg, mcbd::arrow_back_svgSize);
+        auto forwardIcon    = juce::Drawable::createFromImageData(mcbd::arrow_forward_svg, mcbd::arrow_forward_svgSize);
+        auto fullscreenIcon = juce::Drawable::createFromImageData(mcbd::fullscreen_svg, mcbd::fullscreen_svgSize);
         menu.addCommandItem(&_commandManager, CommandIDs::gotoTabLeft, {}, backIcon->createCopy());
         menu.addCommandItem(&_commandManager, CommandIDs::gotoTabRight, {}, forwardIcon->createCopy());
         menu.addSeparator();
-        menu.addCommandItem(&_commandManager, CommandIDs::fullscreen, {}, {});
+        menu.addCommandItem(&_commandManager, CommandIDs::fullscreen, {}, fullscreenIcon->createCopy());
         return menu;
     }
 
