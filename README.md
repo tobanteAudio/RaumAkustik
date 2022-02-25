@@ -1,5 +1,7 @@
 # Raum Akustik
 
+![Raum Akustik Logo](Resources/png/raum_akustik_logo_black.png)
+
 ## Resources
 
 - [Porous Absorber Calculator](http://www.whealy.com/acoustics/PA_Calculator/index.html)
