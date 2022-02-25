@@ -1,0 +1,33 @@
+name: Build + Package
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  macos-build:
+    name: macOS Build
+    runs-on: [self-hosted, macOS]
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v2
+        with:
+          submodules: true
+          lfs: true
+
+      - name: Checkout LFS objects
+        run: git lfs checkout
+
+      - name: Install dependencies
+        run: brew install ninja
+
+      - name: CMake configure -- Release
+        run: cmake -S . -G Ninja -B cmake-build-release -DCMAKE_BUILD_TYPE=Release "-DCMAKE_OSX_ARCHITECTURES=arm64;x86_64"
+
+      - name: CMake build -- Release
+        run: cmake --build cmake-build-release
+
+      - name: CTest -- Release
+        run: ctest --test-dir cmake-build-release -C Release

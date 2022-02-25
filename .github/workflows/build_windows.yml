@@ -1,0 +1,30 @@
+name: Build + Package
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  windows-build:
+    name: Windows Build
+    runs-on: windows-2019
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v2
+        with:
+          submodules: true
+          lfs: true
+
+      - name: Checkout LFS objects
+        run: git lfs checkout
+
+      - name: CMake configure -- Release
+        run: cmake -S . -B cmake-build-release -G "Visual Studio 16 2019" -T ClangCL
+
+      - name: CMake build -- Release
+        run: cmake --build cmake-build-release --config "Release"
+
+      - name: CTest -- Release
+        run: ctest --test-dir cmake-build-release -C Release
