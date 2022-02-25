@@ -8,7 +8,7 @@ on:
 
 jobs:
   windows-build:
-    name: Windows Build
+    name: Build
     runs-on: windows-2019
     steps:
       - name: Check out code
