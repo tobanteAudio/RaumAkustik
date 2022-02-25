@@ -17,10 +17,10 @@ struct MainComponent final
     void paint(juce::Graphics&) override;
     void resized() override;
 
-    auto getNextCommandTarget() -> juce::ApplicationCommandTarget*;
-    auto getAllCommands(juce::Array<juce::CommandID>& commands) -> void;
-    auto getCommandInfo(juce::CommandID commandID, juce::ApplicationCommandInfo& result) -> void;
-    auto perform(juce::ApplicationCommandTarget::InvocationInfo const& info) -> bool;
+    auto getNextCommandTarget() -> juce::ApplicationCommandTarget* override;
+    auto getAllCommands(juce::Array<juce::CommandID>& commands) -> void override;
+    auto getCommandInfo(juce::CommandID commandID, juce::ApplicationCommandInfo& result) -> void override;
+    auto perform(juce::ApplicationCommandTarget::InvocationInfo const& info) -> bool override;
 
 private:
     auto showAboutMessage() -> void;

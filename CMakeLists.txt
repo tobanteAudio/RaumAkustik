@@ -57,7 +57,7 @@ target_link_libraries(libRaumAkustik
 )
 
 target_sources(libRaumAkustik
-    PUBLIC
+    PRIVATE
         "Source/mc/RaumAkustik/Air.hpp"
         "Source/mc/RaumAkustik/FirstReflection.hpp"
         "Source/mc/RaumAkustik/PorousAbsorber.cpp"
@@ -135,8 +135,8 @@ target_compile_definitions(RaumAkustik
 target_link_libraries(RaumAkustik
     PRIVATE
         juce::juce_gui_extra
-    PUBLIC
         libRaumAkustik
+    PUBLIC
         RaumAkustik_BinaryData
         juce::juce_recommended_config_flags
         juce::juce_recommended_lto_flags
