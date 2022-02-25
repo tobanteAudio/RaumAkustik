@@ -39,11 +39,14 @@ auto MenuBar::getMenuForIndex(int menuIndex, const juce::String& /*menuName*/) -
 
     if (menuIndex == 1)
     {
-        auto menu     = juce::PopupMenu {};
-        auto undoIcon = juce::Drawable::createFromImageData(mcbd::undo_svg, mcbd::undo_svgSize);
-        auto redoIcon = juce::Drawable::createFromImageData(mcbd::redo_svg, mcbd::redo_svgSize);
+        auto menu         = juce::PopupMenu {};
+        auto undoIcon     = juce::Drawable::createFromImageData(mcbd::undo_svg, mcbd::undo_svgSize);
+        auto redoIcon     = juce::Drawable::createFromImageData(mcbd::redo_svg, mcbd::redo_svgSize);
+        auto settingsIcon = juce::Drawable::createFromImageData(mcbd::settings_svg, mcbd::settings_svgSize);
         menu.addCommandItem(&_commandManager, CommandIDs::undo, {}, undoIcon->createCopy());
         menu.addCommandItem(&_commandManager, CommandIDs::redo, {}, redoIcon->createCopy());
+        menu.addSeparator();
+        menu.addCommandItem(&_commandManager, CommandIDs::settings, {}, settingsIcon->createCopy());
         return menu;
     }
 
@@ -54,6 +57,8 @@ auto MenuBar::getMenuForIndex(int menuIndex, const juce::String& /*menuName*/) -
         auto forwardIcon = juce::Drawable::createFromImageData(mcbd::arrow_forward_svg, mcbd::arrow_forward_svgSize);
         menu.addCommandItem(&_commandManager, CommandIDs::gotoTabLeft, {}, backIcon->createCopy());
         menu.addCommandItem(&_commandManager, CommandIDs::gotoTabRight, {}, forwardIcon->createCopy());
+        menu.addSeparator();
+        menu.addCommandItem(&_commandManager, CommandIDs::fullscreen, {}, {});
         return menu;
     }
 

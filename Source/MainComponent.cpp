@@ -18,12 +18,7 @@ MainComponent::MainComponent()
     reloadUI();
 }
 
-MainComponent::~MainComponent()
-{
-    DBG(_valueTree.toXmlString());
-    setLookAndFeel(nullptr);
-    juce::LookAndFeel::setDefaultLookAndFeel(nullptr);
-}
+MainComponent::~MainComponent() { setLookAndFeel(nullptr); }
 
 auto MainComponent::paint(juce::Graphics& g) -> void
 {
@@ -50,8 +45,10 @@ auto MainComponent::getAllCommands(juce::Array<juce::CommandID>& c) -> void
         mc::CommandIDs::saveAs,
         mc::CommandIDs::redo,
         mc::CommandIDs::undo,
+        mc::CommandIDs::settings,
         mc::CommandIDs::gotoTabLeft,
         mc::CommandIDs::gotoTabRight,
+        mc::CommandIDs::fullscreen,
         mc::CommandIDs::about,
     });
 }
@@ -83,6 +80,10 @@ auto MainComponent::getCommandInfo(juce::CommandID commandID, juce::ApplicationC
             result.setInfo("Redo", "Redo one step", "Edit", 0);
             result.addDefaultKeypress('z', ModifierKeys::commandModifier | ModifierKeys::shiftModifier);
             break;
+        case mc::CommandIDs::settings:
+            result.setInfo("Settings", "Open settings", "Edit", 0);
+            result.addDefaultKeypress('.', ModifierKeys::commandModifier);
+            break;
         case mc::CommandIDs::gotoTabLeft:
             result.setInfo("Goto tab left", "Goto tab on the left", "View", 0);
             result.addDefaultKeypress(KeyPress::tabKey, ModifierKeys::commandModifier);
@@ -90,6 +91,11 @@ auto MainComponent::getCommandInfo(juce::CommandID commandID, juce::ApplicationC
         case mc::CommandIDs::gotoTabRight:
             result.setInfo("Goto tab right", "Goto tab on the right", "View", 0);
             result.addDefaultKeypress(KeyPress::tabKey, ModifierKeys::commandModifier | ModifierKeys::shiftModifier);
+            break;
+        case mc::CommandIDs::fullscreen:
+            result.setInfo("Fullscreen", "Toggle fullscreen mode", "View", 0);
+            result.setTicked(getPeer() == nullptr ? false : getPeer()->isFullScreen());
+            result.addDefaultKeypress(KeyPress::F11Key, ModifierKeys::noModifiers);
             break;
         case mc::CommandIDs::about:
             result.setInfo("About", "Open about page", "Help", 0);
@@ -107,6 +113,7 @@ auto MainComponent::perform(juce::ApplicationCommandTarget::InvocationInfo const
         case mc::CommandIDs::saveAs: saveProject(); break;
         case mc::CommandIDs::undo: _undoManager.undo(); break;
         case mc::CommandIDs::redo: _undoManager.redo(); break;
+        case mc::CommandIDs::fullscreen: toggleFullscreen(); break;
         case mc::CommandIDs::about: showAboutMessage(); break;
         default: return false;
     }
@@ -145,4 +152,10 @@ auto MainComponent::reloadUI() -> void
     auto const color = getLookAndFeel().findColour(juce::ResizableWindow::backgroundColourId);
     _tabs.addTab("First Reflections", color, _firstReflectionsView.get(), false);
     _tabs.addTab("Porous Absorber", color, _absorberSimulationView.get(), false);
+}
+
+auto MainComponent::toggleFullscreen() -> void
+{
+    getPeer()->setFullScreen(!getPeer()->isFullScreen());
+    // if (getPeer()->isFullScreen()) { }
 }

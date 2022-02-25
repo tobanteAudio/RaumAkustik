@@ -18,14 +18,8 @@ LookAndFeel::LookAndFeel()
     setColour(juce::TabbedButtonBar::tabOutlineColourId, juce::Colours::transparentBlack);
 }
 
-auto LookAndFeel::drawPopupMenuBackground(juce::Graphics& g, int width, int height) -> void
+auto LookAndFeel::drawPopupMenuBackground(juce::Graphics& g, int /*width*/, int /*height*/) -> void
 {
     g.fillAll(findColour(juce::PopupMenu::backgroundColourId));
-    juce::ignoreUnused(width, height);
-
-#if !JUCE_MAC
-    // g.setColour(findColour(juce::PopupMenu::textColourId).withAlpha(0.6f));
-    // g.drawRect(0, 0, width, height);
-#endif
 }
 }  // namespace mc

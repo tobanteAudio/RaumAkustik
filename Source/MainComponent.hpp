@@ -27,11 +27,11 @@ private:
     auto saveProject() -> void;
     auto loadProject() -> void;
     auto reloadUI() -> void;
+    auto toggleFullscreen() -> void;
 
     juce::ApplicationCommandManager _commandManager {};
     juce::UndoManager _undoManager;
     juce::ValueTree _valueTree {"RaumAkustik"};
-
     mc::LookAndFeel _lnf {};
 
     mc::MenuBar _menuBar {_commandManager};

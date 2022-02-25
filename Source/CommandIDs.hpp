@@ -12,8 +12,10 @@ struct CommandIDs
         saveAs,
         undo,
         redo,
+        settings,
         gotoTabLeft,
         gotoTabRight,
+        fullscreen,
         about,
     };
 };
