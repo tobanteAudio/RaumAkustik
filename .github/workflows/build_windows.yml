@@ -1,13 +1,7 @@
-name: Build + Package
-
-on:
-  push:
-    branches: [main]
-  pull_request:
-    branches: [main]
+name: Windows
 
 jobs:
-  windows-build:
+  build:
     name: Build
     runs-on: windows-2019
     steps:

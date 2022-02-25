@@ -1,15 +1,9 @@
-name: Build + Package
-
-on:
-  push:
-    branches: [main]
-  pull_request:
-    branches: [main]
+name: macOS
 
 jobs:
-  macos-build:
+  build:
     name: Build
-    runs-on: [macos-11]
+    runs-on: macos-11
     steps:
       - name: Check out code
         uses: actions/checkout@v2
