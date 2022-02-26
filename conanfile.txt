@@ -1,0 +1,13 @@
+[requires]
+mp-units/0.8.0@mpusz/testing
+catch2/2.13.8
+
+[options]
+catch2:with_main=True
+
+[generators]
+cmake_find_package
+markdown
+
+[imports]
+., license* -> ./licenses @ folder=True, ignore_case=True

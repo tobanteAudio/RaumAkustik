@@ -16,8 +16,18 @@ jobs:
       - name: Checkout LFS objects
         run: git lfs checkout
 
+      - name: Install dependencies
+        run: |
+          choco install ninja
+          pip install conan
+
+      - name: Set up Visual Studio shell
+        uses: egor-tensin/vs-shell@v2
+        with:
+          arch: x64
+
       - name: CMake configure -- Release
-        run: cmake -S . -B cmake-build-release -G "Visual Studio 16 2019" -T ClangCL
+        run: cmake -S . -B build -G "Ninja Multi-Config" -D CMAKE_BUILD_TYPE=Release
 
       - name: CMake build -- Release
         run: cmake --build cmake-build-release --config "Release"
