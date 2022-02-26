@@ -1,5 +1,5 @@
 [requires]
-mp-units/0.8.0@mpusz/testing
+mp-units/0.7.0
 catch2/2.13.8
 
 [options]

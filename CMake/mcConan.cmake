@@ -20,7 +20,6 @@ else()
 
     include(${CMAKE_BINARY_DIR}/conan.cmake)
     conan_add_remote(NAME conancenter URL https://center.conan.io)
-    conan_add_remote(NAME conan-mpusz URL https://mpusz.jfrog.io/artifactory/api/conan/conan-oss)
     conan_cmake_autodetect(settings)
     conan_cmake_install(
         CONANFILE
@@ -30,7 +29,7 @@ else()
         BUILD
             outdated
         REMOTE
-            conancenter conan-mpusz
+            conancenter
         SETTINGS
             ${settings}
     )
