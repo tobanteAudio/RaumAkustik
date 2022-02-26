@@ -59,6 +59,7 @@ target_include_directories(libRaumAkustik PUBLIC "${PROJECT_SOURCE_DIR}/Source")
 
 target_link_libraries(libRaumAkustik
     PUBLIC
+        mp-units::mp-units
         juce::juce_recommended_config_flags
         juce::juce_recommended_lto_flags
         juce::juce_recommended_warning_flags
@@ -66,10 +67,12 @@ target_link_libraries(libRaumAkustik
 
 target_sources(libRaumAkustik
     PRIVATE
+        "Source/mc/RaumAkustik/Air.cpp"
         "Source/mc/RaumAkustik/Air.hpp"
         "Source/mc/RaumAkustik/FirstReflection.hpp"
         "Source/mc/RaumAkustik/PorousAbsorber.cpp"
         "Source/mc/RaumAkustik/PorousAbsorber.hpp"
+        "Source/mc/RaumAkustik/Units.hpp"
         "Source/mc/RaumAkustik/Utility.cpp"
         "Source/mc/RaumAkustik/Utility.hpp"
 )
@@ -82,6 +85,7 @@ target_sources(libRaumAkustik_Tests
         "Source/mc/RaumAkustik/Air.test.cpp"
         "Source/mc/RaumAkustik/FirstReflection.test.cpp"
         "Source/mc/RaumAkustik/PorousAbsorber.test.cpp"
+        "Source/mc/RaumAkustik/Units.test.cpp"
         "Source/mc/RaumAkustik/Utility.test.cpp"
 )
 

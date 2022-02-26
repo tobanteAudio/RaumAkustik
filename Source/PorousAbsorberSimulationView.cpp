@@ -178,7 +178,7 @@ auto PorousAbsorberSimulationView::updateSimulation() -> void
         static_cast<double>(_absorberAirGap),
     };
 
-    auto const env   = AtmosphericEnvironment {_temperature, _pressure};
+    auto const env   = AtmosphericEnvironment {celciusToKelvin(_temperature), OneAtmosphere * _pressure};
     auto const angle = static_cast<double>(_absorberAngleOfIncidence);
 
     auto const startFrequency = static_cast<double>(_plotStartFrequency);

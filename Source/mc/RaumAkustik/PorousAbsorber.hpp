@@ -80,7 +80,7 @@ namespace detail
 {
 
 [[nodiscard]] auto hertzToAngular(double hertz) -> double;
-[[nodiscard]] auto waveNumber(double temperature, double frequency) -> double;
+[[nodiscard]] auto waveNumber(Kelvin temperature, double frequency) -> double;
 [[nodiscard]] auto delanyBazleyTerm(double airDensity, double frequency, double flowResistivity) -> double;
 [[nodiscard]] auto yComponentOfWaveNumber(double waveNumber, double angle) -> double;
 [[nodiscard]] auto angleOfPropagation(std::complex<double> k, double ky) -> double;

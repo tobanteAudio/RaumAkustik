@@ -1,7 +1,6 @@
 #pragma once
 
-#define _USE_MATH_DEFINES
-#include <cmath>
+#include "mc/RaumAkustik/Units.hpp"
 
 namespace mc
 {
@@ -12,29 +11,12 @@ inline constexpr auto oneAtmosphere     = 101325.0;  // Pa
 
 struct AtmosphericEnvironment
 {
-    double temperature {0};
-    double pressure {0};
+    Kelvin temperature {0};
+    Pascal pressure {0};
 };
 
-template<typename T>
-inline auto densityOfAir(T temperature, T pressure) -> T
-{
-    // kg m-3
-    // Effects of humidity are neglected
-    return (pressure * oneAtmosphere) / (gasConstant * (T(273.15) + temperature));
-}
-
-template<typename T>
-inline auto soundVelocity(T temperature) -> T
-{
-    return std::sqrt((specificHeatRatio * oneAtmosphere) / densityAtZeroC)
-           * std::sqrt(T(1) + (temperature / T(273.15)));
-}
-
-template<typename T>
-inline auto impedanceOfAir(T temperature, T pressure) -> T
-{
-    return soundVelocity(temperature) * densityOfAir(temperature, pressure);
-}
+[[nodiscard]] auto densityOfAir(Kelvin temperature, Pascal pressure) noexcept -> KilogramPerMetreCub;
+[[nodiscard]] auto soundVelocity(Kelvin temperature) noexcept -> MetrePerSecond;
+[[nodiscard]] auto impedanceOfAir(Kelvin temperature, Pascal pressure) noexcept -> double;
 
 }  // namespace mc
