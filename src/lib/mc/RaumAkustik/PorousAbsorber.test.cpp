@@ -1,5 +1,7 @@
 #include "PorousAbsorber.hpp"
 
+#include "mc/RaumAkustik/Air.hpp"
+
 #include <catch2/catch.hpp>
 
 static constexpr auto c20 = mc::AtmosphericEnvironment {mc::celciusToKelvin(20.0), mc::OneAtmosphere};

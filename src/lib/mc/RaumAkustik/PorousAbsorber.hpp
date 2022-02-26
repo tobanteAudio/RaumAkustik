@@ -1,11 +1,17 @@
 #pragma once
 
-#include "mc/RaumAkustik/Air.hpp"
+#include "mc/RaumAkustik/Units.hpp"
 
 #include <complex>
 
 namespace mc
 {
+struct AtmosphericEnvironment
+{
+    Kelvin temperature {0};
+    Pascal pressure {0};
+};
+
 struct PorousAbsorberSpecs
 {
     /// Absorber thickness (ta)
