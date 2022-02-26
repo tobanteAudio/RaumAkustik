@@ -79,7 +79,6 @@ struct PorousAbsorberProperties
 namespace detail
 {
 
-[[nodiscard]] auto hertzToAngular(double hertz) -> double;
 [[nodiscard]] auto waveNumber(Kelvin temperature, Hertz frequency) -> double;
 [[nodiscard]] auto delanyBazleyTerm(double airDensity, double frequency, double flowResistivity) -> double;
 [[nodiscard]] auto yComponentOfWaveNumber(double waveNumber, double angle) -> double;

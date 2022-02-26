@@ -57,11 +57,6 @@ auto propertiesOfAbsorber(PorousAbsorberSpecs specs, AtmosphericEnvironment env,
 
 namespace detail
 {
-auto hertzToAngular(double hertz) -> double
-{
-    // 2pf
-    return (2.0 * std::numbers::pi) * hertz;
-}
 
 auto waveNumber(Kelvin temperature, Hertz frequency) -> double
 {

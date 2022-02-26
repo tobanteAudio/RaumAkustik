@@ -68,15 +68,6 @@ TEST_CASE("RaumAkustik: propertiesOfAbsorber", "[RaumAkustik]")
     }
 }
 
-TEST_CASE("RaumAkustik: detail::hertzToAngular", "[RaumAkustik]")
-{
-    REQUIRE(mc::detail::hertzToAngular(0.0) == Approx(0.0));
-    REQUIRE(mc::detail::hertzToAngular(50.0) == Approx(314.15927));
-    REQUIRE(mc::detail::hertzToAngular(53.0) == Approx(333.00882));
-    REQUIRE(mc::detail::hertzToAngular(56.0) == Approx(351.85838));
-    REQUIRE(mc::detail::hertzToAngular(59.0) == Approx(370.70793));
-}
-
 TEST_CASE("RaumAkustik: detail::waveNumber", "[RaumAkustik]")
 {
     REQUIRE(mc::detail::waveNumber(mc::celciusToKelvin(20.0), mc::Hertz {50.0}) == Approx(0.9149));
