@@ -33,6 +33,9 @@ if (CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
 
     # Minimum macOS version
     set(CMAKE_OSX_DEPLOYMENT_TARGET "10.14")
+
+    enable_testing()
+    include(CTest)
 endif ()
 
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/CMake)
