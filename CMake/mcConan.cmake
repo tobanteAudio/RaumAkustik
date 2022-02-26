@@ -19,8 +19,8 @@ else()
     endif()
 
     include(${CMAKE_BINARY_DIR}/conan.cmake)
-    conan_add_remote(NAME conancenter URL https://center.conan.io)
-    conan_add_remote(NAME conan-mpusz URL https://mpusz.jfrog.io/artifactory/api/conan/conan-oss)
+    conan_add_remote(NAME conancenter INDEX 0 URL https://center.conan.io)
+    conan_add_remote(NAME conan-mpusz INDEX 1 URL https://mpusz.jfrog.io/artifactory/api/conan/conan-oss)
     conan_cmake_autodetect(settings)
     conan_cmake_install(
         CONANFILE
@@ -29,8 +29,6 @@ else()
             ${CMAKE_CURRENT_SOURCE_DIR}
         BUILD
             outdated
-        REMOTE
-            conancenter conan-mpusz
         SETTINGS
             ${settings}
     )
