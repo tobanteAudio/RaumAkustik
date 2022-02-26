@@ -37,7 +37,7 @@ PorousAbsorberSimulationView::PorousAbsorberSimulationView(juce::ValueTree vt, j
             new juce::SliderPropertyComponent {_absorberThickness.getPropertyAsValue(), "Thickness (mm)", 0.0, 1000.0,
                                                1.0},
             new juce::SliderPropertyComponent {_absorberFlowResisitivity.getPropertyAsValue(), "Flow Resisitivity", 0.0,
-                                               10'000.0, 1.0},
+                                               40'000.0, 1.0},
             new juce::SliderPropertyComponent {_absorberAngleOfIncidence.getPropertyAsValue(), "Angle Of Incidence",
                                                0.0, 90.0, 1.0},
             new juce::SliderPropertyComponent {_absorberAirGap.getPropertyAsValue(), "Air Gap (mm)", 0.0, 1000.0, 1.0},

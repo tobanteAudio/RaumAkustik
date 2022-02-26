@@ -16,9 +16,9 @@ if (CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
     set(CMAKE_C_STANDARD_REQUIRED ON)
     set(CMAKE_C_EXTENSIONS OFF)
 
-    # Set C++17 with no extensions enabled. Fail if the
+    # Set C++20 with no extensions enabled. Fail if the
     # standard is not supported.
-    set(CMAKE_CXX_STANDARD 17)
+    set(CMAKE_CXX_STANDARD 20)
     set(CMAKE_CXX_STANDARD_REQUIRED ON)
     set(CMAKE_CXX_EXTENSIONS OFF)
 
