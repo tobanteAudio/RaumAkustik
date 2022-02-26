@@ -19,6 +19,7 @@
 |                        [RT60 Simulator](https://amcoustics.com/tools/amrev/#/diagram)                        |                                 |
 |                 [Porous Absorber](http://www.whealy.com/acoustics/PA_Calculator/index.html)                  |           Nice plots            |
 |                  [Multilayer Membrane Absorber](http://www.acousticmodelling.com/multi.php)                  |                                 |
+|                      [Air Density](https://www.omnicalculator.com/physics/air-density)                       |                                 |
 
 ### FEM Modelling
 
@@ -37,7 +38,9 @@
 
 ### Books
 
-|                                Link                                 |  Comment  |
-| :-----------------------------------------------------------------: | :-------: |
-| [amcoustics: Online Book](https://amcoustics.com/articles/thesis/1) |           |
-|   [Multiphysics Cyclopedia](https://www.comsol.com/multiphysics)    | By COMSOL |
+|                                                       Link                                                       |  Comment  |
+| :--------------------------------------------------------------------------------------------------------------: | :-------: |
+|                       [amcoustics: Online Book](https://amcoustics.com/articles/thesis/1)                        |           |
+|                          [Multiphysics Cyclopedia](https://www.comsol.com/multiphysics)                          | By COMSOL |
+| [Thermodynamics – Basic Concepts](https://durhamcollege.ca/wp-content/uploads/Thermodynamics-Basic-Concepts.pdf) |           |
+|      [Acoustic Impedance](https://www4.uwsp.edu/physastr/kmenning/Phys115/Link5-09_acoustic_impedance.pdf)       |           |

@@ -86,7 +86,8 @@ namespace detail
 {
 
 [[nodiscard]] auto waveNumber(Kelvin temperature, Hertz frequency) -> double;
-[[nodiscard]] auto delanyBazleyTerm(double airDensity, double frequency, double flowResistivity) -> double;
+[[nodiscard]] auto delanyBazleyTerm(KilogramPerCubicMetre airDensity, Hertz frequency, double flowResistivity)
+    -> double;
 [[nodiscard]] auto yComponentOfWaveNumber(double waveNumber, double angle) -> double;
 [[nodiscard]] auto angleOfPropagation(std::complex<double> k, double ky) -> double;
 

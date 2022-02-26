@@ -9,8 +9,8 @@ TEST_CASE("RaumAkustik: densityOfAir", "[RaumAkustik]")
     auto c22 = mc::Kelvin {273.15 + 22.0};
     auto p   = mc::OneAtmosphere;
 
-    REQUIRE(mc::densityOfAir(c20, p).number() == Approx(mc::KilogramPerMetreCub {1.20412}.number()));
-    REQUIRE(mc::densityOfAir(c22, p).number() == Approx(mc::KilogramPerMetreCub {1.19596}.number()));
+    REQUIRE(mc::densityOfAir(c20, p).number() == Approx(mc::KilogramPerCubicMetre {1.20412}.number()));
+    REQUIRE(mc::densityOfAir(c22, p).number() == Approx(mc::KilogramPerCubicMetre {1.19596}.number()));
 }
 
 TEST_CASE("RaumAkustik: soundVelocity", "[RaumAkustik]")

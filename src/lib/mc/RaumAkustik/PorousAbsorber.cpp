@@ -17,7 +17,7 @@ auto propertiesOfAbsorber(PorousAbsorberSpecs specs, AtmosphericEnvironment env,
 
     auto p = PorousAbsorberProperties {};
     {
-        p.X   = detail::delanyBazleyTerm(airDensity.number(), frequency.number(), specs.flowResisitivity);
+        p.X   = detail::delanyBazleyTerm(airDensity, frequency, specs.flowResisitivity);
         p.zca = airIm * std::complex {1 + 0.0571 * (std::pow(p.X, -0.754)), -0.087 * (std::pow(p.X, -0.732))};
         p.k   = twoPiC * frequency.number()
               * std::complex {1 + 0.0978 * std::pow(p.X, -0.7), -0.189 * std::pow(p.X, -0.595)};
@@ -65,10 +65,11 @@ auto waveNumber(Kelvin temperature, Hertz frequency) -> double
     // 2p/l
     return ((2.0 * std::numbers::pi) / soundVelocity(temperature).number()) * frequency.number();
 }
-auto delanyBazleyTerm(double airDensity, double frequency, double flowResistivity) -> double
+auto delanyBazleyTerm(KilogramPerCubicMetre airDensity, Hertz frequency, double flowResistivity) -> double
 {
     // Eq 5.11
-    return (airDensity * frequency) / flowResistivity;
+    auto const tmp = (airDensity * frequency) / flowResistivity;
+    return tmp.number();
 }
 
 auto yComponentOfWaveNumber(double waveNumber, double angle) -> double

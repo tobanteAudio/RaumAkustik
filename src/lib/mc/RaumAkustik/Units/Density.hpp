@@ -5,6 +5,6 @@
 namespace mc
 {
 using namespace units::isq;
-using KilogramPerMetreCub            = si::density<si::kilogram_per_metre_cub, double>;
-inline constexpr auto DensityAtZeroC = KilogramPerMetreCub {1.293};
+using KilogramPerCubicMetre          = si::density<si::kilogram_per_metre_cub, double>;
+inline constexpr auto DensityAtZeroC = KilogramPerCubicMetre {1.293};
 }  // namespace mc

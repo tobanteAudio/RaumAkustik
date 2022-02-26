@@ -80,11 +80,11 @@ TEST_CASE("RaumAkustik: detail::delanyBazleyTerm", "[RaumAkustik]")
 {
     {
         auto const density = mc::densityOfAir(mc::celciusToKelvin(20.0), mc::OneAtmosphere);
-        REQUIRE(mc::detail::delanyBazleyTerm(density.number(), 50.0, 8'000.0) == Approx(0.0075257395));
+        REQUIRE(mc::detail::delanyBazleyTerm(density, mc::Hertz {50.0}, 8'000.0) == Approx(0.0075257395));
     }
     {
         auto const density = mc::densityOfAir(mc::celciusToKelvin(22.0), mc::OneAtmosphere);
-        REQUIRE(mc::detail::delanyBazleyTerm(density.number(), 50.0, 8'000.0) == Approx(0.0074747434));
+        REQUIRE(mc::detail::delanyBazleyTerm(density, mc::Hertz {50.0}, 8'000.0) == Approx(0.0074747434));
     }
 }
 
