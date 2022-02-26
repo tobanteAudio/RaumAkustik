@@ -8,11 +8,13 @@ target_include_directories(${PROJECT_NAME}
 )
 
 target_link_libraries(${PROJECT_NAME}
+    PRIVATE
+        juce::juce_recommended_warning_flags
     PUBLIC
+        Eigen3::Eigen
         mp-units::mp-units
         juce::juce_recommended_config_flags
         juce::juce_recommended_lto_flags
-        juce::juce_recommended_warning_flags
 )
 
 target_sources(${PROJECT_NAME}
@@ -21,6 +23,7 @@ target_sources(${PROJECT_NAME}
 
         "mc/RaumAkustik/Air.cpp"
         "mc/RaumAkustik/Air.hpp"
+        "mc/RaumAkustik/FEM.hpp"
         "mc/RaumAkustik/FirstReflection.hpp"
         "mc/RaumAkustik/PorousAbsorber.cpp"
         "mc/RaumAkustik/PorousAbsorber.hpp"
@@ -43,6 +46,7 @@ target_link_libraries("${PROJECT_NAME}_Tests" PRIVATE ModernCircuits::RaumAkusti
 target_sources("${PROJECT_NAME}_Tests"
     PRIVATE
         "mc/RaumAkustik/Air.test.cpp"
+        "mc/RaumAkustik/FEM.test.cpp"
         "mc/RaumAkustik/FirstReflection.test.cpp"
         "mc/RaumAkustik/PorousAbsorber.test.cpp"
         "mc/RaumAkustik/Units/Frequency.test.cpp"

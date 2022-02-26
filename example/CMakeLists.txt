@@ -1,0 +1,4 @@
+project(example)
+
+add_executable(RaumAkustik_Example_FEM_2D FEM_2D.cpp)
+target_link_libraries(RaumAkustik_Example_FEM_2D PRIVATE ModernCircuits::RaumAkustik)

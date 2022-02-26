@@ -46,6 +46,7 @@ include(mcCompilerOptions)
 include(mcCompilerWarnings)
 include(mcCodeCoverage)
 
+find_package(Eigen3 REQUIRED)
 find_package(mp-units REQUIRED)
 find_package(Catch2 REQUIRED)
 include(Catch)
@@ -56,3 +57,5 @@ set_directory_properties(PROPERTIES JUCE_COMPANY_NAME "Modern Circuits UG (haftu
 
 add_subdirectory(src/lib)
 add_subdirectory(src/app)
+
+add_subdirectory(example)
