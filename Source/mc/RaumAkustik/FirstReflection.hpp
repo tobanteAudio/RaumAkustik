@@ -46,7 +46,7 @@ inline auto firstReflectionSideWall(RoomDimensions dimensions, Point listenPosit
     return listenPosition.y - (y * x2) / (x1 + x2);
 }
 
-inline auto firstReflectionFrontWall(RoomDimensions dimensions, Point listenPosition, Speaker speaker) -> double
+inline auto firstReflectionFrontWall(RoomDimensions /*dimensions*/, Point listenPosition, Speaker speaker) -> double
 {
     auto const y  = std::abs(speaker.x - listenPosition.x);
     auto const x1 = speaker.y;

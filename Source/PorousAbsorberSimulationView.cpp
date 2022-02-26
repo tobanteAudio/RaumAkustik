@@ -140,7 +140,7 @@ auto PorousAbsorberSimulationView::paintRowBackground(juce::Graphics& g, int row
         g.fillAll(alternateColour);
 }
 
-auto PorousAbsorberSimulationView::paintCell(juce::Graphics& g, int rowNumber, int columnId, int width, int height,
+auto PorousAbsorberSimulationView::paintCell(juce::Graphics& g, int row, int columnId, int width, int height,
                                              bool /*rowIsSelected*/) -> void
 {
     g.setColour(getLookAndFeel().findColour(juce::ListBox::textColourId));
@@ -148,19 +148,19 @@ auto PorousAbsorberSimulationView::paintCell(juce::Graphics& g, int rowNumber, i
 
     if (columnId == 1)
     {
-        auto const frequency = juce::String {_props[rowNumber].first};
+        auto const frequency = juce::String {_props[static_cast<size_t>(row)].first};
         g.drawText(frequency, 2, 0, width - 4, height, juce::Justification::centredLeft, true);
     }
 
     if (columnId == 2)
     {
-        auto const absorptionFactor = juce::String {_props[rowNumber].second.absorptionFactorNoAirGap};
+        auto const absorptionFactor = juce::String {_props[static_cast<size_t>(row)].second.absorptionFactorNoAirGap};
         g.drawText(absorptionFactor, 2, 0, width - 4, height, juce::Justification::centredLeft, true);
     }
 
     if (columnId == 3)
     {
-        auto const absorptionFactor = juce::String {_props[rowNumber].second.absorptionFactorWithAirGap};
+        auto const absorptionFactor = juce::String {_props[static_cast<size_t>(row)].second.absorptionFactorWithAirGap};
         g.drawText(absorptionFactor, 2, 0, width - 4, height, juce::Justification::centredLeft, true);
     }
 
@@ -184,7 +184,7 @@ auto PorousAbsorberSimulationView::updateSimulation() -> void
     auto const startFrequency = static_cast<double>(_plotStartFrequency);
     auto const subDivisions   = static_cast<double>(_plotOctaveSubdivision);
 
-    for (auto i {0}; i < static_cast<int>(_plotNumPoints); ++i)
+    for (std::size_t i {0}; i < static_cast<std::size_t>(_plotNumPoints); ++i)
     {
         auto const frequency = oactaveSubdivision(startFrequency, static_cast<size_t>(subDivisions), i);
         _props.push_back(std::make_pair(frequency, propertiesOfAbsorber(specs, env, frequency, angle)));

@@ -31,7 +31,7 @@ auto reflectionLeftSpeaker(RoomLayout const& room) -> double
     auto const x2  = room.dimensions.width - room.listenPosition.x;
     auto const tmp = (y * x2) / (x1 + x2);
     return room.listenPosition.y - tmp;
-};
+}
 
 auto reflectionLeftSpeakerFar(RoomLayout const& room) -> double
 {
@@ -40,7 +40,7 @@ auto reflectionLeftSpeakerFar(RoomLayout const& room) -> double
     auto const x2  = room.dimensions.width - room.listenPosition.x;
     auto const tmp = (y * x2) / (x1 + x2);
     return room.listenPosition.y - tmp;
-};
+}
 
 auto reflectionRightSpeaker(RoomLayout const& room) -> double
 {
@@ -49,7 +49,7 @@ auto reflectionRightSpeaker(RoomLayout const& room) -> double
     auto const x2  = room.dimensions.width - room.listenPosition.x;
     auto const tmp = (y * x2) / (x1 + x2);
     return room.listenPosition.y - tmp;
-};
+}
 
 auto reflectionRightSpeakerFar(RoomLayout const& room) -> double
 {
@@ -58,7 +58,7 @@ auto reflectionRightSpeakerFar(RoomLayout const& room) -> double
     auto const x2  = room.dimensions.width - room.listenPosition.x;
     auto const tmp = (y * x2) / (x1 + x2);
     return room.listenPosition.y - tmp;
-};
+}
 
 FirstReflectionsView::FirstReflectionsView(juce::ValueTree vt, juce::UndoManager* um)
     : _undoManager {um}, _roomTree {vt.getOrCreateChildWithName("FirstReflections", um)}
