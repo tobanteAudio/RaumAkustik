@@ -25,8 +25,14 @@ target_sources(${PROJECT_NAME}
         "mc/RaumAkustik/PorousAbsorber.cpp"
         "mc/RaumAkustik/PorousAbsorber.hpp"
         "mc/RaumAkustik/Units.hpp"
-        "mc/RaumAkustik/Utility.cpp"
-        "mc/RaumAkustik/Utility.hpp"
+
+        "mc/RaumAkustik/Units/Density.hpp"
+        "mc/RaumAkustik/Units/Frequency.cpp"
+        "mc/RaumAkustik/Units/Frequency.hpp"
+        "mc/RaumAkustik/Units/HeatCapacity.hpp"
+        "mc/RaumAkustik/Units/Pressure.hpp"
+        "mc/RaumAkustik/Units/Speed.hpp"
+        "mc/RaumAkustik/Units/Temperature.hpp"
 )
 
 
@@ -39,6 +45,5 @@ target_sources("${PROJECT_NAME}_Tests"
         "mc/RaumAkustik/Air.test.cpp"
         "mc/RaumAkustik/FirstReflection.test.cpp"
         "mc/RaumAkustik/PorousAbsorber.test.cpp"
-        "mc/RaumAkustik/Units.test.cpp"
-        "mc/RaumAkustik/Utility.test.cpp"
+        "mc/RaumAkustik/Units/Frequency.test.cpp"
 )
