@@ -1,6 +1,6 @@
 [requires]
 eigen/3.4.0
-mp-units/0.7.0
+mp-units/0.8.0@mpusz/testing
 catch2/2.13.8
 
 [options]
