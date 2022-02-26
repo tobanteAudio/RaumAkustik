@@ -17,9 +17,7 @@ jobs:
         run: git lfs checkout
 
       - name: Install dependencies
-        run: |
-          brew install ninja
-          pip install conan
+        run: brew install ninja conan
 
       - name: CMake configure -- Release
         run: cmake -S . -G Ninja -B cmake-build-release -DCMAKE_BUILD_TYPE=Release "-DCMAKE_OSX_ARCHITECTURES=arm64;x86_64"

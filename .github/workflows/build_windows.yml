@@ -27,7 +27,7 @@ jobs:
           arch: x64
 
       - name: CMake configure -- Release
-        run: cmake -S . -B build -G "Ninja Multi-Config" -D CMAKE_BUILD_TYPE=Release
+        run: cmake -S . -B build -G "Visual Studio 16 2019" -D CMAKE_BUILD_TYPE=Release
 
       - name: CMake build -- Release
         run: cmake --build cmake-build-release --config "Release"
