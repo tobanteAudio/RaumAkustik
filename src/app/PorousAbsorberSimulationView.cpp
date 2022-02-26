@@ -7,9 +7,9 @@ namespace mc
 
 namespace
 {
-auto positionForFrequency(double const freq) noexcept -> double
+auto positionForFrequency(Hertz const freq) noexcept -> double
 {
-    return (std::log(freq / 20.0) / std::log(2.0)) / 10.0;
+    return (std::log(freq.number() / 20.0) / std::log(2.0)) / 10.0;
 }
 
 }  // namespace
@@ -80,8 +80,8 @@ auto PorousAbsorberSimulationView::paint(juce::Graphics& g) -> void
     g.setColour(juce::Colours::grey.withAlpha(0.5f));
     for (auto freq : std::vector {20.0, 40.0, 80.0, 160.0, 320.0, 640.0, 1280.0, 2560.0, 5120.0})
     {
-        auto x = static_cast<float>(_plotArea.getX())
-                 + static_cast<float>(_plotArea.getWidth()) * static_cast<float>(positionForFrequency(freq));
+        auto const freqPos = static_cast<float>(positionForFrequency(Hertz {freq}));
+        auto const x       = static_cast<float>(_plotArea.getX()) + static_cast<float>(_plotArea.getWidth()) * freqPos;
         auto const topY    = static_cast<float>(_plotArea.getY());
         auto const bottomY = static_cast<float>(_plotArea.getBottom());
         g.drawLine(x, topY, x, bottomY, 3.0f);
@@ -148,7 +148,7 @@ auto PorousAbsorberSimulationView::paintCell(juce::Graphics& g, int row, int col
 
     if (columnId == 1)
     {
-        auto const frequency = juce::String {_props[static_cast<size_t>(row)].first};
+        auto const frequency = juce::String {_props[static_cast<size_t>(row)].first.number()};
         g.drawText(frequency, 2, 0, width - 4, height, juce::Justification::centredLeft, true);
     }
 
@@ -181,12 +181,12 @@ auto PorousAbsorberSimulationView::updateSimulation() -> void
     auto const env   = AtmosphericEnvironment {celciusToKelvin(_temperature), OneAtmosphere * _pressure};
     auto const angle = static_cast<double>(_absorberAngleOfIncidence);
 
-    auto const startFrequency = static_cast<double>(_plotStartFrequency);
+    auto const startFrequency = Hertz {static_cast<double>(_plotStartFrequency)};
     auto const subDivisions   = static_cast<double>(_plotOctaveSubdivision);
 
-    for (std::size_t i {0}; i < static_cast<std::size_t>(_plotNumPoints); ++i)
+    for (auto i {0}; i < static_cast<int>(_plotNumPoints); ++i)
     {
-        auto const frequency = oactaveSubdivision(startFrequency, static_cast<size_t>(subDivisions), i);
+        auto const frequency = oactaveSubdivision(startFrequency, subDivisions, static_cast<double>(i));
         _props.push_back(std::make_pair(frequency, propertiesOfAbsorber(specs, env, frequency, angle)));
     }
 

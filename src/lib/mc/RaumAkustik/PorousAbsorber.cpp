@@ -4,7 +4,7 @@
 
 namespace mc
 {
-auto propertiesOfAbsorber(PorousAbsorberSpecs specs, AtmosphericEnvironment env, double frequency, double angle)
+auto propertiesOfAbsorber(PorousAbsorberSpecs specs, AtmosphericEnvironment env, Hertz frequency, double angle)
     -> PorousAbsorberProperties
 {
     auto const airDensity = densityOfAir(env.temperature, env.pressure);
@@ -15,11 +15,12 @@ auto propertiesOfAbsorber(PorousAbsorberSpecs specs, AtmosphericEnvironment env,
 
     auto p = PorousAbsorberProperties {};
     {
-        p.X   = detail::delanyBazleyTerm(airDensity.number(), frequency, specs.flowResisitivity);
+        p.X   = detail::delanyBazleyTerm(airDensity.number(), frequency.number(), specs.flowResisitivity);
         p.zca = airIm * std::complex {1 + 0.0571 * (std::pow(p.X, -0.754)), -0.087 * (std::pow(p.X, -0.732))};
-        p.k   = twoPiC * frequency * std::complex {1 + 0.0978 * std::pow(p.X, -0.7), -0.189 * std::pow(p.X, -0.595)};
-        p.ky  = detail::yComponentOfWaveNumber(wn, angle);
-        p.kx  = std::sqrt((p.k * p.k) - std::pow(p.ky, 2));
+        p.k   = twoPiC * frequency.number()
+              * std::complex {1 + 0.0978 * std::pow(p.X, -0.7), -0.189 * std::pow(p.X, -0.595)};
+        p.ky                  = detail::yComponentOfWaveNumber(wn, angle);
+        p.kx                  = std::sqrt((p.k * p.k) - std::pow(p.ky, 2));
         p.betaPorous          = detail::angleOfPropagation(p.k, p.ky);
         p.ratiooOfWaveNumbers = p.k / p.kx;
 
@@ -62,10 +63,10 @@ auto hertzToAngular(double hertz) -> double
     return (2.0 * std::numbers::pi) * hertz;
 }
 
-auto waveNumber(Kelvin temperature, double frequency) -> double
+auto waveNumber(Kelvin temperature, Hertz frequency) -> double
 {
     // 2p/l
-    return ((2.0 * std::numbers::pi) / soundVelocity(temperature).number()) * frequency;
+    return ((2.0 * std::numbers::pi) / soundVelocity(temperature).number()) * frequency.number();
 }
 auto delanyBazleyTerm(double airDensity, double frequency, double flowResistivity) -> double
 {

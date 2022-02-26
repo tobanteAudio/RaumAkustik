@@ -1,9 +1,11 @@
 #pragma once
 
-#include <cstddef>
+#include <units/isq/si/frequency.h>
 
 namespace mc
 {
-[[nodiscard]] auto oactaveSubdivision(double startFrequencyHertz, std::size_t octaveSubdivisions, std::size_t idx)
-    -> double;
+using namespace units::isq;
+using Hertz = si::frequency<si::hertz, double>;
+
+[[nodiscard]] auto oactaveSubdivision(Hertz startFrequency, double numSubdivisions, double index) -> Hertz;
 }  // namespace mc
