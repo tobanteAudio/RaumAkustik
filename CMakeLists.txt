@@ -46,6 +46,7 @@ include(mcCompilerOptions)
 include(mcCompilerWarnings)
 include(mcCodeCoverage)
 
+find_package(blaze REQUIRED)
 find_package(Eigen3 REQUIRED)
 find_package(mp-units REQUIRED)
 find_package(Catch2 REQUIRED)
