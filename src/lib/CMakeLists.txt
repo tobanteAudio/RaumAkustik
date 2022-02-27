@@ -12,6 +12,7 @@ target_link_libraries(${PROJECT_NAME}
         juce::juce_recommended_warning_flags
     PUBLIC
         blaze::blaze
+        Boost::headers
         Eigen3::Eigen
         mp-units::mp-units
         juce::juce_recommended_config_flags
@@ -29,6 +30,8 @@ target_sources(${PROJECT_NAME}
         "mc/RaumAkustik/PorousAbsorber.cpp"
         "mc/RaumAkustik/PorousAbsorber.hpp"
         "mc/RaumAkustik/Units.hpp"
+
+        "mc/RaumAkustik/Json/Source.cpp"
 
         "mc/RaumAkustik/Units/Density.hpp"
         "mc/RaumAkustik/Units/Frequency.cpp"
