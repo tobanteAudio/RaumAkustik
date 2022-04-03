@@ -40,3 +40,8 @@ cmake-build-*
 *.exe
 *.out
 *.app
+
+# Python
+.env
+.venv
+venv
