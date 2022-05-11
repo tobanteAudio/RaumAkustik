@@ -1,9 +1,7 @@
 # Raum Akustik
 
-## Status
-
 [![macOS](https://github.com/ModernCircuits/RaumAkustik/actions/workflows/build_mac.yml/badge.svg)](https://github.com/ModernCircuits/RaumAkustik/actions/workflows/build_mac.yml) [![Windows](https://github.com/ModernCircuits/RaumAkustik/actions/workflows/build_windows.yml/badge.svg)](https://github.com/ModernCircuits/RaumAkustik/actions/workflows/build_windows.yml)[![Linux](https://github.com/ModernCircuits/RaumAkustik/actions/workflows/build_linux.yml/badge.svg)](https://github.com/ModernCircuits/RaumAkustik/actions/workflows/build_linux.yml)
-[![Clang-Tidy](https://github.com/ModernCircuits/RaumAkustik/actions/workflows/analyze_clang-tidy.yml/badge.svg)](https://github.com/ModernCircuits/RaumAkustik/actions/workflows/analyze_clang-tidy.yml)[![Coverage](https://github.com/ModernCircuits/RaumAkustik/actions/workflows/analyze_coverage.yml/badge.svg)](https://github.com/ModernCircuits/RaumAkustik/actions/workflows/analyze_coverage.yml)[![ASAN](https://github.com/ModernCircuits/RaumAkustik/actions/workflows/analyze_asan.yml/badge.svg?branch=main)](https://github.com/ModernCircuits/RaumAkustik/actions/workflows/analyze_asan.yml) |
+[![Clang-Tidy](https://github.com/ModernCircuits/RaumAkustik/actions/workflows/analyze_clang-tidy.yml/badge.svg)](https://github.com/ModernCircuits/RaumAkustik/actions/workflows/analyze_clang-tidy.yml)[![Coverage](https://github.com/ModernCircuits/RaumAkustik/actions/workflows/analyze_coverage.yml/badge.svg)](https://github.com/ModernCircuits/RaumAkustik/actions/workflows/analyze_coverage.yml)[![ASAN](https://github.com/ModernCircuits/RaumAkustik/actions/workflows/analyze_asan.yml/badge.svg?branch=main)](https://github.com/ModernCircuits/RaumAkustik/actions/workflows/analyze_asan.yml)
 
 ## Resources
 
