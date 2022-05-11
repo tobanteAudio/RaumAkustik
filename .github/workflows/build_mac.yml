@@ -17,7 +17,9 @@ jobs:
         run: git lfs checkout
 
       - name: Install dependencies
-        run: brew install ninja conan
+        run: |
+          brew install ninja conan
+          pip install -U conan
 
       - name: CMake configure -- Release
         run: cmake -S . -G Xcode -B cmake-build-release -DCMAKE_BUILD_TYPE=Release

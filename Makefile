@@ -20,7 +20,7 @@ tidy-fix:
 coverage:
 	cmake -S . -G Ninja -B cmake-build-coverage -D CMAKE_BUILD_TYPE=Debug -D MC_BUILD_COVERAGE=TRUE
 	cmake --build cmake-build-coverage
-	ctest --test-dir cmake-build-coverage -C Debug
+	cd cmake-build-coverage && ctest -C Debug
 
 .PHONY: coverage-html
 coverage-html: coverage

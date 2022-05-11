@@ -1,0 +1,25 @@
+name: Coverage
+
+on: [push, pull_request]
+
+jobs:
+  coverage:
+    name: Coverage
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v2
+        with:
+          submodules: true
+          lfs: true
+
+      - name: Checkout LFS objects
+        run: git lfs checkout
+
+      - name: Install dependencies
+        run: |
+          sudo apt install -y ninja-build libasound2-dev libjack-jackd2-dev ladspa-sdk libcurl4-openssl-dev  libfreetype6-dev libx11-dev libxcomposite-dev libxcursor-dev libxcursor-dev libxext-dev libxinerama-dev libxrandr-dev libxrender-dev libwebkit2gtk-4.0-dev libglu1-mesa-dev mesa-common-dev lcov gcovr
+          pip install conan
+
+      - name: Run coverage build
+        run: make coverage
