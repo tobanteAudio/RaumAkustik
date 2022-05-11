@@ -2,6 +2,8 @@
 
 namespace mc
 {
+namespace
+{
 struct Point
 {
     double x{0};
@@ -42,7 +44,7 @@ auto reflectionLeftSpeakerFar(RoomLayout const& room) -> double
     return room.listenPosition.y - tmp;
 }
 
-auto reflectionRightSpeaker(RoomLayout const& room) -> double
+[[maybe_unused]] auto reflectionRightSpeaker(RoomLayout const& room) -> double
 {
     auto const y   = room.listenPosition.y - room.rightSpeaker.y;
     auto const x1  = room.dimensions.width - room.rightSpeaker.x;
@@ -51,7 +53,7 @@ auto reflectionRightSpeaker(RoomLayout const& room) -> double
     return room.listenPosition.y - tmp;
 }
 
-auto reflectionRightSpeakerFar(RoomLayout const& room) -> double
+[[maybe_unused]] auto reflectionRightSpeakerFar(RoomLayout const& room) -> double
 {
     auto const y   = room.listenPosition.y - room.rightSpeaker.y;
     auto const x1  = room.rightSpeaker.x;
@@ -59,6 +61,7 @@ auto reflectionRightSpeakerFar(RoomLayout const& room) -> double
     auto const tmp = (y * x2) / (x1 + x2);
     return room.listenPosition.y - tmp;
 }
+}  // namespace
 
 FirstReflectionsView::FirstReflectionsView(juce::ValueTree vt, juce::UndoManager* um)
     : _undoManager{um}, _roomTree{vt.getOrCreateChildWithName("FirstReflections", um)}
