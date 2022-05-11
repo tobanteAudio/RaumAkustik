@@ -8,7 +8,7 @@ struct RaumAkustikApplication : juce::JUCEApplication
     const juce::String getApplicationVersion() override { return JUCE_APPLICATION_VERSION_STRING; }
     bool moreThanOneInstanceAllowed() override { return true; }
 
-    void initialise(const juce::String& commandLine) override
+    void initialise(juce::String const& commandLine) override
     {
         // This method is where you should put your application's initialisation
         // code..
@@ -32,7 +32,7 @@ struct RaumAkustikApplication : juce::JUCEApplication
         quit();
     }
 
-    void anotherInstanceStarted(const juce::String& commandLine) override
+    void anotherInstanceStarted(juce::String const& commandLine) override
     {
         // When another instance of the app is launched while this one is running,
         // this method is invoked, and the commandLine parameter tells you what

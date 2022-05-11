@@ -4,24 +4,24 @@ namespace mc
 {
 struct Point
 {
-    double x {0};
-    double y {0};
-    double z {0};
+    double x{0};
+    double y{0};
+    double z{0};
 };
 
 struct RoomDimensions
 {
-    double length {0};
-    double width {0};
-    double height {0};
+    double length{0};
+    double width{0};
+    double height{0};
 };
 
 struct RoomLayout
 {
-    RoomDimensions dimensions {};
-    Point leftSpeaker {};
-    Point rightSpeaker {};
-    Point listenPosition {};
+    RoomDimensions dimensions{};
+    Point leftSpeaker{};
+    Point rightSpeaker{};
+    Point listenPosition{};
 };
 
 auto reflectionLeftSpeaker(RoomLayout const& room) -> double
@@ -61,7 +61,7 @@ auto reflectionRightSpeakerFar(RoomLayout const& room) -> double
 }
 
 FirstReflectionsView::FirstReflectionsView(juce::ValueTree vt, juce::UndoManager* um)
-    : _undoManager {um}, _roomTree {vt.getOrCreateChildWithName("FirstReflections", um)}
+    : _undoManager{um}, _roomTree{vt.getOrCreateChildWithName("FirstReflections", um)}
 {
     _iconSize.setDefault(20.0);
 
@@ -74,23 +74,23 @@ FirstReflectionsView::FirstReflectionsView(juce::ValueTree vt, juce::UndoManager
 
 void FirstReflectionsView::paint(juce::Graphics& g)
 {
-    auto const room = RoomLayout {
-        RoomDimensions {
+    auto const room = RoomLayout{
+        RoomDimensions{
             _roomLength,
             _roomWidth,
             _roomHeight,
         },
-        Point {
+        Point{
             _leftX,
             _leftY,
             _leftZ,
         },
-        Point {
+        Point{
             _rightX,
             _rightY,
             _rightZ,
         },
-        Point {
+        Point{
             _listenX,
             _listenY,
             _listenZ,
@@ -101,7 +101,7 @@ void FirstReflectionsView::paint(juce::Graphics& g)
     jassert(lnf != nullptr);
 
     auto const iconSize = std::max<double>(_iconSize, 1.0);
-    auto const iconRect = juce::Rectangle {0.0, 0.0, iconSize, iconSize};
+    auto const iconRect = juce::Rectangle{0.0, 0.0, iconSize, iconSize};
 
     if (room.dimensions.length == 0.0) { return; }
     if (room.dimensions.width == 0.0) { return; }
@@ -117,7 +117,7 @@ void FirstReflectionsView::paint(juce::Graphics& g)
     auto const scaleFactor  = room.dimensions.length / (area.getHeight() * 0.9);
     auto const roomLengthPx = room.dimensions.length / scaleFactor;
     auto const roomWidthPx  = room.dimensions.width / scaleFactor;
-    auto const topViewRoom  = juce::Rectangle {area.getX(), area.getY(), roomWidthPx, roomLengthPx}.withCentre(
+    auto const topViewRoom  = juce::Rectangle{area.getX(), area.getY(), roomWidthPx, roomLengthPx}.withCentre(
          topViewArea.getCentre().toDouble());
 
     g.setColour(juce::Colours::black);
@@ -142,17 +142,17 @@ void FirstReflectionsView::paint(juce::Graphics& g)
     {
         auto const reflectionLeftClose = reflectionLeftSpeaker(room);
         auto const leftCloseToWall
-            = juce::Line {leftX, leftY, topViewRoom.getX(), topViewRoom.getY() + reflectionLeftClose / scaleFactor};
+            = juce::Line{leftX, leftY, topViewRoom.getX(), topViewRoom.getY() + reflectionLeftClose / scaleFactor};
         auto const leftCloseToListen
-            = juce::Line {topViewRoom.getX(), topViewRoom.getY() + reflectionLeftClose / scaleFactor, listenX, listenY};
+            = juce::Line{topViewRoom.getX(), topViewRoom.getY() + reflectionLeftClose / scaleFactor, listenX, listenY};
         g.drawLine(leftCloseToWall.toFloat());
         g.drawLine(leftCloseToListen.toFloat());
 
         auto const reflectionLeftFar = reflectionLeftSpeakerFar(room);
         auto const leftFarToWall
-            = juce::Line {leftX, leftY, topViewRoom.getRight(), topViewRoom.getY() + reflectionLeftFar / scaleFactor};
-        auto const leftFarToListen = juce::Line {
-            topViewRoom.getRight(), topViewRoom.getY() + reflectionLeftFar / scaleFactor, listenX, listenY};
+            = juce::Line{leftX, leftY, topViewRoom.getRight(), topViewRoom.getY() + reflectionLeftFar / scaleFactor};
+        auto const leftFarToListen = juce::Line{topViewRoom.getRight(),
+                                                topViewRoom.getY() + reflectionLeftFar / scaleFactor, listenX, listenY};
         g.drawLine(leftFarToWall.toFloat());
         g.drawLine(leftFarToListen.toFloat());
     }
@@ -160,7 +160,7 @@ void FirstReflectionsView::paint(juce::Graphics& g)
     ///////////////////////////////////////// FRONT
     auto const frontArea    = totalArea.toDouble();
     auto const roomHeightPx = room.dimensions.height / scaleFactor;
-    auto const frontView    = juce::Rectangle {0.0, 0.0, roomWidthPx, roomHeightPx}.withCentre(frontArea.getCentre());
+    auto const frontView    = juce::Rectangle{0.0, 0.0, roomWidthPx, roomHeightPx}.withCentre(frontArea.getCentre());
     g.drawRect(frontView.toFloat(), 8.0f);
 
     auto const leftZ         = frontView.getBottom() - room.leftSpeaker.z / scaleFactor;
@@ -218,44 +218,44 @@ auto FirstReflectionsView::connectValuesToTree() -> void
     _renderProperties.clear();
 
     _roomProperties.addSection(
-        "General", juce::Array<juce::PropertyComponent*> {
-                       new juce::SliderPropertyComponent {_iconSize.getPropertyAsValue(), "Icon Size", 0.0, 100.0, 1.0},
+        "General", juce::Array<juce::PropertyComponent*>{
+                       new juce::SliderPropertyComponent{_iconSize.getPropertyAsValue(), "Icon Size", 0.0, 100.0, 1.0},
                    });
 
     _roomProperties.addSection(
         "Room Dimensions",
-        juce::Array<juce::PropertyComponent*> {
-            new juce::SliderPropertyComponent {_roomLength.getPropertyAsValue(), "Length", 0.0, 1000.0, 1.0},
-            new juce::SliderPropertyComponent {_roomWidth.getPropertyAsValue(), "Width", 0.0, 1000.0, 1.0},
-            new juce::SliderPropertyComponent {_roomHeight.getPropertyAsValue(), "Height", 0.0, 1000.0, 1.0},
+        juce::Array<juce::PropertyComponent*>{
+            new juce::SliderPropertyComponent{_roomLength.getPropertyAsValue(), "Length", 0.0, 1000.0, 1.0},
+            new juce::SliderPropertyComponent{_roomWidth.getPropertyAsValue(), "Width", 0.0, 1000.0, 1.0},
+            new juce::SliderPropertyComponent{_roomHeight.getPropertyAsValue(), "Height", 0.0, 1000.0, 1.0},
         });
 
     _roomProperties.addSection(
-        "Listen Position", juce::Array<juce::PropertyComponent*> {
-                               new juce::SliderPropertyComponent {_listenX.getPropertyAsValue(), "X", 0.0, 1000.0, 1.0},
-                               new juce::SliderPropertyComponent {_listenY.getPropertyAsValue(), "Y", 0.0, 1000.0, 1.0},
-                               new juce::SliderPropertyComponent {_listenZ.getPropertyAsValue(), "Z", 0.0, 1000.0, 1.0},
+        "Listen Position", juce::Array<juce::PropertyComponent*>{
+                               new juce::SliderPropertyComponent{_listenX.getPropertyAsValue(), "X", 0.0, 1000.0, 1.0},
+                               new juce::SliderPropertyComponent{_listenY.getPropertyAsValue(), "Y", 0.0, 1000.0, 1.0},
+                               new juce::SliderPropertyComponent{_listenZ.getPropertyAsValue(), "Z", 0.0, 1000.0, 1.0},
                            });
 
     _roomProperties.addSection(
-        "Left Speaker", juce::Array<juce::PropertyComponent*> {
-                            new juce::SliderPropertyComponent {_leftX.getPropertyAsValue(), "X", 0.0, 1000.0, 1.0},
-                            new juce::SliderPropertyComponent {_leftY.getPropertyAsValue(), "Y", 0.0, 1000.0, 1.0},
-                            new juce::SliderPropertyComponent {_leftZ.getPropertyAsValue(), "Z", 0.0, 1000.0, 1.0},
+        "Left Speaker", juce::Array<juce::PropertyComponent*>{
+                            new juce::SliderPropertyComponent{_leftX.getPropertyAsValue(), "X", 0.0, 1000.0, 1.0},
+                            new juce::SliderPropertyComponent{_leftY.getPropertyAsValue(), "Y", 0.0, 1000.0, 1.0},
+                            new juce::SliderPropertyComponent{_leftZ.getPropertyAsValue(), "Z", 0.0, 1000.0, 1.0},
                         });
 
     _roomProperties.addSection(
-        "Right Speaker", juce::Array<juce::PropertyComponent*> {
-                             new juce::SliderPropertyComponent {_rightX.getPropertyAsValue(), "X", 0.0, 1000.0, 1.0},
-                             new juce::SliderPropertyComponent {_rightY.getPropertyAsValue(), "Y", 0.0, 1000.0, 1.0},
-                             new juce::SliderPropertyComponent {_rightZ.getPropertyAsValue(), "Z", 0.0, 1000.0, 1.0},
+        "Right Speaker", juce::Array<juce::PropertyComponent*>{
+                             new juce::SliderPropertyComponent{_rightX.getPropertyAsValue(), "X", 0.0, 1000.0, 1.0},
+                             new juce::SliderPropertyComponent{_rightY.getPropertyAsValue(), "Y", 0.0, 1000.0, 1.0},
+                             new juce::SliderPropertyComponent{_rightZ.getPropertyAsValue(), "Z", 0.0, 1000.0, 1.0},
                          });
 
     _renderProperties.addSection(
         "First Reflections",
-        juce::Array<juce::PropertyComponent*> {
-            new juce::BooleanPropertyComponent {_renderLeftReflections.getPropertyAsValue(), "Left", "Draw"},
-            new juce::BooleanPropertyComponent {_renderRightReflections.getPropertyAsValue(), "Right", "Draw"},
+        juce::Array<juce::PropertyComponent*>{
+            new juce::BooleanPropertyComponent{_renderLeftReflections.getPropertyAsValue(), "Left", "Draw"},
+            new juce::BooleanPropertyComponent{_renderRightReflections.getPropertyAsValue(), "Right", "Draw"},
         });
 }
 

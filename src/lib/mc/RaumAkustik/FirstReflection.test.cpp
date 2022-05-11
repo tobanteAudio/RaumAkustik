@@ -2,25 +2,25 @@
 
 #include <catch2/catch.hpp>
 
-static constexpr auto room = mc::RoomLayout {
-    mc::RoomDimensions {
+static constexpr auto room = mc::RoomLayout{
+    mc::RoomDimensions{
         600,
         365,
         312,
     },
     {
-        mc::Speaker {
+        mc::Speaker{
             121,
             160,
             125,
         },
-        mc::Speaker {
+        mc::Speaker{
             121 + 123,
             160,
             125,
         },
     },
-    mc::Point {
+    mc::Point{
         121 + 123 / 2.0,
         160 + 123,
         120,
@@ -29,7 +29,7 @@ static constexpr auto room = mc::RoomLayout {
 
 TEST_CASE("RaumAkustik: firstReflections", "[RaumAkustik]")
 {
-    auto reflections = std::array<mc::FirstReflection, 2> {};
+    auto reflections = std::array<mc::FirstReflection, 2>{};
     mc::firstReflections(begin(room.speakers), end(room.speakers), begin(reflections), room.dimensions,
                          room.listenPosition);
 

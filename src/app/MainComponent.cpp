@@ -128,16 +128,16 @@ auto MainComponent::showAboutMessage() -> void
 
 auto MainComponent::saveProject() -> void
 {
-    auto file = juce::File {juce::File::getSpecialLocation(juce::File::userHomeDirectory)}.getChildFile("test.mcra");
+    auto file = juce::File{juce::File::getSpecialLocation(juce::File::userHomeDirectory)}.getChildFile("test.mcra");
     if (file.existsAsFile()) { file.deleteFile(); }
-    auto stream = juce::FileOutputStream {file};
+    auto stream = juce::FileOutputStream{file};
     stream.writeText(_valueTree.toXmlString(), false, false, "\n");
 }
 
 auto MainComponent::loadProject() -> void
 {
-    auto file   = juce::File {juce::File::getSpecialLocation(juce::File::userHomeDirectory)}.getChildFile("test.mcra");
-    auto stream = juce::FileInputStream {file};
+    auto file   = juce::File{juce::File::getSpecialLocation(juce::File::userHomeDirectory)}.getChildFile("test.mcra");
+    auto stream = juce::FileInputStream{file};
     _valueTree  = juce::ValueTree::fromXml(stream.readEntireStreamAsString());
     reloadUI();
 }

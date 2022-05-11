@@ -29,16 +29,16 @@ private:
     auto reloadUI() -> void;
     auto toggleFullscreen() -> void;
 
-    juce::ApplicationCommandManager _commandManager {};
+    juce::ApplicationCommandManager _commandManager{};
     juce::UndoManager _undoManager;
-    juce::ValueTree _valueTree {"RaumAkustik"};
-    mc::LookAndFeel _lnf {};
+    juce::ValueTree _valueTree{"RaumAkustik"};
+    mc::LookAndFeel _lnf{};
 
-    mc::MenuBar _menuBar {_commandManager};
+    mc::MenuBar _menuBar{_commandManager};
 
-    juce::TabbedComponent _tabs {juce::TabbedButtonBar::TabsAtTop};
-    std::unique_ptr<mc::FirstReflectionsView> _firstReflectionsView {};
-    std::unique_ptr<mc::PorousAbsorberSimulationView> _absorberSimulationView {};
+    juce::TabbedComponent _tabs{juce::TabbedButtonBar::TabsAtTop};
+    std::unique_ptr<mc::FirstReflectionsView> _firstReflectionsView{};
+    std::unique_ptr<mc::PorousAbsorberSimulationView> _absorberSimulationView{};
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(MainComponent)
 };

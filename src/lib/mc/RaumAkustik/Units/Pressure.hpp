@@ -6,5 +6,5 @@ namespace mc
 {
 using namespace units::isq;
 using Pascal                        = si::pressure<si::pascal, double>;
-inline constexpr auto OneAtmosphere = Pascal {101325.0};
+inline constexpr auto OneAtmosphere = Pascal{101325.0};
 }  // namespace mc

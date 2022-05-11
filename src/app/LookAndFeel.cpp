@@ -3,7 +3,7 @@
 namespace mc
 {
 LookAndFeel::LookAndFeel()
-    : juce::LookAndFeel_V4 {{
+    : juce::LookAndFeel_V4{{
         juce::Colour::fromRGB(30, 41, 59),     // windowBackground
         juce::Colour::fromRGB(51, 65, 85),     // widgetBackground
         juce::Colour::fromRGB(51, 65, 85),     // menuBackground

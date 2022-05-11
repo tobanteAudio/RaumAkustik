@@ -28,24 +28,24 @@ private:
 
     auto updateSimulation() -> void;
 
-    juce::TableListBox _table {"Table", this};
-    juce::PropertyPanel _absorberSpecs {};
+    juce::TableListBox _table{"Table", this};
+    juce::PropertyPanel _absorberSpecs{};
     juce::Rectangle<int> _plotArea;
 
-    juce::UndoManager* _undoManager {nullptr};
+    juce::UndoManager* _undoManager{nullptr};
     juce::ValueTree _valueTree;
 
-    juce::CachedValue<double> _temperature {_valueTree, "temperature", _undoManager};
-    juce::CachedValue<double> _pressure {_valueTree, "pressure", _undoManager};
+    juce::CachedValue<double> _temperature{_valueTree, "temperature", _undoManager};
+    juce::CachedValue<double> _pressure{_valueTree, "pressure", _undoManager};
 
-    juce::CachedValue<double> _absorberThickness {_valueTree, "absorberThickness", _undoManager};
-    juce::CachedValue<double> _absorberFlowResisitivity {_valueTree, "absorberFlowResisitivity", _undoManager};
-    juce::CachedValue<double> _absorberAngleOfIncidence {_valueTree, "absorberAngleOfIncidence", _undoManager};
-    juce::CachedValue<double> _absorberAirGap {_valueTree, "absorberAirGap", _undoManager};
+    juce::CachedValue<double> _absorberThickness{_valueTree, "absorberThickness", _undoManager};
+    juce::CachedValue<double> _absorberFlowResisitivity{_valueTree, "absorberFlowResisitivity", _undoManager};
+    juce::CachedValue<double> _absorberAngleOfIncidence{_valueTree, "absorberAngleOfIncidence", _undoManager};
+    juce::CachedValue<double> _absorberAirGap{_valueTree, "absorberAirGap", _undoManager};
 
-    juce::CachedValue<double> _plotNumPoints {_valueTree, "plotNumPoints", _undoManager};
-    juce::CachedValue<double> _plotStartFrequency {_valueTree, "plotStartFrequency", _undoManager};
-    juce::CachedValue<double> _plotOctaveSubdivision {_valueTree, "plotOctaveSubdivision", _undoManager};
+    juce::CachedValue<double> _plotNumPoints{_valueTree, "plotNumPoints", _undoManager};
+    juce::CachedValue<double> _plotStartFrequency{_valueTree, "plotStartFrequency", _undoManager};
+    juce::CachedValue<double> _plotOctaveSubdivision{_valueTree, "plotOctaveSubdivision", _undoManager};
 
     std::vector<std::pair<mc::Hertz, PorousAbsorberProperties>> _props;
 

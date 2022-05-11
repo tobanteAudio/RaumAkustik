@@ -11,7 +11,7 @@ auto densityOfAir(Kelvin temperature, Pascal pressure) noexcept -> KilogramPerCu
 
 auto soundVelocity(Kelvin temperature) noexcept -> MetrePerSecond
 {
-    return sqrt((SpecificHeatRatio * OneAtmosphere) / DensityAtZeroC) * sqrt(temperature / Kelvin {273.15});
+    return sqrt((SpecificHeatRatio * OneAtmosphere) / DensityAtZeroC) * sqrt(temperature / Kelvin{273.15});
 }
 
 auto impedanceOfAir(Kelvin temperature, Pascal pressure) noexcept -> double

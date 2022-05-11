@@ -20,7 +20,7 @@ struct MenuBar final
 
 private:
     juce::ApplicationCommandManager& _commandManager;
-    juce::MenuBarComponent _menu {this};
+    juce::MenuBarComponent _menu{this};
 };
 
 }  // namespace mc

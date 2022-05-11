@@ -4,14 +4,14 @@
 
 #include <catch2/catch.hpp>
 
-static constexpr auto c20 = mc::AtmosphericEnvironment {mc::celciusToKelvin(20.0), mc::OneAtmosphere};
-static constexpr auto c22 = mc::AtmosphericEnvironment {mc::celciusToKelvin(22.0), mc::OneAtmosphere};
+static constexpr auto c20 = mc::AtmosphericEnvironment{mc::celciusToKelvin(20.0), mc::OneAtmosphere};
+static constexpr auto c22 = mc::AtmosphericEnvironment{mc::celciusToKelvin(22.0), mc::OneAtmosphere};
 
 TEST_CASE("RaumAkustik: propertiesOfAbsorber", "[RaumAkustik]")
 {
 
     {
-        auto const props = mc::propertiesOfAbsorber({100.0, 8'000.0, 100.0}, c20, mc::Hertz {50.0}, 0.0);
+        auto const props = mc::propertiesOfAbsorber({100.0, 8'000.0, 100.0}, c20, mc::Hertz{50.0}, 0.0);
         REQUIRE(props.X == Approx(0.0075257395));
         REQUIRE(props.zca.real() == Approx(1355.71904994104));
         REQUIRE(props.zca.imag() == Approx(-1289.23418591288));
@@ -52,7 +52,7 @@ TEST_CASE("RaumAkustik: propertiesOfAbsorber", "[RaumAkustik]")
     }
 
     {
-        auto const props = mc::propertiesOfAbsorber({100.0, 8'000.0}, c22, mc::Hertz {50.0}, 0.0);
+        auto const props = mc::propertiesOfAbsorber({100.0, 8'000.0}, c22, mc::Hertz{50.0}, 0.0);
         REQUIRE(props.X == Approx(0.0074747434));
         REQUIRE(props.zca.real() == Approx(1355.9444611324));
         REQUIRE(props.zca.imag() == Approx(-1291.26947073563));
@@ -61,7 +61,7 @@ TEST_CASE("RaumAkustik: propertiesOfAbsorber", "[RaumAkustik]")
     }
 
     {
-        auto const props = mc::propertiesOfAbsorber({100.0, 8'000.0, 100.0}, c22, mc::Hertz {50.0}, 15.0);
+        auto const props = mc::propertiesOfAbsorber({100.0, 8'000.0, 100.0}, c22, mc::Hertz{50.0}, 15.0);
         REQUIRE(props.X == Approx(0.0074747434));
         REQUIRE(props.zca.real() == Approx(1355.9444611324));
         REQUIRE(props.zca.imag() == Approx(-1291.26947073563));
@@ -72,39 +72,39 @@ TEST_CASE("RaumAkustik: propertiesOfAbsorber", "[RaumAkustik]")
 
 TEST_CASE("RaumAkustik: detail::waveNumber", "[RaumAkustik]")
 {
-    REQUIRE(mc::detail::waveNumber(mc::celciusToKelvin(20.0), mc::Hertz {50.0}) == Approx(0.9149));
-    REQUIRE(mc::detail::waveNumber(mc::celciusToKelvin(22.0), mc::Hertz {50.0}) == Approx(0.9118));
+    REQUIRE(mc::detail::waveNumber(mc::celciusToKelvin(20.0), mc::Hertz{50.0}) == Approx(0.9149));
+    REQUIRE(mc::detail::waveNumber(mc::celciusToKelvin(22.0), mc::Hertz{50.0}) == Approx(0.9118));
 }
 
 TEST_CASE("RaumAkustik: detail::delanyBazleyTerm", "[RaumAkustik]")
 {
     {
         auto const density = mc::densityOfAir(mc::celciusToKelvin(20.0), mc::OneAtmosphere);
-        REQUIRE(mc::detail::delanyBazleyTerm(density, mc::Hertz {50.0}, 8'000.0) == Approx(0.0075257395));
+        REQUIRE(mc::detail::delanyBazleyTerm(density, mc::Hertz{50.0}, 8'000.0) == Approx(0.0075257395));
     }
     {
         auto const density = mc::densityOfAir(mc::celciusToKelvin(22.0), mc::OneAtmosphere);
-        REQUIRE(mc::detail::delanyBazleyTerm(density, mc::Hertz {50.0}, 8'000.0) == Approx(0.0074747434));
+        REQUIRE(mc::detail::delanyBazleyTerm(density, mc::Hertz{50.0}, 8'000.0) == Approx(0.0074747434));
     }
 }
 
 TEST_CASE("RaumAkustik: detail::yComponentOfWaveNumber", "[RaumAkustik]")
 {
     using namespace mc::detail;
-    REQUIRE(yComponentOfWaveNumber(waveNumber(mc::celciusToKelvin(20.0), mc::Hertz {50.0}), 0.0) == Approx(0.0));
-    REQUIRE(yComponentOfWaveNumber(waveNumber(mc::celciusToKelvin(22.0), mc::Hertz {50.0}), 0.0) == Approx(0.0));
+    REQUIRE(yComponentOfWaveNumber(waveNumber(mc::celciusToKelvin(20.0), mc::Hertz{50.0}), 0.0) == Approx(0.0));
+    REQUIRE(yComponentOfWaveNumber(waveNumber(mc::celciusToKelvin(22.0), mc::Hertz{50.0}), 0.0) == Approx(0.0));
 
-    REQUIRE(yComponentOfWaveNumber(waveNumber(mc::celciusToKelvin(20.0), mc::Hertz {50.0}), 15.0)
+    REQUIRE(yComponentOfWaveNumber(waveNumber(mc::celciusToKelvin(20.0), mc::Hertz{50.0}), 15.0)
             == Approx(0.2367929161));
-    REQUIRE(yComponentOfWaveNumber(waveNumber(mc::celciusToKelvin(22.0), mc::Hertz {50.0}), 15.0)
+    REQUIRE(yComponentOfWaveNumber(waveNumber(mc::celciusToKelvin(22.0), mc::Hertz{50.0}), 15.0)
             == Approx(0.2359892724));
 }
 
 TEST_CASE("RaumAkustik: detail::angleOfPropagation", "[RaumAkustik]")
 {
-    auto const specs = mc::PorousAbsorberSpecs {100.0, 8'000.0};
-    REQUIRE(mc::propertiesOfAbsorber(specs, c20, mc::Hertz {50.0}, 0.0).betaPorous == Approx(0.0));
-    REQUIRE(mc::propertiesOfAbsorber(specs, c22, mc::Hertz {50.0}, 0.0).betaPorous == Approx(0.0));
-    REQUIRE(mc::propertiesOfAbsorber(specs, c20, mc::Hertz {50.0}, 15.0).betaPorous == Approx(2.8036973865));
-    REQUIRE(mc::propertiesOfAbsorber(specs, c22, mc::Hertz {50.0}, 15.0).betaPorous == Approx(2.7931256656));
+    auto const specs = mc::PorousAbsorberSpecs{100.0, 8'000.0};
+    REQUIRE(mc::propertiesOfAbsorber(specs, c20, mc::Hertz{50.0}, 0.0).betaPorous == Approx(0.0));
+    REQUIRE(mc::propertiesOfAbsorber(specs, c22, mc::Hertz{50.0}, 0.0).betaPorous == Approx(0.0));
+    REQUIRE(mc::propertiesOfAbsorber(specs, c20, mc::Hertz{50.0}, 15.0).betaPorous == Approx(2.8036973865));
+    REQUIRE(mc::propertiesOfAbsorber(specs, c22, mc::Hertz{50.0}, 15.0).betaPorous == Approx(2.7931256656));
 }

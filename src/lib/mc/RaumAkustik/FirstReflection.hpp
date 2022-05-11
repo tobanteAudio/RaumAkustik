@@ -10,32 +10,32 @@ namespace mc
 
 struct Point
 {
-    double x {0};
-    double y {0};
-    double z {0};
+    double x{0};
+    double y{0};
+    double z{0};
 };
 
 using Speaker = Point;
 
 struct RoomDimensions
 {
-    double length {0};
-    double width {0};
-    double height {0};
+    double length{0};
+    double width{0};
+    double height{0};
 };
 
 struct RoomLayout
 {
-    RoomDimensions dimensions {};
-    std::array<Speaker, 2> speakers {};
-    Point listenPosition {};
+    RoomDimensions dimensions{};
+    std::array<Speaker, 2> speakers{};
+    Point listenPosition{};
 };
 
 struct FirstReflection
 {
-    double front {0};
-    double left {0};
-    double right {0};
+    double front{0};
+    double left{0};
+    double right{0};
 };
 
 namespace detail
@@ -63,7 +63,7 @@ auto firstReflections(InIt f, InIt l, OutIt o, RoomDimensions dimensions, Point 
 {
     while (f != l)
     {
-        *o = FirstReflection {
+        *o = FirstReflection{
             detail::firstReflectionFrontWall(dimensions, listenPosition, *f),
             detail::firstReflectionSideWall(dimensions, listenPosition, *f, f->x),
             detail::firstReflectionSideWall(dimensions, listenPosition, *f, dimensions.width - f->x),
