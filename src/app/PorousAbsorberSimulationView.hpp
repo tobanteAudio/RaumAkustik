@@ -14,16 +14,17 @@ struct PorousAbsorberSimulationView final
     PorousAbsorberSimulationView(juce::ValueTree vt, juce::UndoManager* um);
     ~PorousAbsorberSimulationView() override = default;
 
-    auto paint(juce::Graphics&) -> void override;
+    auto paint(juce::Graphics& g) -> void override;
     auto resized() -> void override;
 
 private:
     auto valueTreePropertyChanged(juce::ValueTree& tree, juce::Identifier const& property) -> void override;
 
     auto getNumRows() -> int override;
-    auto paintRowBackground(juce::Graphics&, int rowNumber, int width, int height, bool rowIsSelected) -> void override;
+    auto paintRowBackground(juce::Graphics& g, int rowNumber, int width, int height, bool rowIsSelected)
+        -> void override;
 
-    auto paintCell(juce::Graphics&, int rowNumber, int columnId, int width, int height, bool rowIsSelected)
+    auto paintCell(juce::Graphics& g, int rowNumber, int columnId, int width, int height, bool rowIsSelected)
         -> void override;
 
     auto updateSimulation() -> void;
@@ -49,6 +50,6 @@ private:
 
     std::vector<std::pair<mc::Hertz, PorousAbsorberProperties>> _props;
 
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(PorousAbsorberSimulationView)
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(PorousAbsorberSimulationView)  // NOLINT
 };
 }  // namespace mc

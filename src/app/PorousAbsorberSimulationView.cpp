@@ -133,10 +133,8 @@ auto PorousAbsorberSimulationView::paintRowBackground(juce::Graphics& g, int row
     auto alternateColour = getLookAndFeel()
                                .findColour(juce::ListBox::backgroundColourId)
                                .interpolatedWith(getLookAndFeel().findColour(juce::ListBox::textColourId), 0.03f);
-    if (rowIsSelected)
-        g.fillAll(juce::Colours::lightblue);
-    else if (rowNumber % 2)
-        g.fillAll(alternateColour);
+    if (rowIsSelected) { g.fillAll(juce::Colours::lightblue); }
+    else if ((rowNumber % 2) != 0) { g.fillAll(alternateColour); }
 }
 
 auto PorousAbsorberSimulationView::paintCell(juce::Graphics& g, int row, int columnId, int width, int height,
@@ -190,7 +188,7 @@ auto PorousAbsorberSimulationView::updateSimulation() -> void
     for (auto i{0}; i < static_cast<int>(_plotNumPoints); ++i)
     {
         auto const frequency = oactaveSubdivision(startFrequency, subDivisions, static_cast<double>(i));
-        _props.push_back(std::make_pair(frequency, propertiesOfAbsorber(specs, env, frequency, angle)));
+        _props.emplace_back(frequency, propertiesOfAbsorber(specs, env, frequency, angle));
     }
 
     _table.updateContent();

@@ -1,6 +1,7 @@
 #include "Frequency.hpp"
 
-#define _USE_MATH_DEFINES
+#define _USE_MATH_DEFINES  // NOLINT
+
 #include <cmath>
 #include <numbers>
 

@@ -13,7 +13,7 @@ struct FirstReflectionsView final
     FirstReflectionsView(juce::ValueTree vt, juce::UndoManager* um);
     ~FirstReflectionsView() override = default;
 
-    void paint(juce::Graphics&) override;
+    void paint(juce::Graphics& g) override;
     void resized() override;
 
 private:
@@ -54,6 +54,6 @@ private:
 
     juce::Rectangle<int> _drawArea{};
 
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(FirstReflectionsView)
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(FirstReflectionsView)  // NOLINT
 };
 }  // namespace mc

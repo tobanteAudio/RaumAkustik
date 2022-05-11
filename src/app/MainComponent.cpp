@@ -109,7 +109,7 @@ auto MainComponent::perform(juce::ApplicationCommandTarget::InvocationInfo const
     switch (info.commandID)
     {
         case mc::CommandIDs::open: loadProject(); break;
-        case mc::CommandIDs::save: saveProject(); break;
+        case mc::CommandIDs::save:
         case mc::CommandIDs::saveAs: saveProject(); break;
         case mc::CommandIDs::undo: _undoManager.undo(); break;
         case mc::CommandIDs::redo: _undoManager.redo(); break;

@@ -14,7 +14,7 @@ struct MainComponent final
     MainComponent();
     ~MainComponent() override;
 
-    void paint(juce::Graphics&) override;
+    void paint(juce::Graphics& g) override;
     void resized() override;
 
     auto getNextCommandTarget() -> juce::ApplicationCommandTarget* override;
@@ -40,5 +40,5 @@ private:
     std::unique_ptr<mc::FirstReflectionsView> _firstReflectionsView{};
     std::unique_ptr<mc::PorousAbsorberSimulationView> _absorberSimulationView{};
 
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(MainComponent)
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(MainComponent)  // NOLINT
 };

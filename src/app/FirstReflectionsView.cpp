@@ -97,7 +97,7 @@ void FirstReflectionsView::paint(juce::Graphics& g)
         },
     };
 
-    auto const lnf = dynamic_cast<juce::LookAndFeel_V4*>(&getLookAndFeel());
+    auto* const lnf = dynamic_cast<juce::LookAndFeel_V4*>(&getLookAndFeel());
     jassert(lnf != nullptr);
 
     auto const iconSize = std::max<double>(_iconSize, 1.0);

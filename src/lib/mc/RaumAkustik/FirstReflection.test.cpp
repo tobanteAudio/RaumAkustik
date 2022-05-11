@@ -2,7 +2,7 @@
 
 #include <catch2/catch.hpp>
 
-static constexpr auto room = mc::RoomLayout{
+static constexpr auto Room = mc::RoomLayout{
     mc::RoomDimensions{
         600,
         365,
@@ -30,8 +30,8 @@ static constexpr auto room = mc::RoomLayout{
 TEST_CASE("RaumAkustik: firstReflections", "[RaumAkustik]")
 {
     auto reflections = std::array<mc::FirstReflection, 2>{};
-    mc::firstReflections(begin(room.speakers), end(room.speakers), begin(reflections), room.dimensions,
-                         room.listenPosition);
+    mc::firstReflections(begin(Room.speakers), end(Room.speakers), begin(reflections), Room.dimensions,
+                         Room.listenPosition);
 
     REQUIRE(static_cast<int>(reflections[0].front) == 143);
     REQUIRE(static_cast<int>(reflections[0].left) == 209);
