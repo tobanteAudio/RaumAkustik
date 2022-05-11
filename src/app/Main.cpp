@@ -86,7 +86,7 @@ struct RaumAkustikApplication : juce::JUCEApplication
     };
 
 private:
-    std::unique_ptr<MainWindow> _mainWindow;
+    std::unique_ptr<MainWindow> _mainWindow{};
 };
 
 // This macro generates the main() routine that launches the app.

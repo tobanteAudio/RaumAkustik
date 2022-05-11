@@ -26,7 +26,9 @@ jobs:
           sudo ./llvm.sh 14 all
 
       - name: CMake configure -- Release
-        run: cmake -S . -G "Unix Makefiles" -B build -DCMAKE_BUILD_TYPE=Release -DMC_BUILD_WERROR=ON -DCMAKE_C_COMPILER="clang-14" -DCMAKE_CXX_COMPILER="clang++-14"
+        run: |
+          cmake -S . -G "Unix Makefiles" -B build -DCMAKE_BUILD_TYPE=Release -DMC_BUILD_WERROR=ON -DCMAKE_C_COMPILER="clang-14" -DCMAKE_CXX_COMPILER="clang++-14"
+          cmake --build build --target RaumAkustik_BinaryData
 
       - name: Clang-Tidy -- Release
         run: BUILD_DIR=build make tidy-check
