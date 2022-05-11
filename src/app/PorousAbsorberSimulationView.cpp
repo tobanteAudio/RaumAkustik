@@ -76,14 +76,14 @@ auto PorousAbsorberSimulationView::paint(juce::Graphics& g) -> void
     g.setColour(juce::Colours::white);
     g.fillRect(_plotArea);
 
-    g.setColour(juce::Colours::grey.withAlpha(0.5f));
+    g.setColour(juce::Colours::grey.withAlpha(0.5F));
     for (auto freq : std::vector{20.0, 40.0, 80.0, 160.0, 320.0, 640.0, 1280.0, 2560.0, 5120.0})
     {
         auto const freqPos = static_cast<float>(positionForFrequency(Hertz{freq}));
         auto const x       = static_cast<float>(_plotArea.getX()) + static_cast<float>(_plotArea.getWidth()) * freqPos;
         auto const topY    = static_cast<float>(_plotArea.getY());
         auto const bottomY = static_cast<float>(_plotArea.getBottom());
-        g.drawLine(x, topY, x, bottomY, 3.0f);
+        g.drawLine(x, topY, x, bottomY, 3.0F);
     }
 
     auto noAirGapPath = juce::Path{};
@@ -101,13 +101,13 @@ auto PorousAbsorberSimulationView::paint(juce::Graphics& g) -> void
         withAirGapPath.lineTo(juce::Point{posX, withGapY}.toFloat());
     }
 
-    noAirGapPath = noAirGapPath.createPathWithRoundedCorners(5.0f);
+    noAirGapPath = noAirGapPath.createPathWithRoundedCorners(5.0F);
     g.setColour(juce::Colours::black);
-    g.strokePath(noAirGapPath, juce::PathStrokeType{2.0f});
+    g.strokePath(noAirGapPath, juce::PathStrokeType{2.0F});
 
-    withAirGapPath = withAirGapPath.createPathWithRoundedCorners(5.0f);
+    withAirGapPath = withAirGapPath.createPathWithRoundedCorners(5.0F);
     g.setColour(juce::Colours::red);
-    g.strokePath(withAirGapPath, juce::PathStrokeType{2.0f});
+    g.strokePath(withAirGapPath, juce::PathStrokeType{2.0F});
 }
 
 auto PorousAbsorberSimulationView::resized() -> void
@@ -132,7 +132,7 @@ auto PorousAbsorberSimulationView::paintRowBackground(juce::Graphics& g, int row
 {
     auto alternateColour = getLookAndFeel()
                                .findColour(juce::ListBox::backgroundColourId)
-                               .interpolatedWith(getLookAndFeel().findColour(juce::ListBox::textColourId), 0.03f);
+                               .interpolatedWith(getLookAndFeel().findColour(juce::ListBox::textColourId), 0.03F);
     if (rowIsSelected) { g.fillAll(juce::Colours::lightblue); }
     else if ((rowNumber % 2) != 0) { g.fillAll(alternateColour); }
 }
@@ -141,7 +141,7 @@ auto PorousAbsorberSimulationView::paintCell(juce::Graphics& g, int row, int col
                                              bool /*rowIsSelected*/) -> void
 {
     g.setColour(getLookAndFeel().findColour(juce::ListBox::textColourId));
-    g.setFont(16.0f);
+    g.setFont(16.0F);
 
     if (columnId == 1)
     {

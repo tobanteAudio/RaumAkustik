@@ -54,7 +54,7 @@ struct RaumAkustikApplication : juce::JUCEApplication
                 DocumentWindow::allButtons)
         {
             setUsingNativeTitleBar(true);
-            setContentOwned(new MainComponent(), true);
+            setContentOwned(new MainComponent(), true);  // NOLINT(cppcoreguidelines-owning-memory)
 
 #if JUCE_IOS || JUCE_ANDROID
             setFullScreen(true);
