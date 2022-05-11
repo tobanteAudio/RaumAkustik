@@ -18,6 +18,7 @@ jobs:
 
       - name: Install dependencies
         run: |
+          brew update
           brew install ninja conan
 
       - name: CMake configure -- Release
