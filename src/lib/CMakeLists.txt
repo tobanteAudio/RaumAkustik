@@ -13,7 +13,6 @@ target_link_libraries(${PROJECT_NAME}
     PUBLIC
         blaze::blaze
         Boost::headers
-        Eigen3::Eigen
         mp-units::mp-units
         juce::juce_recommended_config_flags
         juce::juce_recommended_lto_flags
