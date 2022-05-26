@@ -1,8 +1,9 @@
 #include "MainComponent.hpp"
 
 #include "CommandIDs.hpp"
+#include "RaumAkustikApplication.hpp"
 
-MainComponent::MainComponent()
+MainComponent::MainComponent() : _audioInputView{mc::raumAkusticApplication().deviceManager()}
 {
     addAndMakeVisible(_menuBar);
     addAndMakeVisible(_tabs);
@@ -151,6 +152,7 @@ auto MainComponent::reloadUI() -> void
     _absorberSimulationView = std::make_unique<mc::PorousAbsorberSimulationView>(_valueTree, &_undoManager);
 
     auto const color = getLookAndFeel().findColour(juce::ResizableWindow::backgroundColourId);
+    _tabs.addTab("Audio Input", color, &_audioInputView, false);
     _tabs.addTab("First Reflections", color, _firstReflectionsView.get(), false);
     _tabs.addTab("Porous Absorber", color, _absorberSimulationView.get(), false);
     if (tabIndex > 0 && tabIndex <= _tabs.getNumTabs()) { _tabs.setCurrentTabIndex(tabIndex, true); }

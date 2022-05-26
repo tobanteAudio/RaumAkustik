@@ -1,5 +1,6 @@
 #pragma once
 
+#include "AudioInputView.hpp"
 #include "FirstReflectionsView.hpp"
 #include "LookAndFeel.hpp"
 #include "MenuBar.hpp"
@@ -37,6 +38,7 @@ private:
     mc::MenuBar _menuBar{_commandManager};
 
     juce::TabbedComponent _tabs{juce::TabbedButtonBar::TabsAtTop};
+    mc::AudioInputView _audioInputView;
     std::unique_ptr<mc::FirstReflectionsView> _firstReflectionsView{};
     std::unique_ptr<mc::PorousAbsorberSimulationView> _absorberSimulationView{};
 

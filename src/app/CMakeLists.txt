@@ -33,6 +33,8 @@ juce_add_gui_app(${PROJECT_NAME}
 
 target_sources(${PROJECT_NAME}
     PRIVATE
+        "AudioInputView.cpp"
+        "AudioInputView.hpp"
         "CommandIDs.hpp"
         "FirstReflectionsView.cpp"
         "FirstReflectionsView.hpp"
@@ -45,12 +47,14 @@ target_sources(${PROJECT_NAME}
         "MenuBar.hpp"
         "PorousAbsorberSimulationView.cpp"
         "PorousAbsorberSimulationView.hpp"
+        "RaumAkustikApplication.cpp"
+        "RaumAkustikApplication.hpp"
 )
 
 target_compile_definitions(${PROJECT_NAME}
     PRIVATE
-        JUCE_WEB_BROWSER=0  # If you remove this, add `NEEDS_WEB_BROWSER TRUE` to the `juce_add_gui_app` call
-        JUCE_USE_CURL=0     # If you remove this, add `NEEDS_CURL TRUE` to the `juce_add_gui_app` call
+        JUCE_WEB_BROWSER=0
+        JUCE_USE_CURL=0
         JUCE_APPLICATION_NAME_STRING="$<TARGET_PROPERTY:${PROJECT_NAME},JUCE_PRODUCT_NAME>"
         JUCE_APPLICATION_VERSION_STRING="$<TARGET_PROPERTY:${PROJECT_NAME},JUCE_VERSION>"
 )
@@ -58,6 +62,8 @@ target_compile_definitions(${PROJECT_NAME}
 target_link_libraries(${PROJECT_NAME}
     PRIVATE
         juce::juce_gui_extra
+        juce::juce_audio_devices
+        juce::juce_audio_utils
         ModernCircuits::RaumAkustik
         RaumAkustik_BinaryData
         juce::juce_recommended_config_flags
