@@ -1,5 +1,5 @@
-librosa
-matplotlib
 
 autopep8
+librosa
+matplotlib
 pylint
