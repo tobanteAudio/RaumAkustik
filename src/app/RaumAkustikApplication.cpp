@@ -88,8 +88,8 @@ auto RaumAkustikApplication::anotherInstanceStarted(juce::String const& commandL
 
 auto raumAkusticApplication() -> RaumAkustikApplication&
 {
-    auto* app           = juce::JUCEApplication::getInstance();
-    auto raumAkustikApp = dynamic_cast<RaumAkustikApplication*>(app);
+    auto* app            = juce::JUCEApplication::getInstance();
+    auto* raumAkustikApp = dynamic_cast<RaumAkustikApplication*>(app);
     jassert(raumAkustikApp != nullptr);
     return *raumAkustikApp;
 }

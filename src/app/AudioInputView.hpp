@@ -9,7 +9,7 @@ namespace mc
 
 struct AudioInputView final : juce::Component
 {
-    AudioInputView(juce::AudioDeviceManager& deviceManager);
+    explicit AudioInputView(juce::AudioDeviceManager& deviceManager);
     ~AudioInputView() override = default;
 
     auto paint(juce::Graphics& g) -> void override;
