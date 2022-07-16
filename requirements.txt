@@ -1,5 +1,7 @@
 
 autopep8
+conan
 librosa
 matplotlib
+pre-commit
 pylint
