@@ -5,7 +5,7 @@
 * REW Settings:
 *  C-weighting compensation: Off
 *  Target level: 75.0 dB
-* Note: ; 
+* Note: ;
 * Measurement: 3. Right 192k Apr 3
 * Smoothing: 1/12 octave
 * Frequency Step: 0.36621094 Hz

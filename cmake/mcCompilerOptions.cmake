@@ -24,5 +24,3 @@ if(MC_BUILD_TSAN AND CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
     target_compile_options(mc_compiler_options INTERFACE -fsanitize=thread -O1 -g -fno-omit-frame-pointer)
     target_link_libraries(mc_compiler_options INTERFACE -fsanitize=thread -O1 -g -fno-omit-frame-pointer)
 endif()
-
-
