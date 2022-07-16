@@ -1,6 +1,6 @@
 #include "FirstReflection.hpp"
 
-#include <catch2/catch.hpp>
+#include <catch2/catch_test_macros.hpp>
 
 static constexpr auto Room = mc::RoomLayout{
     mc::RoomDimensions{

@@ -11,8 +11,7 @@ target_link_libraries(${PROJECT_NAME}
     PRIVATE
         juce::juce_recommended_warning_flags
     PUBLIC
-        blaze::blaze
-        Boost::headers
+        mc-core::mc-core
         mp-units::mp-units
         juce::juce_recommended_config_flags
         juce::juce_recommended_lto_flags
