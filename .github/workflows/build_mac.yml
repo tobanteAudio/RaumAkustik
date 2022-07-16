@@ -20,9 +20,10 @@ jobs:
         run: |
           brew update
           brew install ninja conan
+          conan config set general.revisions_enabled=1
 
       - name: CMake configure -- Release
-        run: cmake -S . -G Xcode -B cmake-build-release -DCMAKE_BUILD_TYPE=Release
+        run: cmake -S . -G "Ninja" -B cmake-build-release -DCMAKE_BUILD_TYPE=Release
 
       - name: CMake build -- Release
         run: cmake --build cmake-build-release

@@ -17,7 +17,9 @@ jobs:
         run: git lfs checkout
 
       - name: Install dependencies
-        run: pip install conan
+        run: |
+          pip install conan
+          conan config set general.revisions_enabled=1
 
       - name: Set up Visual Studio shell
         uses: egor-tensin/vs-shell@v2
