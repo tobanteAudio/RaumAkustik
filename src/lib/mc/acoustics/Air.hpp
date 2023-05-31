@@ -1,6 +1,6 @@
 #pragma once
 
-#include "mc/RaumAkustik/Units.hpp"
+#include "mc/acoustics/Units.hpp"
 
 namespace mc
 {

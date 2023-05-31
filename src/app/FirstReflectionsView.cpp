@@ -121,7 +121,7 @@ void FirstReflectionsView::paint(juce::Graphics& g)
     auto const roomLengthPx = room.dimensions.length / scaleFactor;
     auto const roomWidthPx  = room.dimensions.width / scaleFactor;
     auto const topViewRoom  = juce::Rectangle{area.getX(), area.getY(), roomWidthPx, roomLengthPx}.withCentre(
-         topViewArea.getCentre().toDouble());
+        topViewArea.getCentre().toDouble());
 
     g.setColour(juce::Colours::black);
     g.drawRect(topViewRoom.toFloat(), 8.0F);
