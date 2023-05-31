@@ -1,13 +1,7 @@
 [requires]
-mc-core/0.1.0@ltaudio/stable
 mp-units/0.8.0@mpusz/testing
 catch2/3.0.1
 
-[options]
-
 [generators]
-cmake_find_package
-markdown
-
-[imports]
-., license* -> ./licenses @ folder=True, ignore_case=True
+CMakeDeps
+CMakeToolchain

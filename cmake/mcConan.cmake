@@ -16,9 +16,9 @@ else()
     endif()
 
     include(${CMAKE_BINARY_DIR}/conan.cmake)
-    conan_add_remote(NAME conancenter INDEX 0 URL https://center.conan.io)
-    conan_add_remote(NAME conan-mpusz INDEX 1 URL https://mpusz.jfrog.io/artifactory/api/conan/conan-oss)
-    conan_add_remote(NAME ltaudio     INDEX 2 URL https://ltaudio.jfrog.io/artifactory/api/conan/ltaudio-conan)
+    conan_add_remote(NAME conancenter       INDEX 0 URL https://center.conan.io)
+    conan_add_remote(NAME conan-mpusz       INDEX 1 URL https://mpusz.jfrog.io/artifactory/api/conan/conan-oss)
+    conan_add_remote(NAME modern-circuits   INDEX 2 URL https://moderncircuits.jfrog.io/artifactory/api/conan/modern-circuits-conan)
     conan_cmake_autodetect(settings)
     conan_cmake_install(
         CONANFILE
