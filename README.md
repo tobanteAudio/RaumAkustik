@@ -3,6 +3,19 @@
 [![macOS](https://github.com/ModernCircuits/RaumAkustik/actions/workflows/build_mac.yml/badge.svg)](https://github.com/ModernCircuits/RaumAkustik/actions/workflows/build_mac.yml) [![Windows](https://github.com/ModernCircuits/RaumAkustik/actions/workflows/build_windows.yml/badge.svg)](https://github.com/ModernCircuits/RaumAkustik/actions/workflows/build_windows.yml)[![Linux](https://github.com/ModernCircuits/RaumAkustik/actions/workflows/build_linux.yml/badge.svg)](https://github.com/ModernCircuits/RaumAkustik/actions/workflows/build_linux.yml)
 [![Clang-Tidy](https://github.com/ModernCircuits/RaumAkustik/actions/workflows/analyze_clang-tidy.yml/badge.svg)](https://github.com/ModernCircuits/RaumAkustik/actions/workflows/analyze_clang-tidy.yml)[![Coverage](https://github.com/ModernCircuits/RaumAkustik/actions/workflows/analyze_coverage.yml/badge.svg)](https://github.com/ModernCircuits/RaumAkustik/actions/workflows/analyze_coverage.yml)[![ASAN](https://github.com/ModernCircuits/RaumAkustik/actions/workflows/analyze_asan.yml/badge.svg?branch=main)](https://github.com/ModernCircuits/RaumAkustik/actions/workflows/analyze_asan.yml)
 
+## Build
+
+```sh
+conan remote add mpusz https://mpusz.jfrog.io/artifactory/api/conan/conan-oss
+```
+
+### Windows
+
+```sh
+conan install . -of build -b missing -b outdated -pr:b=.\profiles\win_msvc -pr:h=.\profiles\win_msvc -s build_type=Debug -s compiler.runtime_type=Debug
+conan install . -of build -b missing -b outdated -pr:b=.\profiles\win_msvc -pr:h=.\profiles\win_msvc -s build_type=Release -s compiler.runtime_type=Release
+```
+
 ## Resources
 
 ### Calculator / Simulator
