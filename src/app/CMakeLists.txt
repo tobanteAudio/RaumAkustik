@@ -28,6 +28,7 @@ juce_add_binary_data(RaumAkustik_BinaryData
 
 juce_add_gui_app(${PROJECT_NAME}
     PRODUCT_NAME "Raum Akustik"
+    BUNDLE_ID    "com.modern-circuits.raum-akustic"
     ICON_BIG     "resources/png/raum_akustik_logo_black.png"
 )
 
