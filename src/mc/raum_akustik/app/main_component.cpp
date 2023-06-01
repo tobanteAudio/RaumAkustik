@@ -16,19 +16,18 @@ static auto writeToWavFile(juce::File const& file, std::vector<float> const& buf
     auto channels = std::array<float const*, 1>{buffer.data()};
     return writer->writeFromFloatArrays(channels.data(), 1, static_cast<int>(buffer.size()));
 }
-}  // namespace mc
 
-MainComponent::MainComponent() : _audioInputView{mc::raumAkusticApplication().deviceManager()}
+MainComponent::MainComponent() : _audioInputView{raumAkusticApplication().deviceManager()}
 {
-    auto const spec = mc::SineSweep{
-        .from       = mc::Hertz{20.0},
-        .to         = mc::Hertz{20'000.0},
-        .curve      = mc::SineSweepCurve::Logarithmic,
+    auto const spec = SineSweep{
+        .from       = Hertz{20.0},
+        .to         = Hertz{20'000.0},
+        .curve      = SineSweepCurve::Logarithmic,
         .duration   = std::chrono::milliseconds{10'000},
         .sampleRate = 192'000.0,
     };
-    auto const sweep = mc::generate(spec);
-    mc::writeToWavFile(juce::File{R"(C:\Developer\sweep.wav)"}, sweep, spec.sampleRate, 24);
+    auto const sweep = generate(spec);
+    writeToWavFile(juce::File{R"(C:\Developer\sweep.wav)"}, sweep, spec.sampleRate, 24);
 
     addAndMakeVisible(_menuBar);
     addAndMakeVisible(_tabs);
@@ -66,16 +65,16 @@ auto MainComponent::getNextCommandTarget() -> juce::ApplicationCommandTarget*
 auto MainComponent::getAllCommands(juce::Array<juce::CommandID>& c) -> void
 {
     c.addArray({
-        mc::CommandIDs::open,
-        mc::CommandIDs::save,
-        mc::CommandIDs::saveAs,
-        mc::CommandIDs::redo,
-        mc::CommandIDs::undo,
-        mc::CommandIDs::settings,
-        mc::CommandIDs::gotoTabLeft,
-        mc::CommandIDs::gotoTabRight,
-        mc::CommandIDs::fullscreen,
-        mc::CommandIDs::about,
+        CommandIDs::open,
+        CommandIDs::save,
+        CommandIDs::saveAs,
+        CommandIDs::redo,
+        CommandIDs::undo,
+        CommandIDs::settings,
+        CommandIDs::gotoTabLeft,
+        CommandIDs::gotoTabRight,
+        CommandIDs::fullscreen,
+        CommandIDs::about,
     });
 }
 
@@ -86,44 +85,44 @@ auto MainComponent::getCommandInfo(juce::CommandID commandID, juce::ApplicationC
 
     switch (commandID)
     {
-        case mc::CommandIDs::open:
+        case CommandIDs::open:
             result.setInfo("Open", "Opens a project file", "File", 0);
             result.addDefaultKeypress('o', ModifierKeys::commandModifier);
             break;
-        case mc::CommandIDs::save:
+        case CommandIDs::save:
             result.setInfo("Save", "Saves a project file", "File", 0);
             result.addDefaultKeypress('s', ModifierKeys::commandModifier);
             break;
-        case mc::CommandIDs::saveAs:
+        case CommandIDs::saveAs:
             result.setInfo("Save As", "Saves a project file to a new location", "File", 0);
             result.addDefaultKeypress('s', ModifierKeys::commandModifier | ModifierKeys::shiftModifier);
             break;
-        case mc::CommandIDs::undo:
+        case CommandIDs::undo:
             result.setInfo("Undo", "Undo one step", "Edit", 0);
             result.addDefaultKeypress('z', ModifierKeys::commandModifier);
             break;
-        case mc::CommandIDs::redo:
+        case CommandIDs::redo:
             result.setInfo("Redo", "Redo one step", "Edit", 0);
             result.addDefaultKeypress('z', ModifierKeys::commandModifier | ModifierKeys::shiftModifier);
             break;
-        case mc::CommandIDs::settings:
+        case CommandIDs::settings:
             result.setInfo("Settings", "Open settings", "Edit", 0);
             result.addDefaultKeypress('.', ModifierKeys::commandModifier);
             break;
-        case mc::CommandIDs::gotoTabLeft:
+        case CommandIDs::gotoTabLeft:
             result.setInfo("Goto tab left", "Goto tab on the left", "View", 0);
             result.addDefaultKeypress(KeyPress::tabKey, ModifierKeys::commandModifier);
             break;
-        case mc::CommandIDs::gotoTabRight:
+        case CommandIDs::gotoTabRight:
             result.setInfo("Goto tab right", "Goto tab on the right", "View", 0);
             result.addDefaultKeypress(KeyPress::tabKey, ModifierKeys::commandModifier | ModifierKeys::shiftModifier);
             break;
-        case mc::CommandIDs::fullscreen:
+        case CommandIDs::fullscreen:
             result.setInfo("Fullscreen", "Toggle fullscreen mode", "View", 0);
             result.setTicked(getPeer() == nullptr ? false : getPeer()->isFullScreen());
             result.addDefaultKeypress(KeyPress::F11Key, ModifierKeys::noModifiers);
             break;
-        case mc::CommandIDs::about:
+        case CommandIDs::about:
             result.setInfo("About", "Open about page", "Help", 0);
             result.addDefaultKeypress('h', ModifierKeys::commandModifier);
             break;
@@ -134,13 +133,13 @@ auto MainComponent::perform(juce::ApplicationCommandTarget::InvocationInfo const
 {
     switch (info.commandID)
     {
-        case mc::CommandIDs::open: loadProject(); break;
-        case mc::CommandIDs::save:
-        case mc::CommandIDs::saveAs: saveProject(); break;
-        case mc::CommandIDs::undo: _undoManager.undo(); break;
-        case mc::CommandIDs::redo: _undoManager.redo(); break;
-        case mc::CommandIDs::fullscreen: toggleFullscreen(); break;
-        case mc::CommandIDs::about: showAboutMessage(); break;
+        case CommandIDs::open: loadProject(); break;
+        case CommandIDs::save:
+        case CommandIDs::saveAs: saveProject(); break;
+        case CommandIDs::undo: _undoManager.undo(); break;
+        case CommandIDs::redo: _undoManager.redo(); break;
+        case CommandIDs::fullscreen: toggleFullscreen(); break;
+        case CommandIDs::about: showAboutMessage(); break;
         default: return false;
     }
 
@@ -173,8 +172,8 @@ auto MainComponent::reloadUI() -> void
     auto tabIndex = _tabs.getCurrentTabIndex();
     _tabs.clearTabs();
 
-    _firstReflectionsView   = std::make_unique<mc::FirstReflectionsView>(_valueTree, &_undoManager);
-    _absorberSimulationView = std::make_unique<mc::PorousAbsorberSimulationView>(_valueTree, &_undoManager);
+    _firstReflectionsView   = std::make_unique<FirstReflectionsView>(_valueTree, &_undoManager);
+    _absorberSimulationView = std::make_unique<PorousAbsorberSimulationView>(_valueTree, &_undoManager);
 
     auto const color = getLookAndFeel().findColour(juce::ResizableWindow::backgroundColourId);
     _tabs.addTab("Audio Input", color, &_audioInputView, false);
@@ -188,3 +187,4 @@ auto MainComponent::toggleFullscreen() -> void
     getPeer()->setFullScreen(!getPeer()->isFullScreen());
     // if (getPeer()->isFullScreen()) { }
 }
+}  // namespace mc
