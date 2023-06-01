@@ -6,8 +6,13 @@ namespace mc
 {
 
 using namespace units::isq;
-using JoulePerKilogramKelvin            = si::specific_heat_capacity<si::joule_per_kilogram_kelvin, double>;
+
+template<typename T>
+using JoulePerKilogramKelvin = si::specific_heat_capacity<si::joule_per_kilogram_kelvin, T>;
+
 inline constexpr auto SpecificHeatRatio = 1.402;
-inline constexpr auto GasConstant       = JoulePerKilogramKelvin{287.05};
+
+template<typename T>
+inline constexpr auto GasConstant = JoulePerKilogramKelvin<T>{287.05};
 
 }  // namespace mc

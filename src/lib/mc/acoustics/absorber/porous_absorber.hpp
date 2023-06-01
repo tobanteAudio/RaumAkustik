@@ -11,8 +11,8 @@ namespace mc
 {
 struct AtmosphericEnvironment
 {
-    Kelvin temperature{0};
-    Pascal pressure{0};
+    Kelvin<double> temperature{0};
+    Pascal<double> pressure{0};
 };
 
 struct PorousAbsorberSpecs
@@ -82,15 +82,15 @@ struct PorousAbsorberProperties
     double absorptionFactorWithAirGap{};
 };
 
-[[nodiscard]] auto propertiesOfAbsorber(PorousAbsorberSpecs specs, AtmosphericEnvironment env, Hertz frequency,
+[[nodiscard]] auto propertiesOfAbsorber(PorousAbsorberSpecs specs, AtmosphericEnvironment env, Hertz<double> frequency,
                                         double angle) -> PorousAbsorberProperties;
 
 namespace detail
 {
 
-[[nodiscard]] auto waveNumber(Kelvin temperature, Hertz frequency) -> double;
-[[nodiscard]] auto delanyBazleyTerm(KilogramPerCubicMetre airDensity, Hertz frequency, double flowResistivity)
-    -> double;
+[[nodiscard]] auto waveNumber(Kelvin<double> temperature, Hertz<double> frequency) -> double;
+[[nodiscard]] auto delanyBazleyTerm(KilogramPerCubicMetre<double> airDensity, Hertz<double> frequency,
+                                    double flowResistivity) -> double;
 [[nodiscard]] auto yComponentOfWaveNumber(double waveNumber, double angle) -> double;
 [[nodiscard]] auto angleOfPropagation(std::complex<double> k, double ky) -> double;
 

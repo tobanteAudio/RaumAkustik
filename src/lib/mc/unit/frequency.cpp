@@ -8,14 +8,14 @@
 namespace mc
 {
 
-auto oactaveSubdivision(Hertz startFrequency, double numSubdivisions, double index) -> Hertz
+auto oactaveSubdivision(Hertz<double> startFrequency, double numSubdivisions, double index) -> Hertz<double>
 {
-    return Hertz{std::pow(2.0, std::log2(startFrequency.number()) + index / numSubdivisions)};
+    return Hertz<double>{std::pow(2.0, std::log2(startFrequency.number()) + index / numSubdivisions)};
 }
 
-auto frequencyToAngularVelocity(Hertz hertz) -> RadianPerSecond
+auto frequencyToAngularVelocity(Hertz<double> hertz) -> RadianPerSecond<double>
 {
     static constexpr auto twoPi = std::numbers::pi * 2.0;
-    return RadianPerSecond{twoPi * hertz.number()};
+    return RadianPerSecond<double>{twoPi * hertz.number()};
 }
 }  // namespace mc

@@ -48,7 +48,7 @@ private:
     juce::CachedValue<double> _plotStartFrequency{_valueTree, "plotStartFrequency", _undoManager};
     juce::CachedValue<double> _plotOctaveSubdivision{_valueTree, "plotOctaveSubdivision", _undoManager};
 
-    std::vector<std::pair<mc::Hertz, PorousAbsorberProperties>> _props;
+    std::vector<std::pair<mc::Hertz<double>, PorousAbsorberProperties>> _props;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(PorousAbsorberSimulationView)  // NOLINT
 };

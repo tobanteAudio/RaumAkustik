@@ -5,5 +5,7 @@
 namespace mc
 {
 using namespace units::isq;
-using MetrePerSecond = si::speed<si::metre_per_second, double>;
+
+template<typename T>
+using MetrePerSecond = si::speed<si::metre_per_second, T>;
 }  // namespace mc

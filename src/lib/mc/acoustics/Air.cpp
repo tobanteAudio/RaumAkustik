@@ -6,17 +6,18 @@
 
 namespace mc
 {
-auto densityOfAir(Kelvin temperature, Pascal pressure) noexcept -> KilogramPerCubicMetre
+auto densityOfAir(Kelvin<double> temperature, Pascal<double> pressure) noexcept -> KilogramPerCubicMetre<double>
 {
-    return pressure / (GasConstant * temperature);
+    return pressure / (GasConstant<double> * temperature);
 }
 
-auto soundVelocity(Kelvin temperature) noexcept -> MetrePerSecond
+auto soundVelocity(Kelvin<double> temperature) noexcept -> MetrePerSecond<double>
 {
-    return sqrt((SpecificHeatRatio * OneAtmosphere) / DensityAtZeroC) * sqrt(temperature / Kelvin{273.15});
+    return sqrt((SpecificHeatRatio * OneAtmosphere<double>) / DensityAtZeroC<double>)
+           * sqrt(temperature / Kelvin<double>{273.15});
 }
 
-auto impedanceOfAir(Kelvin temperature, Pascal pressure) noexcept -> double
+auto impedanceOfAir(Kelvin<double> temperature, Pascal<double> pressure) noexcept -> double
 {
     auto const i = soundVelocity(temperature) * densityOfAir(temperature, pressure);
     return i.number();

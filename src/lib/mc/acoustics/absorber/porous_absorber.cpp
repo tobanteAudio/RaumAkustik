@@ -6,7 +6,7 @@
 
 namespace mc
 {
-auto propertiesOfAbsorber(PorousAbsorberSpecs specs, AtmosphericEnvironment env, Hertz frequency, double angle)
+auto propertiesOfAbsorber(PorousAbsorberSpecs specs, AtmosphericEnvironment env, Hertz<double> frequency, double angle)
     -> PorousAbsorberProperties
 {
     auto const airDensity = densityOfAir(env.temperature, env.pressure);
@@ -60,12 +60,13 @@ auto propertiesOfAbsorber(PorousAbsorberSpecs specs, AtmosphericEnvironment env,
 namespace detail
 {
 
-auto waveNumber(Kelvin temperature, Hertz frequency) -> double
+auto waveNumber(Kelvin<double> temperature, Hertz<double> frequency) -> double
 {
     // 2p/l
     return ((2.0 * std::numbers::pi) / soundVelocity(temperature).number()) * frequency.number();
 }
-auto delanyBazleyTerm(KilogramPerCubicMetre airDensity, Hertz frequency, double flowResistivity) -> double
+auto delanyBazleyTerm(KilogramPerCubicMetre<double> airDensity, Hertz<double> frequency, double flowResistivity)
+    -> double
 {
     // Eq 5.11
     auto const tmp = (airDensity * frequency) / flowResistivity;

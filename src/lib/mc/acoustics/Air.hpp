@@ -9,8 +9,9 @@
 namespace mc
 {
 
-[[nodiscard]] auto densityOfAir(Kelvin temperature, Pascal pressure) noexcept -> KilogramPerCubicMetre;
-[[nodiscard]] auto soundVelocity(Kelvin temperature) noexcept -> MetrePerSecond;
-[[nodiscard]] auto impedanceOfAir(Kelvin temperature, Pascal pressure) noexcept -> double;
+[[nodiscard]] auto densityOfAir(Kelvin<double> temperature, Pascal<double> pressure) noexcept
+    -> KilogramPerCubicMetre<double>;
+[[nodiscard]] auto soundVelocity(Kelvin<double> temperature) noexcept -> MetrePerSecond<double>;
+[[nodiscard]] auto impedanceOfAir(Kelvin<double> temperature, Pascal<double> pressure) noexcept -> double;
 
 }  // namespace mc

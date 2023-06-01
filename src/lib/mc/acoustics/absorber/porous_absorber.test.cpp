@@ -5,8 +5,8 @@
 #include <catch2/catch_approx.hpp>
 #include <catch2/catch_test_macros.hpp>
 
-static constexpr auto C20 = mc::AtmosphericEnvironment{mc::celciusToKelvin(20.0), mc::OneAtmosphere};
-static constexpr auto C22 = mc::AtmosphericEnvironment{mc::celciusToKelvin(22.0), mc::OneAtmosphere};
+static constexpr auto C20 = mc::AtmosphericEnvironment{mc::celciusToKelvin(20.0), mc::OneAtmosphere<double>};
+static constexpr auto C22 = mc::AtmosphericEnvironment{mc::celciusToKelvin(22.0), mc::OneAtmosphere<double>};
 
 TEST_CASE("RaumAkustik: propertiesOfAbsorber", "[RaumAkustik]")
 {
@@ -80,11 +80,11 @@ TEST_CASE("RaumAkustik: detail::waveNumber", "[RaumAkustik]")
 TEST_CASE("RaumAkustik: detail::delanyBazleyTerm", "[RaumAkustik]")
 {
     {
-        auto const density = mc::densityOfAir(mc::celciusToKelvin(20.0), mc::OneAtmosphere);
+        auto const density = mc::densityOfAir(mc::celciusToKelvin(20.0), mc::OneAtmosphere<double>);
         REQUIRE(mc::detail::delanyBazleyTerm(density, mc::Hertz{50.0}, 8'000.0) == Catch::Approx(0.0075257395));
     }
     {
-        auto const density = mc::densityOfAir(mc::celciusToKelvin(22.0), mc::OneAtmosphere);
+        auto const density = mc::densityOfAir(mc::celciusToKelvin(22.0), mc::OneAtmosphere<double>);
         REQUIRE(mc::detail::delanyBazleyTerm(density, mc::Hertz{50.0}, 8'000.0) == Catch::Approx(0.0074747434));
     }
 }
