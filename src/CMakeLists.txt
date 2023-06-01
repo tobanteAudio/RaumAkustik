@@ -1,5 +1,8 @@
 project(mc_acoustics)
 
+find_package(mp-units REQUIRED)
+find_package(blaze REQUIRED CONFIG)
+
 add_library(${PROJECT_NAME} STATIC)
 add_library(mc::acoustics ALIAS ${PROJECT_NAME})
 target_include_directories(${PROJECT_NAME}
@@ -11,6 +14,7 @@ target_link_libraries(${PROJECT_NAME}
     PRIVATE
         juce::juce_recommended_warning_flags
     PUBLIC
+        blaze::blaze
         mp-units::mp-units
         juce::juce_recommended_config_flags
         juce::juce_recommended_lto_flags

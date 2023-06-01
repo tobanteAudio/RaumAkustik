@@ -4,6 +4,9 @@
 
 #include <juce_dsp/juce_dsp.h>
 
+#include <blaze/math/DynamicVector.h>
+#include <blaze/math/Subvector.h>
+
 #include <span>
 
 namespace mc
@@ -52,7 +55,6 @@ static auto getFrequencyAndAmplitude(std::span<std::complex<float> const> bins, 
     {
         auto const bin       = bins[i];
         auto const frequency = frequencyForBin<float>(fftSize, i, sampleRate);
-        // if (frequency >= sampleRate * 0.5) { break; }
         auto const amplitude = std::abs(bin) / static_cast<float>(fftSize);
         result.emplace_back(frequency, amplitude);
     }
@@ -67,7 +69,7 @@ static auto makePathFromAnalysis(std::span<FrequencyAndAmplitude const> analysis
     if (size == 0) return {};
 
     auto frequencyLess = [](auto bin, auto target) { return bin.frequency < target; };
-    auto first         = std::lower_bound(begin(analysis), end(analysis), 20.0F, frequencyLess);
+    auto first         = std::lower_bound(begin(analysis), end(analysis), 1.0F, frequencyLess);
     if (first == end(analysis)) { return {}; }
 
     auto p = juce::Path{};
@@ -75,12 +77,12 @@ static auto makePathFromAnalysis(std::span<FrequencyAndAmplitude const> analysis
 
     auto const width  = bounds.getWidth();
     auto const startY = amplitudeToY(first->amplitude, bounds);
-    p.startNewSubPath(bounds.getX() + frequencyToX(20.0f, fs * 0.5F, first->frequency, width), startY);
+    p.startNewSubPath(bounds.getX() + frequencyToX(1.0f, fs * 0.5F, first->frequency, width), startY);
 
     for (; first != end(analysis); ++first)
     {
         auto const y = amplitudeToY(first->amplitude, bounds);
-        p.lineTo(bounds.getX() + frequencyToX(20.0f, fs * 0.5F, first->frequency, width), y);
+        p.lineTo(bounds.getX() + frequencyToX(1.0f, fs * 0.5F, first->frequency, width), y);
     }
 
     return p;
@@ -93,19 +95,21 @@ static auto toAudioBuffer(std::vector<float> const& in) -> juce::AudioBuffer<flo
     return buf;
 }
 
-static auto getSpectrumPath(juce::AudioBuffer<float> const& signal, double fs, juce::Rectangle<int> area) -> juce::Path
+static auto getSpectrumPath(juce::AudioBuffer<float> const& in, double fs, juce::Rectangle<int> area) -> juce::Path
 {
-    auto const fftSize  = size_t(juce::nextPowerOfTwo(signal.getNumSamples()));
+    auto const fftSize  = size_t(juce::nextPowerOfTwo(in.getNumSamples()));
     auto const fftOrder = std::bit_width(fftSize) - 1;
 
-    auto buffer = std::vector<float>(fftSize * 2UL, 0.0F);
-    std::copy(signal.getReadPointer(0), signal.getReadPointer(0) + signal.getNumSamples(), buffer.begin());
+    auto buf     = blaze::DynamicVector<std::complex<float>>(fftSize);
+    auto* buffer = reinterpret_cast<float*>(buf.data());
+    std::copy(in.getReadPointer(0), in.getReadPointer(0) + in.getNumSamples(), buffer);
 
     auto fft = juce::dsp::FFT{fftOrder};
-    fft.performRealOnlyForwardTransform(buffer.data(), true);
+    fft.performRealOnlyForwardTransform(buffer, true);
 
+    auto const* coefficients = buf.data();
     auto const numBins       = static_cast<size_t>(fft.getSize() / 2 + 1);
-    auto const* coefficients = reinterpret_cast<std::complex<float> const*>(buffer.data());
+    auto const sv2           = blaze::subvector(buf, 0UL, numBins);
     auto const amplitudes    = getFrequencyAndAmplitude({coefficients, numBins}, fs);
     DBG("fftSize: " << fftSize << " fftOrder: " << fftOrder << " fft.getSize(): " << fft.getSize()
                     << " numBins: " << numBins);
@@ -150,10 +154,11 @@ auto GeneratorTab::paint(juce::Graphics& g) -> void
 
     g.setColour(juce::Colours::white);
 
-    auto const b = _spectrumBounds.toFloat();
+    auto const b  = _spectrumBounds.toFloat();
+    auto const sr = static_cast<float>(static_cast<double>(_sampleRate));
     for (auto const frequency : {55.0F, 110.0F, 220.0F, 440.0F, 880.0F, 1760.0F, 3520.0F, 7040.0F})
     {
-        auto x = juce::roundToInt(b.getX() + frequencyToX(20.0F, 22'050.0F, frequency, b.getWidth()));
+        auto x = juce::roundToInt(b.getX() + frequencyToX(1.0F, sr / 2.0F, frequency, b.getWidth()));
         g.drawVerticalLine(x, b.getY(), b.getBottom());
     }
 

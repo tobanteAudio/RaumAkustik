@@ -43,7 +43,6 @@ include(mcCompilerOptions)
 include(mcCompilerWarnings)
 include(mcCodeCoverage)
 
-find_package(mp-units REQUIRED)
 find_package(Catch2 REQUIRED)
 include(Catch)
 
