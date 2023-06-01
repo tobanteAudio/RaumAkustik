@@ -23,11 +23,13 @@ target_sources(${PROJECT_NAME}
         "mc/acoustics/Air.cpp"
         "mc/acoustics/Air.hpp"
         "mc/acoustics/FirstReflection.hpp"
-        "mc/acoustics/sweep.cpp"
-        "mc/acoustics/sweep.hpp"
 
         "mc/acoustics/absorber/porous_absorber.cpp"
         "mc/acoustics/absorber/porous_absorber.hpp"
+
+        "mc/generator/oscillator.hpp"
+        "mc/generator/sweep.cpp"
+        "mc/generator/sweep.hpp"
 
         "mc/unit/density.hpp"
         "mc/unit/frequency.cpp"

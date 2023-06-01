@@ -1,31 +1,9 @@
 #include "sweep.hpp"
 
-#include <cmath>
-#include <numbers>
+#include <mc/generator/oscillator.hpp>
 
 namespace mc
 {
-
-namespace
-{
-struct SinOscillator
-{
-    explicit SinOscillator(double fs) : _fs{fs} {}
-
-    [[nodiscard]] auto operator()(double frequency) noexcept -> double
-    {
-        auto const output     = std::sin(_phase * std::numbers::pi * 2.0);
-        auto const deltaPhase = 1.0 / (_fs / frequency);
-        _phase += deltaPhase;
-        _phase -= std::floor(_phase);
-        return output;
-    }
-
-private:
-    double _fs{0};
-    double _phase{0};
-};
-}  // namespace
 
 // x[n] = A * sin(2 * π * f[n] * n / fs + φ)
 //
@@ -46,24 +24,29 @@ private:
 //     - f2 is the final frequency of the sweep.
 //     - n1 is the starting sample index of the sweep.
 //     - n2 is the ending sample index of the sweep.
-auto makeSineSweep(SineSweepSpec const& spec) -> std::vector<float>
+auto generate(SineSweep const& spec) -> std::vector<float>
 {
     using Seconds = std::chrono::duration<double>;
 
+    auto scaleFrequency = [curve = spec.curve](auto f1, auto f2, auto t)
+    {
+        if (curve == SineSweepCurve::Logarithmic) { return std::pow(f1 * (f2 / f1), t); }
+        return std::lerp(f1, f2, t);
+    };
+
     auto const fs         = spec.sampleRate;
-    auto const f1         = static_cast<double>(spec.start);
-    auto const f2         = static_cast<double>(spec.end);
-    auto const numSamples = static_cast<size_t>(std::chrono::duration_cast<Seconds>(spec.length).count() * fs);
+    auto const f1         = spec.from.number();
+    auto const f2         = spec.to.number();
+    auto const numSamples = static_cast<size_t>(std::chrono::duration_cast<Seconds>(spec.duration).count() * fs);
 
     auto buffer = std::vector<float>(numSamples, 0.0F);
-    auto osc    = SinOscillator{fs};
+    auto osc    = SinOscillator<double>{fs};
 
     for (auto i{0UL}; i < numSamples; ++i)
     {
         auto const t         = static_cast<double>(i) / static_cast<double>(numSamples - 1);
-        auto const freq      = std::pow(f1 * (f2 / f1), t);
-        auto const frequency = std::lerp(f1, f2, t);
-        buffer[i]            = static_cast<float>(osc(freq));
+        auto const frequency = scaleFrequency(f1, f2, t);
+        buffer[i]            = static_cast<float>(osc(frequency));
     }
 
     return buffer;

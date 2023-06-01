@@ -3,7 +3,7 @@
 #include "CommandIDs.hpp"
 #include "RaumAkustikApplication.hpp"
 
-#include <mc/acoustics/sweep.hpp>
+#include <mc/generator/sweep.hpp>
 
 namespace mc
 {
@@ -21,13 +21,14 @@ static auto writeToWavFile(juce::File const& file, std::vector<float> const& buf
 
 MainComponent::MainComponent() : _audioInputView{mc::raumAkusticApplication().deviceManager()}
 {
-    auto const spec = mc::SineSweepSpec{
-        .start      = 20.0F,
-        .end        = 20'000.0F,
-        .length     = std::chrono::milliseconds{60'000},
+    auto const spec = mc::SineSweep{
+        .from       = mc::Hertz{20.0},
+        .to         = mc::Hertz{20'000.0},
+        .curve      = mc::SineSweepCurve::Logarithmic,
+        .duration   = std::chrono::milliseconds{10'000},
         .sampleRate = 192'000.0,
     };
-    auto const sweep = mc::makeSineSweep(spec);
+    auto const sweep = mc::generate(spec);
     mc::writeToWavFile(juce::File{R"(C:\Developer\sweep.wav)"}, sweep, spec.sampleRate, 24);
 
     addAndMakeVisible(_menuBar);
