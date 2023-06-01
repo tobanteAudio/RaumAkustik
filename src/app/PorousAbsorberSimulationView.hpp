@@ -1,6 +1,6 @@
 #pragma once
 
-#include "mc/acoustics/PorousAbsorber.hpp"
+#include <mc/acoustics/absorber/porous_absorber.hpp>
 
 #include <juce_gui_extra/juce_gui_extra.h>
 

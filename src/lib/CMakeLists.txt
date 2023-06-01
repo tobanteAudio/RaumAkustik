@@ -20,23 +20,22 @@ target_link_libraries(${PROJECT_NAME}
 
 target_sources(${PROJECT_NAME}
     PRIVATE
-        "mc/acoustics.hpp"
-
         "mc/acoustics/Air.cpp"
         "mc/acoustics/Air.hpp"
-        "mc/acoustics/FEM.hpp"
         "mc/acoustics/FirstReflection.hpp"
-        "mc/acoustics/PorousAbsorber.cpp"
-        "mc/acoustics/PorousAbsorber.hpp"
-        "mc/acoustics/Units.hpp"
+        "mc/acoustics/sweep.cpp"
+        "mc/acoustics/sweep.hpp"
 
-        "mc/acoustics/Units/Density.hpp"
-        "mc/acoustics/Units/Frequency.cpp"
-        "mc/acoustics/Units/Frequency.hpp"
-        "mc/acoustics/Units/HeatCapacity.hpp"
-        "mc/acoustics/Units/Pressure.hpp"
-        "mc/acoustics/Units/Speed.hpp"
-        "mc/acoustics/Units/Temperature.hpp"
+        "mc/acoustics/absorber/porous_absorber.cpp"
+        "mc/acoustics/absorber/porous_absorber.hpp"
+
+        "mc/unit/density.hpp"
+        "mc/unit/frequency.cpp"
+        "mc/unit/frequency.hpp"
+        "mc/unit/heat_capacity.hpp"
+        "mc/unit/pressure.hpp"
+        "mc/unit/speed.hpp"
+        "mc/unit/temperature.hpp"
 )
 
 
@@ -47,8 +46,7 @@ target_link_libraries("${PROJECT_NAME}_Tests" PRIVATE mc::acoustics Catch2::Catc
 target_sources("${PROJECT_NAME}_Tests"
     PRIVATE
         "mc/acoustics/Air.test.cpp"
-        "mc/acoustics/FEM.test.cpp"
         "mc/acoustics/FirstReflection.test.cpp"
-        "mc/acoustics/PorousAbsorber.test.cpp"
-        "mc/acoustics/Units/Frequency.test.cpp"
+        "mc/acoustics/absorber/porous_absorber.test.cpp"
+        "mc/unit/frequency.test.cpp"
 )

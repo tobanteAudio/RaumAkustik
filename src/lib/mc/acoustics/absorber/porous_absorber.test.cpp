@@ -1,6 +1,6 @@
-#include "PorousAbsorber.hpp"
+#include "porous_absorber.hpp"
 
-#include "mc/acoustics/Air.hpp"
+#include <mc/acoustics/Air.hpp>
 
 #include <catch2/catch_approx.hpp>
 #include <catch2/catch_test_macros.hpp>

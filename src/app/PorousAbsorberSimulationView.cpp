@@ -1,6 +1,6 @@
 #include "PorousAbsorberSimulationView.hpp"
 
-#include "mc/acoustics/Units/Frequency.hpp"
+#include <mc/unit/frequency.hpp>
 
 namespace mc
 {

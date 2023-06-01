@@ -3,8 +3,33 @@
 #include "CommandIDs.hpp"
 #include "RaumAkustikApplication.hpp"
 
+#include <mc/acoustics/sweep.hpp>
+
+namespace mc
+{
+static auto writeToWavFile(juce::File const& file, std::vector<float> const& buffer, double fs, int bits = 24) -> bool
+{
+    if (file.existsAsFile()) { file.deleteFile(); }
+    auto stream = file.createOutputStream();
+    auto wav    = juce::WavAudioFormat{};
+    auto writer = std::unique_ptr<juce::AudioFormatWriter>{wav.createWriterFor(stream.get(), fs, 1, bits, {}, 0)};
+    if (writer) { juce::ignoreUnused(stream.release()); }
+    auto channels = std::array<float const*, 1>{buffer.data()};
+    return writer->writeFromFloatArrays(channels.data(), 1, static_cast<int>(buffer.size()));
+}
+}  // namespace mc
+
 MainComponent::MainComponent() : _audioInputView{mc::raumAkusticApplication().deviceManager()}
 {
+    auto const spec = mc::SineSweepSpec{
+        .start      = 20.0F,
+        .end        = 20'000.0F,
+        .length     = std::chrono::milliseconds{60'000},
+        .sampleRate = 192'000.0,
+    };
+    auto const sweep = mc::makeSineSweep(spec);
+    mc::writeToWavFile(juce::File{R"(C:\Developer\sweep.wav)"}, sweep, spec.sampleRate, 24);
+
     addAndMakeVisible(_menuBar);
     addAndMakeVisible(_tabs);
 
