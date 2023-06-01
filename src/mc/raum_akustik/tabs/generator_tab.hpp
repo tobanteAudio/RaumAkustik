@@ -24,6 +24,7 @@ struct GeneratorTab final
 private:
     juce::PropertyPanel _sweepSpecPanel{};
     juce::Rectangle<int> _thumbnailBounds{};
+    juce::Rectangle<int> _spectrumBounds{};
 
     juce::UndoManager* _undoManager{nullptr};
     juce::ValueTree _valueTree{"SineSweep"};
@@ -38,6 +39,8 @@ private:
     juce::AudioBuffer<float> _thumbnailBuffer{};
     juce::AudioThumbnailCache _thumbnailCache{1};
     juce::AudioThumbnail _thumbnail{32, _formatManager, _thumbnailCache};
+
+    juce::Path _spectrumPath;
 };
 
 }  // namespace mc

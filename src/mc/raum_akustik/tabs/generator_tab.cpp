@@ -2,14 +2,115 @@
 
 #include <mc/generator/sweep.hpp>
 
+#include <juce_dsp/juce_dsp.h>
+
+#include <span>
+
 namespace mc
 {
+
+struct FrequencyAndAmplitude
+{
+    float frequency;
+    float amplitude;
+};
+
+template<typename T>
+[[nodiscard]] constexpr auto frequencyForBin(size_t windowSize, size_t index, double sampleRate) -> T
+{
+    return static_cast<T>(index) * static_cast<T>(sampleRate) / static_cast<T>(windowSize);
+}
+
+static auto frequencyToX(float minFreq, float maxFreq, float freq, float width)
+{
+    // auto const logMinFreq = std::log10(minFreq);
+    // auto const diff       = std::log10(freq) - logMinFreq;
+    // return diff * width / (std::log10(maxFreq) - logMinFreq);
+
+    auto const logMin  = std::log(minFreq);
+    auto const logMax  = std::log(maxFreq);
+    auto const logFreq = std::log(freq);
+    auto const ratio   = (logFreq - logMin) / (logMax - logMin);
+    return width * ratio;
+}
+
+static auto amplitudeToY(float amplitude, const juce::Rectangle<float> bounds) -> float
+{
+    auto const infinity = -96.0f;
+    auto const dB       = juce::Decibels::gainToDecibels(amplitude, infinity);
+    return juce::jmap(dB, infinity, 0.0f, bounds.getBottom(), bounds.getY());
+}
+
+static auto getFrequencyAndAmplitude(std::span<std::complex<float> const> bins, double sampleRate)
+    -> std::vector<FrequencyAndAmplitude>
+{
+    auto result = std::vector<FrequencyAndAmplitude>{};
+    result.reserve(bins.size());
+
+    auto const fftSize = (bins.size() - 1) * 2;
+    for (auto i{0UL}; i < bins.size(); ++i)
+    {
+        auto const bin       = bins[i];
+        auto const frequency = frequencyForBin<float>(fftSize, i, sampleRate);
+        // if (frequency >= sampleRate * 0.5) { break; }
+        auto const amplitude = std::abs(bin) / static_cast<float>(fftSize);
+        result.emplace_back(frequency, amplitude);
+    }
+
+    return result;
+}
+
+static auto makePathFromAnalysis(std::span<FrequencyAndAmplitude const> analysis, float fs,
+                                 juce::Rectangle<float> bounds) -> juce::Path
+{
+    auto const size = static_cast<int>(analysis.size());
+    if (size == 0) return {};
+
+    auto frequencyLess = [](auto bin, auto target) { return bin.frequency < target; };
+    auto first         = std::lower_bound(begin(analysis), end(analysis), 20.0F, frequencyLess);
+    if (first == end(analysis)) { return {}; }
+
+    auto p = juce::Path{};
+    p.preallocateSpace(8 + size * 3);
+
+    auto const width  = bounds.getWidth();
+    auto const startY = amplitudeToY(first->amplitude, bounds);
+    p.startNewSubPath(bounds.getX() + frequencyToX(20.0f, fs * 0.5F, first->frequency, width), startY);
+
+    for (; first != end(analysis); ++first)
+    {
+        auto const y = amplitudeToY(first->amplitude, bounds);
+        p.lineTo(bounds.getX() + frequencyToX(20.0f, fs * 0.5F, first->frequency, width), y);
+    }
+
+    return p;
+}
 
 static auto toAudioBuffer(std::vector<float> const& in) -> juce::AudioBuffer<float>
 {
     auto buf = juce::AudioBuffer<float>{1, static_cast<int>(in.size())};
     std::copy(in.begin(), in.end(), buf.getWritePointer(0));
     return buf;
+}
+
+static auto getSpectrumPath(juce::AudioBuffer<float> const& signal, double fs, juce::Rectangle<int> area) -> juce::Path
+{
+    auto const fftSize  = size_t(juce::nextPowerOfTwo(signal.getNumSamples()));
+    auto const fftOrder = std::bit_width(fftSize) - 1;
+
+    auto buffer = std::vector<float>(fftSize * 2UL, 0.0F);
+    std::copy(signal.getReadPointer(0), signal.getReadPointer(0) + signal.getNumSamples(), buffer.begin());
+
+    auto fft = juce::dsp::FFT{fftOrder};
+    fft.performRealOnlyForwardTransform(buffer.data(), true);
+
+    auto const numBins       = static_cast<size_t>(fft.getSize() / 2 + 1);
+    auto const* coefficients = reinterpret_cast<std::complex<float> const*>(buffer.data());
+    auto const amplitudes    = getFrequencyAndAmplitude({coefficients, numBins}, fs);
+    DBG("fftSize: " << fftSize << " fftOrder: " << fftOrder << " fft.getSize(): " << fft.getSize()
+                    << " numBins: " << numBins);
+
+    return makePathFromAnalysis(amplitudes, float(fs), area.toFloat());
 }
 
 GeneratorTab::GeneratorTab()
@@ -42,16 +143,30 @@ auto GeneratorTab::paint(juce::Graphics& g) -> void
 {
     g.setColour(juce::Colours::black);
     g.fillRect(_thumbnailBounds);
+    g.fillRect(_spectrumBounds);
 
     g.setColour(juce::Colours::white);
-    _thumbnail.drawChannel(g, _thumbnailBounds, 0.0, _thumbnail.getTotalLength(), 0, 0.5F);
+    _thumbnail.drawChannel(g, _thumbnailBounds.reduced(4), 0.0, _thumbnail.getTotalLength(), 0, 0.5F);
+
+    g.setColour(juce::Colours::white);
+
+    auto const b = _spectrumBounds.toFloat();
+    for (auto const frequency : {55.0F, 110.0F, 220.0F, 440.0F, 880.0F, 1760.0F, 3520.0F, 7040.0F})
+    {
+        auto x = juce::roundToInt(b.getX() + frequencyToX(20.0F, 22'050.0F, frequency, b.getWidth()));
+        g.drawVerticalLine(x, b.getY(), b.getBottom());
+    }
+
+    g.strokePath(_spectrumPath, juce::PathStrokeType{2.0F});
 }
 
 auto GeneratorTab::resized() -> void
 {
     auto area = getLocalBounds();
     _sweepSpecPanel.setBounds(area.removeFromLeft(area.proportionOfWidth(0.5)));
-    _thumbnailBounds = area;
+    _thumbnailBounds = area.removeFromTop(area.proportionOfHeight(0.5));
+    _spectrumBounds  = area;
+    handleAsyncUpdate();
 }
 
 auto GeneratorTab::handleAsyncUpdate() -> void
@@ -69,6 +184,8 @@ auto GeneratorTab::handleAsyncUpdate() -> void
     _thumbnail.clear();
     _thumbnail.reset(1, spec.sampleRate, 1);
     _thumbnail.addBlock(0, _thumbnailBuffer, 0, _thumbnailBuffer.getNumSamples());
+
+    _spectrumPath = getSpectrumPath(sweep, spec.sampleRate, _spectrumBounds);
 }
 
 auto GeneratorTab::changeListenerCallback(juce::ChangeBroadcaster* /*source*/) -> void { repaint(); }
