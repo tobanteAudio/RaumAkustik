@@ -39,6 +39,14 @@ conan install . -of build -b missing -b outdated -pr:b=.\profiles\win_msvc -pr:h
 | [Acoustics Modelling Blog](https://computational-acoustics.gitlab.io/website/posts/) |         |
 |     [Room modes in 3D using sketchup and FEM](https://blog.kaistale.com/?p=1768)     |         |
 
+### Measurements
+
+|                                                            Link                                                            | Comment |
+| :------------------------------------------------------------------------------------------------------------------------: | :-----: |
+|            [Digital room equalisation](http://www.audiosignal.co.uk/Resources/Digital_room_equalisation_A4.pdf)            |         |
+| [Swept Sine Chirps for Measuring Impulse Response](https://thinksrs.com/downloads/pdfs/applicationnotes/SR1_SweptSine.pdf) |         |
+|    [SINE SWEEP OPTIMIZATION FOR ROOM IMPULSE RESPONSE MEASUREMENTS](https://odeon.dk/pdf/fa2020_sweepoptimization.pdf)     |         |
+
 ### Guides
 
 |                                                                   Link                                                                    |  Comment   |
