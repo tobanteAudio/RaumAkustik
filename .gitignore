@@ -4,6 +4,9 @@
 .vs
 .vscode
 
+# Deps
+/3rd_party/asiosdk_*
+
 # CMake
 build
 cmake-build-*
