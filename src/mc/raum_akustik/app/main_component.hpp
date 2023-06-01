@@ -6,6 +6,7 @@
 #include <mc/raum_akustik/tabs/absorber_simulation_tab.hpp>
 #include <mc/raum_akustik/tabs/audio_input_tab.hpp>
 #include <mc/raum_akustik/tabs/first_reflections_tab.hpp>
+#include <mc/raum_akustik/tabs/generator_tab.hpp>
 
 #include <juce_gui_extra/juce_gui_extra.h>
 
@@ -42,6 +43,7 @@ private:
 
     juce::TabbedComponent _tabs{juce::TabbedButtonBar::TabsAtTop};
     AudioInputView _audioInputView;
+    GeneratorTab _generatorTab;
     std::unique_ptr<FirstReflectionsView> _firstReflectionsView{};
     std::unique_ptr<PorousAbsorberSimulationView> _absorberSimulationView{};
 

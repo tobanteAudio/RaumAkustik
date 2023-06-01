@@ -52,6 +52,8 @@ target_sources(${PROJECT_NAME}
         "tabs/audio_input_tab.hpp"
         "tabs/first_reflections_tab.cpp"
         "tabs/first_reflections_tab.hpp"
+        "tabs/generator_tab.cpp"
+        "tabs/generator_tab.hpp"
 )
 
 target_compile_definitions(${PROJECT_NAME}

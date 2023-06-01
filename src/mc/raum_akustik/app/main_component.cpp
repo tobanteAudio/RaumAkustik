@@ -177,6 +177,7 @@ auto MainComponent::reloadUI() -> void
 
     auto const color = getLookAndFeel().findColour(juce::ResizableWindow::backgroundColourId);
     _tabs.addTab("Audio Input", color, &_audioInputView, false);
+    _tabs.addTab("Generator", color, &_generatorTab, false);
     _tabs.addTab("First Reflections", color, _firstReflectionsView.get(), false);
     _tabs.addTab("Porous Absorber", color, _absorberSimulationView.get(), false);
     if (tabIndex > 0 && tabIndex <= _tabs.getNumTabs()) { _tabs.setCurrentTabIndex(tabIndex, true); }
