@@ -1,6 +1,6 @@
 #include "porous_absorber.hpp"
 
-#include <mc/acoustics/Air.hpp>
+#include <mc/acoustics/air.hpp>
 
 #include <numbers>
 

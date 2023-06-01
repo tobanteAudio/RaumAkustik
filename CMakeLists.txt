@@ -51,5 +51,5 @@ add_subdirectory(3rd_party/JUCE EXCLUDE_FROM_ALL)
 set_directory_properties(PROPERTIES JUCE_COMPANY_COPYRIGHT "Copyright 2022 Modern Circuits UG (haftungsbeschränkt). All rights reserved.")
 set_directory_properties(PROPERTIES JUCE_COMPANY_NAME "Modern Circuits UG (haftungsbeschränkt)")
 
-add_subdirectory(src/lib)
-add_subdirectory(src/app)
+add_subdirectory(src)
+add_subdirectory(src/mc/raum_akustik)

@@ -20,12 +20,13 @@ target_link_libraries(${PROJECT_NAME}
 
 target_sources(${PROJECT_NAME}
     PRIVATE
-        "mc/acoustics/Air.cpp"
-        "mc/acoustics/Air.hpp"
-        "mc/acoustics/FirstReflection.hpp"
+        "mc/acoustics/air.cpp"
+        "mc/acoustics/air.hpp"
 
         "mc/acoustics/absorber/porous_absorber.cpp"
         "mc/acoustics/absorber/porous_absorber.hpp"
+
+        "mc/acoustics/reflection/first_reflection.hpp"
 
         "mc/generator/oscillator.hpp"
         "mc/generator/sweep.cpp"
@@ -47,8 +48,8 @@ catch_discover_tests("${PROJECT_NAME}_Tests")
 target_link_libraries("${PROJECT_NAME}_Tests" PRIVATE mc::acoustics Catch2::Catch2WithMain)
 target_sources("${PROJECT_NAME}_Tests"
     PRIVATE
-        "mc/acoustics/Air.test.cpp"
-        "mc/acoustics/FirstReflection.test.cpp"
+        "mc/acoustics/air.test.cpp"
         "mc/acoustics/absorber/porous_absorber.test.cpp"
+        "mc/acoustics/reflection/first_reflection.test.cpp"
         "mc/unit/frequency.test.cpp"
 )
