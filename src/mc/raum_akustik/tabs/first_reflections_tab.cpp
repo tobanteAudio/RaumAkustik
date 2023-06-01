@@ -1,4 +1,4 @@
-#include "FirstReflectionsView.hpp"
+#include "first_reflections_tab.hpp"
 
 namespace mc
 {

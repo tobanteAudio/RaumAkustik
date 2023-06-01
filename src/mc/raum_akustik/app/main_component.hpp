@@ -1,10 +1,11 @@
 #pragma once
 
-#include "AudioInputView.hpp"
-#include "FirstReflectionsView.hpp"
-#include "LookAndFeel.hpp"
-#include "MenuBar.hpp"
-#include "PorousAbsorberSimulationView.hpp"
+#include <mc/raum_akustik/app/main_component.hpp>
+#include <mc/raum_akustik/app/menu_bar.hpp>
+#include <mc/raum_akustik/look/look_and_feel.hpp>
+#include <mc/raum_akustik/tabs/absorber_simulation_tab.hpp>
+#include <mc/raum_akustik/tabs/audio_input_tab.hpp>
+#include <mc/raum_akustik/tabs/first_reflections_tab.hpp>
 
 #include <juce_gui_extra/juce_gui_extra.h>
 

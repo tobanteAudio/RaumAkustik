@@ -1,4 +1,4 @@
-#include "PorousAbsorberSimulationView.hpp"
+#include "absorber_simulation_tab.hpp"
 
 #include <mc/unit/frequency.hpp>
 

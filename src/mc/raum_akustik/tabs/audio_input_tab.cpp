@@ -1,4 +1,4 @@
-#include "AudioInputView.hpp"
+#include "audio_input_tab.hpp"
 
 namespace mc
 {

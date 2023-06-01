@@ -1,9 +1,8 @@
-#include "MainComponent.hpp"
-
-#include "CommandIDs.hpp"
-#include "RaumAkustikApplication.hpp"
+#include "main_component.hpp"
 
 #include <mc/generator/sweep.hpp>
+#include <mc/raum_akustik/app/application.hpp>
+#include <mc/raum_akustik/app/command_ids.hpp>
 
 namespace mc
 {

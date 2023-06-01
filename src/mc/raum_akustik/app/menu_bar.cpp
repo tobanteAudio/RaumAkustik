@@ -1,7 +1,8 @@
-#include "MenuBar.hpp"
+#include "menu_bar.hpp"
+
+#include <mc/raum_akustik/app/command_ids.hpp>
 
 #include "BinaryData.hpp"
-#include "CommandIDs.hpp"
 
 namespace mc
 {

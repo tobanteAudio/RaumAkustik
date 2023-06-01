@@ -34,22 +34,24 @@ juce_add_gui_app(${PROJECT_NAME}
 
 target_sources(${PROJECT_NAME}
     PRIVATE
-        "AudioInputView.cpp"
-        "AudioInputView.hpp"
-        "CommandIDs.hpp"
-        "FirstReflectionsView.cpp"
-        "FirstReflectionsView.hpp"
-        "LookAndFeel.cpp"
-        "LookAndFeel.hpp"
-        "Main.cpp"
-        "MainComponent.cpp"
-        "MainComponent.hpp"
-        "MenuBar.cpp"
-        "MenuBar.hpp"
-        "PorousAbsorberSimulationView.cpp"
-        "PorousAbsorberSimulationView.hpp"
-        "RaumAkustikApplication.cpp"
-        "RaumAkustikApplication.hpp"
+        "app/application.cpp"
+        "app/application.hpp"
+        "app/command_ids.hpp"
+        "app/main_component.cpp"
+        "app/main_component.hpp"
+        "app/main.cpp"
+        "app/menu_bar.cpp"
+        "app/menu_bar.hpp"
+
+        "look/look_and_feel.cpp"
+        "look/look_and_feel.hpp"
+
+        "tabs/absorber_simulation_tab.cpp"
+        "tabs/absorber_simulation_tab.hpp"
+        "tabs/audio_input_tab.cpp"
+        "tabs/audio_input_tab.hpp"
+        "tabs/first_reflections_tab.cpp"
+        "tabs/first_reflections_tab.hpp"
 )
 
 target_compile_definitions(${PROJECT_NAME}

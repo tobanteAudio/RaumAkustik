@@ -1,4 +1,4 @@
-#include "LookAndFeel.hpp"
+#include "look_and_feel.hpp"
 
 namespace mc
 {
