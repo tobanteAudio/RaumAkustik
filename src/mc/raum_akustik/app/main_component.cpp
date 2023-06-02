@@ -20,8 +20,8 @@ static auto writeToWavFile(juce::File const& file, std::vector<float> const& buf
 MainComponent::MainComponent() : _audioInputView{raumAkusticApplication().deviceManager()}
 {
     auto const spec = SineSweep{
-        .from       = Hertz{20.0},
-        .to         = Hertz{20'000.0},
+        .from       = Hertz<double>{20.0},
+        .to         = Hertz<double>{20'000.0},
         .curve      = SineSweepCurve::Logarithmic,
         .duration   = std::chrono::milliseconds{10'000},
         .sampleRate = 192'000.0,

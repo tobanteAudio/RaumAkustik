@@ -182,7 +182,7 @@ auto PorousAbsorberSimulationView::updateSimulation() -> void
         static_cast<double>(_pressure) * OneAtmosphere<double>,
     };
 
-    auto const startFrequency = Hertz{static_cast<double>(_plotStartFrequency)};
+    auto const startFrequency = Hertz<double>{static_cast<double>(_plotStartFrequency)};
     auto const subDivisions   = static_cast<double>(_plotOctaveSubdivision);
 
     for (auto i{0}; i < static_cast<int>(_plotNumPoints); ++i)

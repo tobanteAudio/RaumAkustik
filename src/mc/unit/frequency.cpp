@@ -1,4 +1,4 @@
-#include "Frequency.hpp"
+#include "frequency.hpp"
 
 #define _USE_MATH_DEFINES  // NOLINT
 

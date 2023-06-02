@@ -31,9 +31,6 @@ if (CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
     set_property(GLOBAL PROPERTY USE_FOLDERS ON)
     set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-    # Minimum macOS version
-    set(CMAKE_OSX_DEPLOYMENT_TARGET "10.14")
-
     enable_testing()
     include(CTest)
 endif ()

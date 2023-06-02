@@ -56,7 +56,7 @@ static auto getFrequencyAndAmplitude(std::span<std::complex<float> const> bins, 
         auto const bin       = bins[i];
         auto const frequency = frequencyForBin<float>(fftSize, i, sampleRate);
         auto const amplitude = std::abs(bin) / static_cast<float>(fftSize);
-        result.emplace_back(frequency, amplitude);
+        result.emplace_back(FrequencyAndAmplitude{frequency, amplitude});
     }
 
     return result;
@@ -109,7 +109,6 @@ static auto getSpectrumPath(juce::AudioBuffer<float> const& in, double fs, juce:
 
     auto const* coefficients = buf.data();
     auto const numBins       = static_cast<size_t>(fft.getSize() / 2 + 1);
-    auto const sv2           = blaze::subvector(buf, 0UL, numBins);
     auto const amplitudes    = getFrequencyAndAmplitude({coefficients, numBins}, fs);
     DBG("fftSize: " << fftSize << " fftOrder: " << fftOrder << " fft.getSize(): " << fft.getSize()
                     << " numBins: " << numBins);

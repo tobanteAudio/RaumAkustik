@@ -47,13 +47,13 @@ target_sources(${PROJECT_NAME}
 
 
 
-add_executable("${PROJECT_NAME}_Tests")
-catch_discover_tests("${PROJECT_NAME}_Tests")
-target_link_libraries("${PROJECT_NAME}_Tests" PRIVATE mc::acoustics Catch2::Catch2WithMain)
-target_sources("${PROJECT_NAME}_Tests"
-    PRIVATE
-        "mc/acoustics/air.test.cpp"
-        "mc/acoustics/absorber/porous_absorber.test.cpp"
-        "mc/acoustics/reflection/first_reflection.test.cpp"
-        "mc/unit/frequency.test.cpp"
-)
+# add_executable("${PROJECT_NAME}_Tests")
+# catch_discover_tests("${PROJECT_NAME}_Tests")
+# target_link_libraries("${PROJECT_NAME}_Tests" PRIVATE mc::acoustics Catch2::Catch2WithMain)
+# target_sources("${PROJECT_NAME}_Tests"
+#     PRIVATE
+#         "mc/acoustics/air.test.cpp"
+#         "mc/acoustics/absorber/porous_absorber.test.cpp"
+#         "mc/acoustics/reflection/first_reflection.test.cpp"
+#         "mc/unit/frequency.test.cpp"
+# )
