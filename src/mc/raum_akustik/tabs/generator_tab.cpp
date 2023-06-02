@@ -26,10 +26,6 @@ template<typename T>
 
 static auto frequencyToX(float minFreq, float maxFreq, float freq, float width)
 {
-    // auto const logMinFreq = std::log10(minFreq);
-    // auto const diff       = std::log10(freq) - logMinFreq;
-    // return diff * width / (std::log10(maxFreq) - logMinFreq);
-
     auto const logMin  = std::log(minFreq);
     auto const logMax  = std::log(maxFreq);
     auto const logFreq = std::log(freq);
@@ -151,17 +147,38 @@ auto GeneratorTab::paint(juce::Graphics& g) -> void
     g.setColour(juce::Colours::white);
     _thumbnail.drawChannel(g, _thumbnailBounds.reduced(4), 0.0, _thumbnail.getTotalLength(), 0, 0.5F);
 
-    g.setColour(juce::Colours::white);
+    auto const b       = _spectrumBounds.toFloat();
+    auto const maxFreq = static_cast<float>(static_cast<double>(_sampleRate)) / 2.0F;
 
-    auto const b  = _spectrumBounds.toFloat();
-    auto const sr = static_cast<float>(static_cast<double>(_sampleRate));
-    for (auto const frequency : {55.0F, 110.0F, 220.0F, 440.0F, 880.0F, 1760.0F, 3520.0F, 7040.0F})
+    for (auto const decade : {10.0F, 100.0F, 1'000.0F})
     {
-        auto x = juce::roundToInt(b.getX() + frequencyToX(1.0F, sr / 2.0F, frequency, b.getWidth()));
-        g.drawVerticalLine(x, b.getY(), b.getBottom());
+        auto x0 = juce::roundToInt(b.getX() + frequencyToX(1.0F, maxFreq, decade, b.getWidth()));
+        g.setColour(juce::Colours::white.withAlpha(0.5F));
+        g.drawVerticalLine(x0, b.getY(), b.getBottom());
+
+        for (auto i{1}; i < 10; ++i)
+        {
+            auto const d = decade * static_cast<float>(i);
+            auto const x = juce::roundToInt(b.getX() + frequencyToX(1.0F, maxFreq, d, b.getWidth()));
+            g.setColour(juce::Colours::white.withAlpha(0.25F));
+            g.drawVerticalLine(x, b.getY(), b.getBottom());
+        }
     }
 
-    g.strokePath(_spectrumPath, juce::PathStrokeType{2.0F});
+    auto x0 = juce::roundToInt(b.getX() + frequencyToX(1.0F, maxFreq, 10'000.0F, b.getWidth()));
+    g.setColour(juce::Colours::white.withAlpha(0.5F));
+    g.drawVerticalLine(x0, b.getY(), b.getBottom());
+
+    for (auto i{0}; i < 90; i += 6)
+    {
+        auto const amplitude = juce::Decibels::decibelsToGain(static_cast<float>(-i));
+        auto const y         = juce::roundToInt(amplitudeToY(amplitude, b));
+        g.setColour(juce::Colours::white.withAlpha(0.25F));
+        g.drawHorizontalLine(y, b.getX(), b.getRight());
+    }
+
+    g.setColour(juce::Colours::white);
+    g.strokePath(_spectrumPath, juce::PathStrokeType{1.0F});
 }
 
 auto GeneratorTab::resized() -> void
