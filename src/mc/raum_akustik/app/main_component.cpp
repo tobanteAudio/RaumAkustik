@@ -17,7 +17,8 @@ static auto writeToWavFile(juce::File const& file, std::vector<float> const& buf
     return writer->writeFromFloatArrays(channels.data(), 1, static_cast<int>(buffer.size()));
 }
 
-MainComponent::MainComponent() : _audioInputView{raumAkusticApplication().deviceManager()}
+MainComponent::MainComponent()
+    : _audioInputView{raumAkusticApplication().deviceManager()}, _generatorTab{raumAkusticApplication().deviceManager()}
 {
     auto const spec = SineSweep{
         .from       = Hertz<double>{20.0},

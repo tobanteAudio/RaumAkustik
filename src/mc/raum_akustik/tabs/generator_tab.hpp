@@ -1,5 +1,7 @@
 #pragma once
 
+#include <mc/raum_akustik/tool/measurement_recorder.hpp>
+
 #include <juce_audio_utils/juce_audio_utils.h>
 #include <juce_gui_basics/juce_gui_basics.h>
 
@@ -12,7 +14,7 @@ struct GeneratorTab final
     , juce::ChangeListener
     , juce::ValueTree::Listener
 {
-    GeneratorTab();
+    explicit GeneratorTab(juce::AudioDeviceManager& audioDeviceManager);
     ~GeneratorTab() override = default;
 
     auto paint(juce::Graphics& g) -> void override;
@@ -23,6 +25,7 @@ struct GeneratorTab final
 
 private:
     juce::PropertyPanel _sweepSpecPanel{};
+    MeasurementRecorder _recorder;
     juce::Rectangle<int> _thumbnailBounds{};
     juce::Rectangle<int> _spectrumBounds{};
 

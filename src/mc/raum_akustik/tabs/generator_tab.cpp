@@ -112,7 +112,7 @@ static auto getSpectrumPath(juce::AudioBuffer<float> const& in, double fs, juce:
     return makePathFromAnalysis(amplitudes, float(fs), area.toFloat());
 }
 
-GeneratorTab::GeneratorTab()
+GeneratorTab::GeneratorTab(juce::AudioDeviceManager& deviceManager) : _recorder{deviceManager}
 {
     _valueTree.setProperty("from", 20.0, nullptr);
     _valueTree.setProperty("to", 20'000.0, nullptr);
@@ -135,6 +135,7 @@ GeneratorTab::GeneratorTab()
                                                                  juce::var{176400.0}, juce::var{192000.0}}},
     });
     addAndMakeVisible(_sweepSpecPanel);
+    addAndMakeVisible(_recorder);
     handleAsyncUpdate();
 }
 
@@ -184,9 +185,14 @@ auto GeneratorTab::paint(juce::Graphics& g) -> void
 auto GeneratorTab::resized() -> void
 {
     auto area = getLocalBounds();
-    _sweepSpecPanel.setBounds(area.removeFromLeft(area.proportionOfWidth(0.5)));
+
+    auto widgets = area.removeFromLeft(area.proportionOfWidth(0.5));
+    _sweepSpecPanel.setBounds(widgets.removeFromTop(widgets.proportionOfHeight(0.5)));
+    _recorder.setBounds(widgets);
+
     _thumbnailBounds = area.removeFromTop(area.proportionOfHeight(0.5));
     _spectrumBounds  = area;
+
     handleAsyncUpdate();
 }
 
