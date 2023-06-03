@@ -58,6 +58,8 @@ target_sources(${PROJECT_NAME}
         "tool/latency_tester.cpp"
         "tool/latency_tester.hpp"
 
+        "widget/level_meter.cpp"
+        "widget/level_meter.hpp"
         "widget/scrolling_waveform.cpp"
         "widget/scrolling_waveform.hpp"
 )

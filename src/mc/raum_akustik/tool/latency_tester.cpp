@@ -1,5 +1,7 @@
 #include "latency_tester.hpp"
 
+#include <juce_dsp/juce_dsp.h>
+
 namespace mc
 {
 
@@ -84,39 +86,41 @@ void LatencyTester::audioDeviceIOCallbackWithContext(float const* const* inputCh
 
     const juce::ScopedLock sl(lock);
 
-    if (testIsRunning)
+    if (!testIsRunning)
     {
-        auto* recordingBuffer = recordedSound.getWritePointer(0);
-        auto* playBuffer      = testSound.getReadPointer(0);
+        auto const output = juce::dsp::AudioBlock<float>{
+            outputChannelData,
+            static_cast<size_t>(numOutputChannels),
+            static_cast<size_t>(numSamples),
+        };
 
-        for (int i = 0; i < numSamples; ++i)
-        {
-            if (recordedSampleNum < recordedSound.getNumSamples())
-            {
-                auto inputSamp = 0.0f;
-
-                for (auto j = numInputChannels; --j >= 0;)
-                    if (inputChannelData[j] != nullptr) inputSamp += inputChannelData[j][i];
-
-                recordingBuffer[recordedSampleNum] = inputSamp;
-            }
-
-            ++recordedSampleNum;
-
-            auto outputSamp = (playingSampleNum < testSound.getNumSamples()) ? playBuffer[playingSampleNum] : 0.0f;
-
-            for (auto j = numOutputChannels; --j >= 0;)
-                if (outputChannelData[j] != nullptr) outputChannelData[j][i] = outputSamp;
-
-            ++playingSampleNum;
-        }
+        output.fill(0.0F);
+        return;
     }
-    else
+
+    auto* recordingBuffer = recordedSound.getWritePointer(0);
+    auto* playBuffer      = testSound.getReadPointer(0);
+
+    for (int i = 0; i < numSamples; ++i)
     {
-        // We need to clear the output buffers, in case they're full of junk..
-        for (int i = 0; i < numOutputChannels; ++i)
-            if (outputChannelData[i] != nullptr)
-                juce::zeromem(outputChannelData[i], (size_t)numSamples * sizeof(float));
+        if (recordedSampleNum < recordedSound.getNumSamples())
+        {
+            auto inputSamp = 0.0f;
+
+            for (auto j = numInputChannels; --j >= 0;)
+                if (inputChannelData[j] != nullptr) inputSamp += inputChannelData[j][i];
+
+            recordingBuffer[recordedSampleNum] = inputSamp;
+        }
+
+        ++recordedSampleNum;
+
+        auto outputSamp = (playingSampleNum < testSound.getNumSamples()) ? playBuffer[playingSampleNum] : 0.0f;
+
+        for (auto j = numOutputChannels; --j >= 0;)
+            if (outputChannelData[j] != nullptr) outputChannelData[j][i] = outputSamp;
+
+        ++playingSampleNum;
     }
 }
 

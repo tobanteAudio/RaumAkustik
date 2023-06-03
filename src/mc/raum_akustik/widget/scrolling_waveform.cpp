@@ -1,5 +1,7 @@
 #include "scrolling_waveform.hpp"
 
+#include <juce_dsp/juce_dsp.h>
+
 namespace mc
 {
 
@@ -25,18 +27,22 @@ auto ScrollingWaveform::audioDeviceIOCallbackWithContext(float const* const* inp
         float inputSample = 0;
 
         for (int chan = 0; chan < numInputChannels; ++chan)
+        {
             if (float const* inputChannel = inputChannelData[chan])
+            {
                 inputSample += inputChannel[i];  // find the sum of all the channels
-
-        inputSample *= 10.0f;  // boost the level to make it more easily visible.
+            }
+        }
 
         pushSample(&inputSample, 1);
     }
 
-    // We need to clear the output buffers before returning, in case they're full of junk..
-    for (int j = 0; j < numOutputChannels; ++j)
-        if (float* outputChannel = outputChannelData[j])
-            juce::zeromem(outputChannel, (size_t)numberOfSamples * sizeof(float));
+    auto const output = juce::dsp::AudioBlock<float>{
+        outputChannelData,
+        static_cast<size_t>(numOutputChannels),
+        static_cast<size_t>(numberOfSamples),
+    };
+    output.fill(0.0F);
 }
 
 }  // namespace mc

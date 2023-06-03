@@ -8,13 +8,19 @@ AudioInputView::AudioInputView(juce::AudioDeviceManager& deviceManager)
 {
     addAndMakeVisible(_deviceSelector);
     addAndMakeVisible(_latencyTester);
+    addAndMakeVisible(_levelMeter);
+
+    _deviceManager.addAudioCallback(&_levelMeter);
 }
+
+AudioInputView::~AudioInputView() { _deviceManager.removeAudioCallback(&_levelMeter); }
 
 auto AudioInputView::paint(juce::Graphics& /*g*/) -> void {}
 
 auto AudioInputView::resized() -> void
 {
     auto area = getLocalBounds();
+    _levelMeter.setBounds(area.removeFromRight(area.proportionOfWidth(0.05)));
     _deviceSelector.setBounds(area.removeFromLeft(area.proportionOfWidth(0.5)));
     _latencyTester.setBounds(area);
 }
