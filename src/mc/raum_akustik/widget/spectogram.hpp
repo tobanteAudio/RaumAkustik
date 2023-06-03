@@ -29,14 +29,15 @@ struct Spectogram
 private:
     enum
     {
-        fftOrder = 10,
-        fftSize  = 1 << fftOrder
+        fftOrder = 11,
+        fftSize  = 1 << fftOrder,
+        hopSize  = fftSize / 4,
     };
 
     juce::Image _image{juce::Image::RGB, 512, 512, true};
 
     juce::dsp::FFT _fft{fftOrder};
-    juce::dsp::WindowingFunction<float> _window{fftSize, juce::dsp::WindowingFunction<float>::hann};
+    juce::dsp::WindowingFunction<float> _window{fftSize, juce::dsp::WindowingFunction<float>::hamming};
 
     int _fifoIndex{0};
     std::atomic<bool> _nextBlockReady{false};

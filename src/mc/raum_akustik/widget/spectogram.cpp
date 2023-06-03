@@ -61,10 +61,15 @@ void Spectogram::pushNextSampleIntoFifo(float sample) noexcept
         {
             _fftBuffer.fill(0.0F);
             std::copy(_fifoBuffer.begin(), _fifoBuffer.end(), _fftBuffer.begin());
+
+            // TODO: Replace when AppleClang has shift_left
+            // std::shift_left(_fifoBuffer.begin(), _fifoBuffer.end(), hopSize);
+            std::rotate(_fifoBuffer.begin(), std::next(_fifoBuffer.begin(), hopSize), _fifoBuffer.end());
+
             _nextBlockReady.store(true);
         }
 
-        _fifoIndex = 0;
+        _fifoIndex -= hopSize;
     }
 
     _fifoBuffer[_fifoIndex++] = sample;
@@ -86,13 +91,24 @@ void Spectogram::drawNextLineOfSpectrogram()
     // show up the detail clearly
     auto const maxLevel = juce::FloatVectorOperations::findMinAndMax(_fftBuffer.data(), fftSize / 2);
 
+    auto const maxGain = juce::jmax(maxLevel.getEnd(), 1e-5f);
+    // auto const maxDB   = juce::Decibels::gainToDecibels(maxGain);
+    // auto const minDB   = juce::Decibels::gainToDecibels(0.0F);
+
     for (auto y = 1; y < imageHeight; ++y)
     {
         auto const skewedY = 1.0f - std::exp(std::log((float)y / (float)imageHeight) * 0.2f);
         auto const index   = juce::jlimit(0, fftSize / 2, (int)(skewedY * (int)fftSize / 2));
-        auto const level   = juce::jmap(_fftBuffer[index], 0.0f, juce::jmax(maxLevel.getEnd(), 1e-5f), 0.0f, 1.0f);
 
-        _image.setPixelAt(rightHandEdge, y, juce::Colour::fromHSV(level, 1.0f, level, 1.0f));
+        auto const gain      = _fftBuffer[index];
+        auto const levelGain = juce::jmap(gain, 0.0F, maxGain, 0.0f, 1.0f);
+        auto const colorGain = juce::Colour::fromHSV(levelGain, 1.0f, levelGain, 1.0f);
+
+        // auto const dB      = juce::Decibels::gainToDecibels(gain);
+        // auto const levelDB = juce::jmap(dB, minDB, maxDB, 0.0f, 1.0f);
+        // auto const colorDB = juce::Colour::fromHSV(levelDB, 1.0f, levelDB, 1.0f);
+
+        _image.setPixelAt(rightHandEdge, y, colorGain);
     }
 }
 
