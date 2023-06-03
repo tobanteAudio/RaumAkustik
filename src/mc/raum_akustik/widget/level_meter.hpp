@@ -27,6 +27,11 @@ private:
     std::atomic<float> _peak{0.0F};
     std::atomic<float> _rms{0.0F};
     juce::AudioBuffer<float> _rmsBuffer;
+
+    juce::ComboBox _range;
+    juce::ComboBox _unit;
+    juce::Slider _refVoltage{juce::Slider::IncDecButtons, juce::Slider::TextBoxRight};
+    juce::Rectangle<float> _meter{};
 };
 
 }  // namespace mc
