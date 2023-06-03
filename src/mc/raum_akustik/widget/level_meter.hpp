@@ -1,6 +1,7 @@
 #pragma once
 
 #include <juce_audio_utils/juce_audio_utils.h>
+#include <juce_dsp/juce_dsp.h>
 
 namespace mc
 {
@@ -26,11 +27,16 @@ struct LevelMeter final
 private:
     std::atomic<float> _peak{0.0F};
     std::atomic<float> _rms{0.0F};
+    std::atomic<float> _smoothValue{15.0F};
     juce::AudioBuffer<float> _rmsBuffer;
+    juce::dsp::StateVariableTPTFilter<float> _peakFilter{};
+    int _writePosition{0};
 
+    juce::Label _peakLabel;
     juce::ComboBox _range;
     juce::ComboBox _unit;
     juce::Slider _refVoltage{juce::Slider::IncDecButtons, juce::Slider::TextBoxRight};
+    juce::Slider _smooth{juce::Slider::IncDecButtons, juce::Slider::TextBoxRight};
     juce::Rectangle<float> _meter{};
 };
 

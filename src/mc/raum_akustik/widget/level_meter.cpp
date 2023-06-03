@@ -1,7 +1,5 @@
 #include "level_meter.hpp"
 
-#include <juce_dsp/juce_dsp.h>
-
 namespace mc
 {
 
@@ -21,6 +19,10 @@ template<typename Float>
 
 LevelMeter::LevelMeter()
 {
+    _peakLabel.setJustificationType(juce::Justification::centred);
+    _peakLabel.setColour(juce::Label::backgroundColourId, juce::Colours::black);
+    _peakLabel.setColour(juce::Label::textColourId, juce::Colours::white);
+
     _range.addItemList({"-96 dB", "-90 dB", "-84 dB", "-78 dB", "-72 dB", "-66 dB", "-60 dB"}, 1);
     _range.setSelectedId(1, juce::dontSendNotification);
 
@@ -30,9 +32,15 @@ LevelMeter::LevelMeter()
     _refVoltage.setRange({0.0001, 2.000}, 0.0001);
     _refVoltage.setValue(1.0, juce::dontSendNotification);
 
+    _smooth.setRange({1.0, 20.0}, 1.0);
+    _smooth.onValueChange = [this] { _smoothValue.store(static_cast<float>(_smooth.getValue())); };
+    _smooth.setValue(15.0, juce::sendNotification);
+
+    addAndMakeVisible(_peakLabel);
     addAndMakeVisible(_range);
     addAndMakeVisible(_unit);
     addAndMakeVisible(_refVoltage);
+    addAndMakeVisible(_smooth);
     startTimerHz(30);
 }
 
@@ -53,51 +61,85 @@ auto LevelMeter::paint(juce::Graphics& g) -> void
 
     if (unit < 2)
     {
-        for (auto i{6}; i < juce::roundToInt(-minDB); i += 6)
+        for (auto i{0}; i < juce::roundToInt(-minDB); i += 6)
         {
             auto const y = juce::roundToInt(dBToY(static_cast<float>(-i)));
             g.drawHorizontalLine(y, area.getX(), area.getRight());
         }
     }
 
-    auto const dbFS    = juce::Decibels::gainToDecibels(_peak.load());
-    auto const volts   = dBFSToVolts(dbFS, vRef);
-    auto const dbV     = voltsTodBV(volts, vRef);
-    auto const options = std::array<float, 3>{dBToY(dbFS), dBToY(dbV), voltsToY(volts)};
-    DBG(options[2]);
+    auto const peakDbFS  = juce::Decibels::gainToDecibels(_peak.load());
+    auto const peakVolts = dBFSToVolts(peakDbFS, vRef);
+    auto const peakDbV   = voltsTodBV(peakVolts, vRef);
+    auto const peaks     = std::array<float, 3>{dBToY(peakDbFS), dBToY(peakDbV), voltsToY(peakVolts)};
+
+    auto const rmsDbFS  = juce::Decibels::gainToDecibels(_rms.load());
+    auto const rmsVolts = dBFSToVolts(rmsDbFS, vRef);
+    auto const rmsDbV   = voltsTodBV(rmsVolts, vRef);
+    auto const rms      = std::array<float, 3>{dBToY(rmsDbFS), dBToY(rmsDbV), voltsToY(rmsVolts)};
+
+    g.setColour(juce::Colours::white.withAlpha(0.95F));
+    g.fillRect(area.withHeight(4.0F).withY(peaks[unit]));
 
     g.setColour(juce::Colours::white.withAlpha(0.75F));
-    g.fillRect(area.withTop(options[unit]));
+    g.fillRect(area.withTop(rms[unit]));
 }
 
 auto LevelMeter::resized() -> void
 {
     auto area         = getLocalBounds();
-    auto widgets      = area.removeFromBottom(area.proportionOfHeight(0.15));
-    auto widgetHeight = widgets.proportionOfHeight(0.33333);
+    auto widgets      = area.removeFromBottom(area.proportionOfHeight(0.2));
+    auto widgetHeight = widgets.proportionOfHeight(0.25);
 
+    _peakLabel.setBounds(area.removeFromTop(area.proportionOfHeight(0.075)));
     _range.setBounds(widgets.removeFromTop(widgetHeight));
     _unit.setBounds(widgets.removeFromTop(widgetHeight));
-    _refVoltage.setBounds(widgets);
+    _refVoltage.setBounds(widgets.removeFromTop(widgetHeight));
+    _smooth.setBounds(widgets);
 
     _meter = area.toFloat();
 }
 
-auto LevelMeter::timerCallback() -> void { repaint(); }
+auto LevelMeter::timerCallback() -> void
+{
+    if (_unit.getSelectedId() < 3)
+    {
+        auto const peakDB = juce::Decibels::gainToDecibels(_peak.load());
+        auto const label  = juce::String(peakDB, 2) + " " + _unit.getText();
+        _peakLabel.setText(label, juce::sendNotification);
+    }
+    else
+    {
+        auto const label = juce::String(_peak.load(), 2) + " " + _unit.getText();
+        _peakLabel.setText(label, juce::sendNotification);
+    }
+
+    repaint();
+}
 
 auto LevelMeter::audioDeviceAboutToStart(juce::AudioIODevice* device) -> void
 {
     auto const maxNumChannels = device->getActiveInputChannels().countNumberOfSetBits();
+    auto const blockSize      = device->getCurrentBufferSizeSamples();
     auto const sampleRate     = device->getCurrentSampleRate();
+    auto const blockRate      = sampleRate / blockSize;
+
+    if (maxNumChannels == 0) { return; }
+
     _rmsBuffer.setSize(maxNumChannels, juce::roundToInt(0.3 * sampleRate), false, true);
+    _peakFilter.prepare({blockRate, 1, 1});
+    _peakFilter.setType(juce::dsp::StateVariableTPTFilterType::lowpass);
+    _peakFilter.setCutoffFrequency(15.0F);
     _peak.store(0.0F);
     _rms.store(0.0F);
+    _writePosition = 0;
 }
 
 auto LevelMeter::audioDeviceStopped() -> void
 {
     _peak.store(0.0F);
     _rms.store(0.0F);
+    _peakFilter.reset();
 }
 
 auto LevelMeter::audioDeviceIOCallbackWithContext(float const* const* inputChannelData, int numInputChannels,
@@ -106,6 +148,8 @@ auto LevelMeter::audioDeviceIOCallbackWithContext(float const* const* inputChann
                                                   juce::AudioIODeviceCallbackContext const& context) -> void
 {
     juce::ignoreUnused(context);
+
+    if (numInputChannels == 0) { return; }
 
     auto const input = juce::dsp::AudioBlock<float const>{
         inputChannelData,
@@ -120,7 +164,21 @@ auto LevelMeter::audioDeviceIOCallbackWithContext(float const* const* inputChann
     };
 
     auto const minmax = input.findMinAndMax();
-    _peak.store(std::max(std::abs(minmax.getStart()), std::abs(minmax.getEnd())));
+    auto const peak   = std::max(std::abs(minmax.getStart()), std::abs(minmax.getEnd()));
+    _peakFilter.setCutoffFrequency(_smoothValue.load());
+    _peak.store(_peakFilter.processSample(0, peak));
+
+    for (auto i{0}; i < numberOfSamples; ++i)
+    {
+        for (auto channel{0}; channel < numInputChannels; ++channel)
+        {
+            _rmsBuffer.setSample(channel, _writePosition, inputChannelData[channel][i]);
+        }
+
+        _writePosition = (_writePosition + 1) % numberOfSamples;
+    }
+
+    _rms.store(_rmsBuffer.getRMSLevel(0, 0, _rmsBuffer.getNumSamples()));
 
     output.fill(0.0F);
 }
