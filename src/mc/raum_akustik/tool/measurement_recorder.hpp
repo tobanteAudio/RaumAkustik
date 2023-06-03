@@ -181,7 +181,6 @@ public:
     MeasurementRecorder(juce::AudioDeviceManager& audioDeviceManager) : audioDeviceManager{audioDeviceManager}
     {
         setOpaque(true);
-        addAndMakeVisible(liveAudioScroller);
 
         addAndMakeVisible(explanationLabel);
         explanationLabel.setFont(juce::Font(15.0f, juce::Font::plain));
@@ -204,17 +203,12 @@ public:
 
         addAndMakeVisible(recordingThumbnail);
 
-        audioDeviceManager.addAudioCallback(&liveAudioScroller);
         audioDeviceManager.addAudioCallback(&recorder);
 
         setSize(500, 500);
     }
 
-    ~MeasurementRecorder() override
-    {
-        audioDeviceManager.removeAudioCallback(&recorder);
-        audioDeviceManager.removeAudioCallback(&liveAudioScroller);
-    }
+    ~MeasurementRecorder() override { audioDeviceManager.removeAudioCallback(&recorder); }
 
     void paint(juce::Graphics& g) override
     {
@@ -225,7 +219,6 @@ public:
     {
         auto area = getLocalBounds();
 
-        liveAudioScroller.setBounds(area.removeFromTop(80).reduced(8));
         recordingThumbnail.setBounds(area.removeFromTop(80).reduced(8));
         recordButton.setBounds(area.removeFromTop(36).removeFromLeft(140).reduced(8));
         explanationLabel.setBounds(area.reduced(8));
@@ -234,7 +227,6 @@ public:
 private:
     juce::AudioDeviceManager& audioDeviceManager;
 
-    ScrollingWaveform liveAudioScroller;
     RecordingThumbnail recordingThumbnail;
     AudioRecorder recorder{recordingThumbnail.getAudioThumbnail()};
 

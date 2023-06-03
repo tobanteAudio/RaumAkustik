@@ -31,7 +31,12 @@ MainComponent::MainComponent()
     writeToWavFile(juce::File{R"(C:\Developer\sweep.wav)"}, sweep, spec.sampleRate, 24);
 
     addAndMakeVisible(_menuBar);
+    addAndMakeVisible(_levelMeter);
+    addAndMakeVisible(_waveform);
     addAndMakeVisible(_tabs);
+
+    raumAkusticApplication().deviceManager().addAudioCallback(&_levelMeter);
+    raumAkusticApplication().deviceManager().addAudioCallback(&_waveform);
 
     _commandManager.registerAllCommandsForTarget(this);
     addKeyListener(_commandManager.getKeyMappings());
@@ -44,7 +49,12 @@ MainComponent::MainComponent()
     reloadUI();
 }
 
-MainComponent::~MainComponent() { setLookAndFeel(nullptr); }
+MainComponent::~MainComponent()
+{
+    raumAkusticApplication().deviceManager().removeAudioCallback(&_levelMeter);
+    raumAkusticApplication().deviceManager().removeAudioCallback(&_waveform);
+    setLookAndFeel(nullptr);
+}
 
 auto MainComponent::paint(juce::Graphics& g) -> void
 {
@@ -55,6 +65,8 @@ auto MainComponent::resized() -> void
 {
     auto area = getLocalBounds();
     _menuBar.setBounds(area.removeFromTop(juce::LookAndFeel::getDefaultLookAndFeel().getDefaultMenuBarHeight()));
+    _waveform.setBounds(area.removeFromTop(area.proportionOfHeight(0.075)));
+    _levelMeter.setBounds(area.removeFromRight(area.proportionOfWidth(0.075)));
     _tabs.setBounds(area.reduced(10));
 }
 

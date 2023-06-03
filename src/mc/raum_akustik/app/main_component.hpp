@@ -7,6 +7,8 @@
 #include <mc/raum_akustik/tabs/audio_input_tab.hpp>
 #include <mc/raum_akustik/tabs/first_reflections_tab.hpp>
 #include <mc/raum_akustik/tabs/generator_tab.hpp>
+#include <mc/raum_akustik/widget/level_meter.hpp>
+#include <mc/raum_akustik/widget/scrolling_waveform.hpp>
 
 #include <juce_gui_extra/juce_gui_extra.h>
 
@@ -40,6 +42,8 @@ private:
     LookAndFeel _lnf{};
 
     MenuBar _menuBar{_commandManager};
+    LevelMeter _levelMeter;
+    ScrollingWaveform _waveform;
 
     juce::TabbedComponent _tabs{juce::TabbedButtonBar::TabsAtTop};
     AudioInputView _audioInputView;

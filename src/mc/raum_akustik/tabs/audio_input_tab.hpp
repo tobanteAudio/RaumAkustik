@@ -2,7 +2,6 @@
 
 #include <mc/raum_akustik/tool/latency_tester.hpp>
 #include <mc/raum_akustik/tool/noise_generator.hpp>
-#include <mc/raum_akustik/widget/level_meter.hpp>
 #include <mc/raum_akustik/widget/spectogram.hpp>
 
 #include <juce_audio_devices/juce_audio_devices.h>
@@ -25,7 +24,6 @@ private:
     juce::AudioDeviceSelectorComponent _deviceSelector;
     LatencyTesterEditor _latencyTester{_deviceManager};
     Spectogram _spectogram;
-    LevelMeter _levelMeter;
     NoiseGenerator _noise;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(AudioInputView)  // NOLINT

@@ -231,8 +231,6 @@ LatencyTesterEditor::LatencyTesterEditor(juce::AudioDeviceManager& audioDeviceMa
 {
     setOpaque(true);
 
-    addAndMakeVisible(liveAudioScroller);
-
     addAndMakeVisible(resultsBox);
     resultsBox.setMultiLine(true);
     resultsBox.setReturnKeyStartsNewLine(true);
@@ -253,14 +251,11 @@ LatencyTesterEditor::LatencyTesterEditor(juce::AudioDeviceManager& audioDeviceMa
     addAndMakeVisible(startTestButton);
     startTestButton.onClick = [this] { startTest(); };
 
-    audioDeviceManager.addAudioCallback(&liveAudioScroller);
-
     setSize(500, 500);
 }
 
 LatencyTesterEditor::~LatencyTesterEditor()
 {
-    audioDeviceManager.removeAudioCallback(&liveAudioScroller);
     audioDeviceManager.removeAudioCallback(latencyTester.get());
     latencyTester.reset();
 }
@@ -281,13 +276,8 @@ void LatencyTesterEditor::paint(juce::Graphics& g) { g.fillAll(findColour(juce::
 void LatencyTesterEditor::resized()
 {
     auto b = getLocalBounds().reduced(5);
-
-    liveAudioScroller.setBounds(b.removeFromTop(b.getHeight() / 4));
-    b.removeFromTop(10);
-
     startTestButton.setBounds(b.removeFromBottom(b.getHeight() / 10));
     b.removeFromBottom(10);
-
     resultsBox.setBounds(b);
 }
 
