@@ -61,6 +61,8 @@ target_sources(${PROJECT_NAME}
         "tool/latency_tester.hpp"
         "tool/measurement_recorder.cpp"
         "tool/measurement_recorder.hpp"
+        "tool/noise_generator.cpp"
+        "tool/noise_generator.hpp"
 
         "widget/level_meter.cpp"
         "widget/level_meter.hpp"

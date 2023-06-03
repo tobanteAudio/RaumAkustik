@@ -10,15 +10,18 @@ AudioInputView::AudioInputView(juce::AudioDeviceManager& deviceManager)
     addAndMakeVisible(_latencyTester);
     addAndMakeVisible(_spectogram);
     addAndMakeVisible(_levelMeter);
+    addAndMakeVisible(_noise);
 
     _deviceManager.addAudioCallback(&_levelMeter);
     _deviceManager.addAudioCallback(&_spectogram);
+    _deviceManager.addAudioCallback(&_noise);
 }
 
 AudioInputView::~AudioInputView()
 {
     _deviceManager.removeAudioCallback(&_levelMeter);
     _deviceManager.removeAudioCallback(&_spectogram);
+    _deviceManager.removeAudioCallback(&_noise);
 }
 
 auto AudioInputView::paint(juce::Graphics& /*g*/) -> void {}
@@ -27,7 +30,11 @@ auto AudioInputView::resized() -> void
 {
     auto area = getLocalBounds();
     _levelMeter.setBounds(area.removeFromRight(area.proportionOfWidth(0.075)));
-    _deviceSelector.setBounds(area.removeFromLeft(area.proportionOfWidth(0.5)));
+
+    auto left = area.removeFromLeft(area.proportionOfWidth(0.5));
+    _deviceSelector.setBounds(left.removeFromTop(left.proportionOfHeight(0.75)));
+    _noise.setBounds(left);
+
     _spectogram.setBounds(area.removeFromTop(area.proportionOfHeight(0.5)));
     _latencyTester.setBounds(area);
 }
