@@ -7,10 +7,16 @@ AudioInputView::AudioInputView(juce::AudioDeviceManager& deviceManager)
     : _deviceManager{deviceManager}, _deviceSelector{deviceManager, 0, 256, 0, 256, true, true, true, false}
 {
     addAndMakeVisible(_deviceSelector);
+    addAndMakeVisible(_latencyTester);
 }
 
 auto AudioInputView::paint(juce::Graphics& /*g*/) -> void {}
 
-auto AudioInputView::resized() -> void { _deviceSelector.setBounds(getLocalBounds()); }
+auto AudioInputView::resized() -> void
+{
+    auto area = getLocalBounds();
+    _deviceSelector.setBounds(area.removeFromLeft(area.proportionOfWidth(0.5)));
+    _latencyTester.setBounds(area);
+}
 
 }  // namespace mc
