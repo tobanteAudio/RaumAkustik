@@ -127,8 +127,8 @@ void MeasurementRecorder::audioDeviceIOCallbackWithContext(float const* const* i
     if (nextSampleNum >= lastSample) { _doneRecording.store(true); }
 }
 
-MeasurementRecorderEditor::MeasurementRecorderEditor(juce::AudioDeviceManager& audioDeviceManager)
-    : audioDeviceManager{audioDeviceManager}
+MeasurementRecorderEditor::MeasurementRecorderEditor(juce::AudioDeviceManager& deviceManager)
+    : audioDeviceManager{deviceManager}
 {
     setOpaque(true);
 

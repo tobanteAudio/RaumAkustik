@@ -44,15 +44,7 @@ auto NoiseGenerator::audioDeviceIOCallbackWithContext(float const* const* inputC
                                                       int numberOfSamples,
                                                       juce::AudioIODeviceCallbackContext const& context) -> void
 {
-    juce::ignoreUnused(context);
-
-    if (numInputChannels == 0) { return; }
-
-    auto const input = juce::dsp::AudioBlock<float const>{
-        inputChannelData,
-        static_cast<size_t>(numInputChannels),
-        static_cast<size_t>(numberOfSamples),
-    };
+    juce::ignoreUnused(context, inputChannelData, numInputChannels);
 
     auto const output = juce::dsp::AudioBlock<float>{
         outputChannelData,

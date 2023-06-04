@@ -72,7 +72,7 @@ void Spectogram::pushNextSampleIntoFifo(float sample) noexcept
         _fifoIndex -= hopSize;
     }
 
-    _fifoBuffer[_fifoIndex++] = sample;
+    _fifoBuffer[static_cast<size_t>(_fifoIndex++)] = sample;
 }
 
 void Spectogram::drawNextLineOfSpectrogram()
@@ -98,7 +98,7 @@ void Spectogram::drawNextLineOfSpectrogram()
     for (auto y = 1; y < imageHeight; ++y)
     {
         auto const skewedY = 1.0f - std::exp(std::log((float)y / (float)imageHeight) * 0.2f);
-        auto const index   = juce::jlimit(0, fftSize / 2, (int)(skewedY * (int)fftSize / 2));
+        auto const index   = static_cast<size_t>(juce::jlimit(0, fftSize / 2, (int)(skewedY * (int)fftSize / 2)));
 
         auto const gain      = _fftBuffer[index];
         auto const levelGain = juce::jmap(gain, 0.0F, maxGain, 0.0f, 1.0f);

@@ -226,8 +226,8 @@ int LatencyTester::calculateLatencySamples() const
     return (recordedStart < 0) ? -1 : (recordedStart - referenceStart);
 }
 
-LatencyTesterEditor::LatencyTesterEditor(juce::AudioDeviceManager& audioDeviceManager)
-    : audioDeviceManager{audioDeviceManager}
+LatencyTesterEditor::LatencyTesterEditor(juce::AudioDeviceManager& deviceManager)
+    : audioDeviceManager{deviceManager}
 {
     setOpaque(true);
 

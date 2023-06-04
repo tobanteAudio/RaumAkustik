@@ -18,8 +18,8 @@ struct LevelMeter final
     auto resized() -> void override;
     auto timerCallback() -> void override;
 
-    auto audioDeviceAboutToStart(juce::AudioIODevice*) -> void;
-    auto audioDeviceStopped() -> void;
+    auto audioDeviceAboutToStart(juce::AudioIODevice*) -> void override;
+    auto audioDeviceStopped() -> void override;
     auto audioDeviceIOCallbackWithContext(float const* const* inputChannelData, int numInputChannels,
                                           float* const* outputChannelData, int numOutputChannels, int numberOfSamples,
                                           juce::AudioIODeviceCallbackContext const& context) -> void override;

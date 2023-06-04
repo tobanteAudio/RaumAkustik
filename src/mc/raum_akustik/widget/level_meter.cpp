@@ -79,10 +79,10 @@ auto LevelMeter::paint(juce::Graphics& g) -> void
     auto const rms      = std::array<float, 3>{dBToY(rmsDbFS), dBToY(rmsDbV), voltsToY(rmsVolts)};
 
     g.setColour(juce::Colours::white.withAlpha(0.95F));
-    g.fillRect(area.withHeight(4.0F).withY(peaks[unit]));
+    g.fillRect(area.withHeight(4.0F).withY(peaks[static_cast<size_t>(unit)]));
 
     g.setColour(juce::Colours::white.withAlpha(0.75F));
-    g.fillRect(area.withTop(rms[unit]));
+    g.fillRect(area.withTop(rms[static_cast<size_t>(unit)]));
 }
 
 auto LevelMeter::resized() -> void
