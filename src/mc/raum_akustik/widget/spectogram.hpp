@@ -43,8 +43,6 @@ private:
     std::atomic<bool> _nextBlockReady{false};
     std::array<float, fftSize * 2> _fftBuffer{};
     std::array<float, fftSize> _fifoBuffer{};
-
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(Spectogram)
 };
 
 }  // namespace mc

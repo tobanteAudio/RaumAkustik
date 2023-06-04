@@ -25,7 +25,7 @@ struct GeneratorTab final
 
 private:
     juce::PropertyPanel _sweepSpecPanel{};
-    MeasurementRecorder _recorder;
+    MeasurementRecorderEditor _recorder;
     juce::Rectangle<int> _thumbnailBounds{};
     juce::Rectangle<int> _spectrumBounds{};
 

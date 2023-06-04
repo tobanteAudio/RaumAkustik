@@ -1,34 +1,27 @@
 #include "main_component.hpp"
 
-#include <mc/generator/sweep.hpp>
 #include <mc/raum_akustik/app/application.hpp>
 #include <mc/raum_akustik/app/command_ids.hpp>
 
 namespace mc
 {
-static auto writeToWavFile(juce::File const& file, std::vector<float> const& buffer, double fs, int bits = 24) -> bool
-{
-    if (file.existsAsFile()) { file.deleteFile(); }
-    auto stream = file.createOutputStream();
-    auto wav    = juce::WavAudioFormat{};
-    auto writer = std::unique_ptr<juce::AudioFormatWriter>{wav.createWriterFor(stream.get(), fs, 1, bits, {}, 0)};
-    if (writer) { juce::ignoreUnused(stream.release()); }
-    auto channels = std::array<float const*, 1>{buffer.data()};
-    return writer->writeFromFloatArrays(channels.data(), 1, static_cast<int>(buffer.size()));
-}
+// static auto writeToWavFile(juce::File const& file, std::vector<float> const& buffer, double fs, int bits = 24) ->
+// bool
+// {
+//     if (file.existsAsFile()) { file.deleteFile(); }
+//     auto stream = file.createOutputStream();
+//     auto wav    = juce::WavAudioFormat{};
+//     auto writer = std::unique_ptr<juce::AudioFormatWriter>{wav.createWriterFor(stream.get(), fs, 1, bits, {}, 0)};
+//     if (writer) { juce::ignoreUnused(stream.release()); }
+//     auto channels = std::array<float const*, 1>{buffer.data()};
+//     return writer->writeFromFloatArrays(channels.data(), 1, static_cast<int>(buffer.size()));
+// }
 
 MainComponent::MainComponent()
     : _audioInputView{raumAkusticApplication().deviceManager()}, _generatorTab{raumAkusticApplication().deviceManager()}
 {
-    auto const spec = SineSweep{
-        .from       = Hertz<double>{20.0},
-        .to         = Hertz<double>{20'000.0},
-        .curve      = SineSweepCurve::Logarithmic,
-        .duration   = std::chrono::milliseconds{10'000},
-        .sampleRate = 192'000.0,
-    };
-    auto const sweep = generate(spec);
-    writeToWavFile(juce::File{R"(C:\Developer\sweep.wav)"}, sweep, spec.sampleRate, 24);
+
+    // writeToWavFile(juce::File{R"(C:\Developer\sweep.wav)"}, sweep, spec.sampleRate, 24);
 
     addAndMakeVisible(_menuBar);
     addAndMakeVisible(_levelMeter);
