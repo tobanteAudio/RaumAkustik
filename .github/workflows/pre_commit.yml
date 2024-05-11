@@ -1,4 +1,4 @@
-name: Pre Commit Hooks
+name: Pre Commit
 
 on: [push, pull_request]
 
@@ -6,14 +6,13 @@ jobs:
   check:
     runs-on: ubuntu-22.04
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           submodules: true
           lfs: true
 
       - name: Install dependencies
         run: |
-          sudo snap install shellcheck shfmt
           python3 -m pip install --upgrade pip
           pip3 install -r requirements.txt
 
