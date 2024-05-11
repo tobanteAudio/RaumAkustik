@@ -1,15 +1,15 @@
-#include "Frequency.hpp"
+#include "frequency.hpp"
 
 #include <catch2/catch_approx.hpp>
 #include <catch2/catch_test_macros.hpp>
 
-TEST_CASE("RaumAkustik: oactaveSubdivision", "[RaumAkustik]")
+TEST_CASE("RaumAkustik: oactaveSubdivision", "")
 {
     REQUIRE(mc::oactaveSubdivision(mc::Hertz<double>{50.0}, 6, 1).number() == Catch::Approx(56.1231024));
     REQUIRE(mc::oactaveSubdivision(mc::Hertz<double>{50.0}, 6, 2).number() == Catch::Approx(62.9960524));
 }
 
-TEST_CASE("RaumAkustik: frequencyToAngularVelocity", "[RaumAkustik]")
+TEST_CASE("RaumAkustik: frequencyToAngularVelocity", "")
 {
     REQUIRE(mc::frequencyToAngularVelocity(mc::Hertz<double>{0.0}).number() == Catch::Approx(0.0));
     REQUIRE(mc::frequencyToAngularVelocity(mc::Hertz<double>{50.0}).number() == Catch::Approx(314.15927));

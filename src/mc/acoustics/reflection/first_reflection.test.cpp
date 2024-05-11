@@ -27,7 +27,7 @@ static constexpr auto Room = mc::RoomLayout{
     },
 };
 
-TEST_CASE("RaumAkustik: firstReflections", "[RaumAkustik]")
+TEST_CASE("RaumAkustik: firstReflections", "")
 {
     auto reflections = std::array<mc::FirstReflection, 2>{};
     mc::firstReflections(begin(Room.speakers), end(Room.speakers), begin(reflections), Room.dimensions,
