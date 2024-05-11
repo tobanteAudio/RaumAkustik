@@ -9,8 +9,7 @@
 
 #include <span>
 
-namespace ra
-{
+namespace ra {
 
 struct FrequencyAndAmplitude
 {
@@ -40,15 +39,14 @@ static auto amplitudeToY(float amplitude, juce::Rectangle<float> const bounds) -
     return juce::jmap(dB, infinity, 0.0f, bounds.getBottom(), bounds.getY());
 }
 
-static auto getFrequencyAndAmplitude(std::span<std::complex<float> const> bins,
-                                     double sampleRate) -> std::vector<FrequencyAndAmplitude>
+static auto getFrequencyAndAmplitude(std::span<std::complex<float> const> bins, double sampleRate)
+    -> std::vector<FrequencyAndAmplitude>
 {
     auto result = std::vector<FrequencyAndAmplitude>{};
     result.reserve(bins.size());
 
     auto const fftSize = (bins.size() - 1) * 2;
-    for (auto i{0UL}; i < bins.size(); ++i)
-    {
+    for (auto i{0UL}; i < bins.size(); ++i) {
         auto const bin       = bins[i];
         auto const frequency = frequencyForBin<float>(fftSize, i, sampleRate);
         auto const amplitude = std::abs(bin) / static_cast<float>(fftSize);
@@ -58,15 +56,19 @@ static auto getFrequencyAndAmplitude(std::span<std::complex<float> const> bins,
     return result;
 }
 
-static auto makePathFromAnalysis(std::span<FrequencyAndAmplitude const> analysis, float fs,
-                                 juce::Rectangle<float> bounds) -> juce::Path
+static auto
+makePathFromAnalysis(std::span<FrequencyAndAmplitude const> analysis, float fs, juce::Rectangle<float> bounds)
+    -> juce::Path
 {
     auto const size = static_cast<int>(analysis.size());
-    if (size == 0) return {};
+    if (size == 0)
+        return {};
 
     auto frequencyLess = [](auto bin, auto target) { return bin.frequency < target; };
     auto first         = std::lower_bound(begin(analysis), end(analysis), 1.0F, frequencyLess);
-    if (first == end(analysis)) { return {}; }
+    if (first == end(analysis)) {
+        return {};
+    }
 
     auto p = juce::Path{};
     p.preallocateSpace(8 + size * 3);
@@ -75,8 +77,7 @@ static auto makePathFromAnalysis(std::span<FrequencyAndAmplitude const> analysis
     auto const startY = amplitudeToY(first->amplitude, bounds);
     p.startNewSubPath(bounds.getX() + frequencyToX(1.0f, fs * 0.5F, first->frequency, width), startY);
 
-    for (; first != end(analysis); ++first)
-    {
+    for (; first != end(analysis); ++first) {
         auto const y = amplitudeToY(first->amplitude, bounds);
         p.lineTo(bounds.getX() + frequencyToX(1.0f, fs * 0.5F, first->frequency, width), y);
     }
@@ -128,11 +129,18 @@ GeneratorTab::GeneratorTab(juce::AudioDeviceManager& deviceManager) : _recorder{
         new juce::SliderPropertyComponent{_to.getPropertyAsValue(), "To (Hz)", 0.0, 20'000.0, 1.0},
         new juce::BooleanPropertyComponent{_curve.getPropertyAsValue(), "Curve", "Lin/Log"},
         new juce::SliderPropertyComponent{_duration.getPropertyAsValue(), "Duration (ms)", 0.0, 20'000.0, 1.0},
-        new juce::ChoicePropertyComponent{_sampleRate.getPropertyAsValue(), "Sample-rate (Hz)",
-                                          juce::StringArray{"44100", "48000", "88200", "96000", "176400", "192000"},
-                                          juce::Array<juce::var>{juce::var{44100.0}, juce::var{48000.0},
-                                                                 juce::var{88200.0}, juce::var{96000.0},
-                                                                 juce::var{176400.0}, juce::var{192000.0}}},
+        new juce::ChoicePropertyComponent{
+                                          _sampleRate.getPropertyAsValue(),
+                                          "Sample-rate (Hz)", juce::StringArray{"44100", "48000", "88200", "96000", "176400", "192000"},
+                                          juce::Array<juce::var>{
+                juce::var{44100.0},
+                juce::var{48000.0},
+                juce::var{88200.0},
+                juce::var{96000.0},
+                juce::var{176400.0},
+                juce::var{192000.0}
+            }
+        },
     });
     addAndMakeVisible(_sweepSpecPanel);
     addAndMakeVisible(_recorder);
@@ -151,14 +159,12 @@ auto GeneratorTab::paint(juce::Graphics& g) -> void
     auto const b       = _spectrumBounds.toFloat();
     auto const maxFreq = static_cast<float>(static_cast<double>(_sampleRate)) / 2.0F;
 
-    for (auto const decade : {10.0F, 100.0F, 1'000.0F})
-    {
+    for (auto const decade : {10.0F, 100.0F, 1'000.0F}) {
         auto x0 = juce::roundToInt(b.getX() + frequencyToX(1.0F, maxFreq, decade, b.getWidth()));
         g.setColour(juce::Colours::white.withAlpha(0.5F));
         g.drawVerticalLine(x0, b.getY(), b.getBottom());
 
-        for (auto i{1}; i < 10; ++i)
-        {
+        for (auto i{1}; i < 10; ++i) {
             auto const d = decade * static_cast<float>(i);
             auto const x = juce::roundToInt(b.getX() + frequencyToX(1.0F, maxFreq, d, b.getWidth()));
             g.setColour(juce::Colours::white.withAlpha(0.25F));
@@ -170,8 +176,7 @@ auto GeneratorTab::paint(juce::Graphics& g) -> void
     g.setColour(juce::Colours::white.withAlpha(0.5F));
     g.drawVerticalLine(x0, b.getY(), b.getBottom());
 
-    for (auto i{0}; i < 90; i += 6)
-    {
+    for (auto i{0}; i < 90; i += 6) {
         auto const amplitude = juce::Decibels::decibelsToGain(static_cast<float>(-i));
         auto const y         = juce::roundToInt(amplitudeToY(amplitude, b));
         g.setColour(juce::Colours::white.withAlpha(0.25F));

@@ -2,8 +2,7 @@
 
 #include <juce_dsp/juce_dsp.h>
 
-namespace ra
-{
+namespace ra {
 
 LatencyTester::LatencyTester(juce::TextEditor& editorBox) : resultsBox(editorBox) {}
 
@@ -24,8 +23,7 @@ void LatencyTester::beginTest()
 
 void LatencyTester::timerCallback()
 {
-    if (testIsRunning && recordedSampleNum >= recordedSound.getNumSamples())
-    {
+    if (testIsRunning && recordedSampleNum >= recordedSound.getNumSamples()) {
         testIsRunning = false;
         stopTimer();
 
@@ -42,8 +40,7 @@ juce::String LatencyTester::getMessageDescribingResult(int latencySamples)
 {
     juce::String message;
 
-    if (latencySamples >= 0)
-    {
+    if (latencySamples >= 0) {
         message << juce::newLine << "Results (" << bufferSize << "): " << juce::newLine << latencySamples
                 << " samples (" << juce::String(latencySamples * 1000.0 / sampleRate, 1) << " milliseconds)"
                 << juce::newLine << "The audio device reports an input latency of " << deviceInputLatency
@@ -52,9 +49,7 @@ juce::String LatencyTester::getMessageDescribingResult(int latencySamples)
                 << " samples ("
                 << juce::String((latencySamples - deviceInputLatency - deviceOutputLatency) * 1000.0 / sampleRate, 2)
                 << " milliseconds)";
-    }
-    else
-    {
+    } else {
         message << juce::newLine << "Couldn't detect the test signal!!" << juce::newLine
                 << "Make sure there's no background noise that might be confusing it..";
     }
@@ -78,16 +73,20 @@ void LatencyTester::audioDeviceAboutToStart(juce::AudioIODevice* device)
 
 void LatencyTester::audioDeviceStopped() {}
 
-void LatencyTester::audioDeviceIOCallbackWithContext(float const* const* inputChannelData, int numInputChannels,
-                                                     float* const* outputChannelData, int numOutputChannels,
-                                                     int numSamples, juce::AudioIODeviceCallbackContext const& context)
+void LatencyTester::audioDeviceIOCallbackWithContext(
+    float const* const* inputChannelData,
+    int numInputChannels,
+    float* const* outputChannelData,
+    int numOutputChannels,
+    int numSamples,
+    juce::AudioIODeviceCallbackContext const& context
+)
 {
     ignoreUnused(context);
 
     juce::ScopedLock const sl(lock);
 
-    if (!testIsRunning)
-    {
+    if (!testIsRunning) {
         auto const output = juce::dsp::AudioBlock<float>{
             outputChannelData,
             static_cast<size_t>(numOutputChannels),
@@ -101,14 +100,13 @@ void LatencyTester::audioDeviceIOCallbackWithContext(float const* const* inputCh
     auto* recordingBuffer = recordedSound.getWritePointer(0);
     auto* playBuffer      = testSound.getReadPointer(0);
 
-    for (int i = 0; i < numSamples; ++i)
-    {
-        if (recordedSampleNum < recordedSound.getNumSamples())
-        {
+    for (int i = 0; i < numSamples; ++i) {
+        if (recordedSampleNum < recordedSound.getNumSamples()) {
             auto inputSamp = 0.0f;
 
             for (auto j = numInputChannels; --j >= 0;)
-                if (inputChannelData[j] != nullptr) inputSamp += inputChannelData[j][i];
+                if (inputChannelData[j] != nullptr)
+                    inputSamp += inputChannelData[j][i];
 
             recordingBuffer[recordedSampleNum] = inputSamp;
         }
@@ -118,7 +116,8 @@ void LatencyTester::audioDeviceIOCallbackWithContext(float const* const* inputCh
         auto outputSamp = (playingSampleNum < testSound.getNumSamples()) ? playBuffer[playingSampleNum] : 0.0f;
 
         for (auto j = numOutputChannels; --j >= 0;)
-            if (outputChannelData[j] != nullptr) outputChannelData[j][i] = outputSamp;
+            if (outputChannelData[j] != nullptr)
+                outputChannelData[j][i] = outputSamp;
 
         ++playingSampleNum;
     }
@@ -141,8 +140,7 @@ void LatencyTester::createTestSound()
     int spikePos   = 0;
     int spikeDelta = 50;
 
-    while (spikePos < length - 1)
-    {
+    while (spikePos < length - 1) {
         spikePositions.add(spikePos);
 
         testSound.setSample(0, spikePos, 0.99f);
@@ -166,12 +164,10 @@ int LatencyTester::findOffsetOfSpikes(juce::AudioBuffer<float> const& buffer) co
     auto runningAverage = 0.0;
     int lastSpike       = 0;
 
-    for (int i = 0; i < buffer.getNumSamples() - 10; ++i)
-    {
+    for (int i = 0; i < buffer.getNumSamples() - 10; ++i) {
         auto samp = std::abs(s[i]);
 
-        if (samp > runningAverage * minSpikeLevel && i > lastSpike + 20)
-        {
+        if (samp > runningAverage * minSpikeLevel && i > lastSpike + 20) {
             lastSpike = i;
             spikesFound.add(i);
         }
@@ -182,15 +178,14 @@ int LatencyTester::findOffsetOfSpikes(juce::AudioBuffer<float> const& buffer) co
     int bestMatch       = -1;
     auto bestNumMatches = spikePositions.size() / 3;  // the minimum number of matches required
 
-    if (spikesFound.size() < bestNumMatches) return -1;
+    if (spikesFound.size() < bestNumMatches)
+        return -1;
 
-    for (int offsetToTest = 0; offsetToTest < buffer.getNumSamples() - 2048; ++offsetToTest)
-    {
+    for (int offsetToTest = 0; offsetToTest < buffer.getNumSamples() - 2048; ++offsetToTest) {
         int numMatchesHere = 0;
         int foundIndex     = 0;
 
-        for (int refIndex = 0; refIndex < spikePositions.size(); ++refIndex)
-        {
+        for (int refIndex = 0; refIndex < spikePositions.size(); ++refIndex) {
             auto referenceSpike = spikePositions.getUnchecked(refIndex) + offsetToTest;
             int spike           = 0;
 
@@ -202,12 +197,12 @@ int LatencyTester::findOffsetOfSpikes(juce::AudioBuffer<float> const& buffer) co
                 ++numMatchesHere;
         }
 
-        if (numMatchesHere > bestNumMatches)
-        {
+        if (numMatchesHere > bestNumMatches) {
             bestNumMatches = numMatchesHere;
             bestMatch      = offsetToTest;
 
-            if (numMatchesHere == spikePositions.size()) break;
+            if (numMatchesHere == spikePositions.size())
+                break;
         }
     }
 
@@ -261,8 +256,7 @@ LatencyTesterEditor::~LatencyTesterEditor()
 
 void LatencyTesterEditor::startTest()
 {
-    if (latencyTester.get() == nullptr)
-    {
+    if (latencyTester.get() == nullptr) {
         latencyTester.reset(new LatencyTester(resultsBox));
         audioDeviceManager.addAudioCallback(latencyTester.get());
     }

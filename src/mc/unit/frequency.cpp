@@ -5,8 +5,7 @@
 #include <cmath>
 #include <numbers>
 
-namespace ra
-{
+namespace ra {
 
 auto oactaveSubdivision(Hertz<double> startFrequency, double numSubdivisions, double index) -> Hertz<double>
 {

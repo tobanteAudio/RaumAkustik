@@ -1,7 +1,6 @@
 #include "level_meter.hpp"
 
-namespace ra
-{
+namespace ra {
 
 // V = Vmax * 10^(dBFS / 20)
 template<typename Float>
@@ -59,10 +58,8 @@ auto LevelMeter::paint(juce::Graphics& g) -> void
 
     auto const unit = _unit.getSelectedId() - 1;
 
-    if (unit < 2)
-    {
-        for (auto i{0}; i < juce::roundToInt(-minDB); i += 6)
-        {
+    if (unit < 2) {
+        for (auto i{0}; i < juce::roundToInt(-minDB); i += 6) {
             auto const y = juce::roundToInt(dBToY(static_cast<float>(-i)));
             g.drawHorizontalLine(y, area.getX(), area.getRight());
         }
@@ -102,14 +99,11 @@ auto LevelMeter::resized() -> void
 
 auto LevelMeter::timerCallback() -> void
 {
-    if (_unit.getSelectedId() < 3)
-    {
+    if (_unit.getSelectedId() < 3) {
         auto const peakDB = juce::Decibels::gainToDecibels(_peak.load());
         auto const label  = juce::String(peakDB, 2) + " " + _unit.getText();
         _peakLabel.setText(label, juce::sendNotification);
-    }
-    else
-    {
+    } else {
         auto const label = juce::String(_peak.load(), 2) + " " + _unit.getText();
         _peakLabel.setText(label, juce::sendNotification);
     }
@@ -124,7 +118,9 @@ auto LevelMeter::audioDeviceAboutToStart(juce::AudioIODevice* device) -> void
     auto const sampleRate     = device->getCurrentSampleRate();
     auto const blockRate      = sampleRate / blockSize;
 
-    if (maxNumChannels == 0) { return; }
+    if (maxNumChannels == 0) {
+        return;
+    }
 
     _rmsBuffer.setSize(maxNumChannels, juce::roundToInt(0.3 * sampleRate), false, true);
     _peakFilter.prepare({blockRate, 1, 1});
@@ -142,14 +138,20 @@ auto LevelMeter::audioDeviceStopped() -> void
     _peakFilter.reset();
 }
 
-auto LevelMeter::audioDeviceIOCallbackWithContext(float const* const* inputChannelData, int numInputChannels,
-                                                  float* const* outputChannelData, int numOutputChannels,
-                                                  int numberOfSamples,
-                                                  juce::AudioIODeviceCallbackContext const& context) -> void
+auto LevelMeter::audioDeviceIOCallbackWithContext(
+    float const* const* inputChannelData,
+    int numInputChannels,
+    float* const* outputChannelData,
+    int numOutputChannels,
+    int numberOfSamples,
+    juce::AudioIODeviceCallbackContext const& context
+) -> void
 {
     juce::ignoreUnused(context);
 
-    if (numInputChannels == 0) { return; }
+    if (numInputChannels == 0) {
+        return;
+    }
 
     auto const input = juce::dsp::AudioBlock<float const>{
         inputChannelData,
@@ -168,10 +170,8 @@ auto LevelMeter::audioDeviceIOCallbackWithContext(float const* const* inputChann
     _peakFilter.setCutoffFrequency(_smoothValue.load());
     _peak.store(_peakFilter.processSample(0, peak));
 
-    for (auto i{0}; i < numberOfSamples; ++i)
-    {
-        for (auto channel{0}; channel < numInputChannels; ++channel)
-        {
+    for (auto i{0}; i < numberOfSamples; ++i) {
+        for (auto channel{0}; channel < numInputChannels; ++channel) {
             _rmsBuffer.setSample(channel, _writePosition, inputChannelData[channel][i]);
         }
 

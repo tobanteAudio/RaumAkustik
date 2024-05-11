@@ -12,8 +12,7 @@
 
 #include <juce_gui_extra/juce_gui_extra.h>
 
-namespace ra
-{
+namespace ra {
 struct MainComponent final
     : juce::Component
     , juce::ApplicationCommandTarget

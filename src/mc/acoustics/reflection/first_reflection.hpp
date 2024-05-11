@@ -5,8 +5,7 @@
 #define _USE_MATH_DEFINES  // NOLINT
 #include <cmath>
 
-namespace ra
-{
+namespace ra {
 
 struct Point
 {
@@ -38,10 +37,9 @@ struct FirstReflection
     double right{0};
 };
 
-namespace detail
-{
-inline auto firstReflectionSideWall(RoomDimensions dimensions, Point listenPosition, Speaker speaker,
-                                    double x1) -> double
+namespace detail {
+inline auto
+firstReflectionSideWall(RoomDimensions dimensions, Point listenPosition, Speaker speaker, double x1) -> double
 {
     auto const y  = listenPosition.y - speaker.y;
     auto const x2 = dimensions.width - listenPosition.x;
@@ -61,8 +59,7 @@ inline auto firstReflectionFrontWall(RoomDimensions /*dimensions*/, Point listen
 template<typename InIt, typename OutIt>
 auto firstReflections(InIt f, InIt l, OutIt o, RoomDimensions dimensions, Point listenPosition) -> void
 {
-    while (f != l)
-    {
+    while (f != l) {
         *o = FirstReflection{
             detail::firstReflectionFrontWall(dimensions, listenPosition, *f),
             detail::firstReflectionSideWall(dimensions, listenPosition, *f, f->x),

@@ -1,10 +1,10 @@
 #include "audio_input_tab.hpp"
 
-namespace ra
-{
+namespace ra {
 
 AudioInputView::AudioInputView(juce::AudioDeviceManager& deviceManager)
-    : _deviceManager{deviceManager}, _deviceSelector{deviceManager, 0, 256, 0, 256, true, true, true, false}
+    : _deviceManager{deviceManager}
+    , _deviceSelector{deviceManager, 0, 256, 0, 256, true, true, true, false}
 {
     addAndMakeVisible(_deviceSelector);
     addAndMakeVisible(_latencyTester);

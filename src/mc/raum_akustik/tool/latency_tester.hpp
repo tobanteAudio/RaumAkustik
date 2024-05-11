@@ -3,8 +3,7 @@
 #include <juce_audio_utils/juce_audio_utils.h>
 #include <juce_gui_basics/juce_gui_basics.h>
 
-namespace ra
-{
+namespace ra {
 
 struct LatencyTester final
     : juce::AudioIODeviceCallback
@@ -18,9 +17,14 @@ struct LatencyTester final
     juce::String getMessageDescribingResult(int latencySamples);
     void audioDeviceAboutToStart(juce::AudioIODevice* device) override;
     void audioDeviceStopped() override;
-    void audioDeviceIOCallbackWithContext(float const* const* inputChannelData, int numInputChannels,
-                                          float* const* outputChannelData, int numOutputChannels, int numSamples,
-                                          juce::AudioIODeviceCallbackContext const& context) override;
+    void audioDeviceIOCallbackWithContext(
+        float const* const* inputChannelData,
+        int numInputChannels,
+        float* const* outputChannelData,
+        int numOutputChannels,
+        int numSamples,
+        juce::AudioIODeviceCallbackContext const& context
+    ) override;
 
 private:
     // create a test sound which consists of a series of randomly-spaced audio spikes..

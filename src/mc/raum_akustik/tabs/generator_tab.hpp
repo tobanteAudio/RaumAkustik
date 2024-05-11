@@ -5,8 +5,7 @@
 #include <juce_audio_utils/juce_audio_utils.h>
 #include <juce_gui_basics/juce_gui_basics.h>
 
-namespace ra
-{
+namespace ra {
 
 struct GeneratorTab final
     : juce::Component

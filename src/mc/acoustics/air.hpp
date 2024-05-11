@@ -6,11 +6,10 @@
 #include <mc/unit/speed.hpp>
 #include <mc/unit/temperature.hpp>
 
-namespace ra
-{
+namespace ra {
 
-[[nodiscard]] auto densityOfAir(Kelvin<double> temperature,
-                                Pascal<double> pressure) noexcept -> KilogramPerCubicMetre<double>;
+[[nodiscard]] auto
+densityOfAir(Kelvin<double> temperature, Pascal<double> pressure) noexcept -> KilogramPerCubicMetre<double>;
 [[nodiscard]] auto soundVelocity(Kelvin<double> temperature) noexcept -> MetrePerSecond<double>;
 [[nodiscard]] auto impedanceOfAir(Kelvin<double> temperature, Pascal<double> pressure) noexcept -> double;
 

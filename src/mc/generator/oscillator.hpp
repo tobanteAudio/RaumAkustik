@@ -3,8 +3,7 @@
 #include <cmath>
 #include <numbers>
 
-namespace ra
-{
+namespace ra {
 
 template<typename Float>
 struct SinOscillator

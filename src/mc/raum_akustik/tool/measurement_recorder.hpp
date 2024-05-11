@@ -6,8 +6,7 @@
 #include <juce_audio_utils/juce_audio_utils.h>
 #include <juce_gui_basics/juce_gui_basics.h>
 
-namespace ra
-{
+namespace ra {
 
 struct MeasurementRecorder final
     : juce::Timer
@@ -24,9 +23,14 @@ struct MeasurementRecorder final
 
     void audioDeviceAboutToStart(juce::AudioIODevice* device) override;
     void audioDeviceStopped() override;
-    void audioDeviceIOCallbackWithContext(float const* const* inputChannelData, int numInputChannels,
-                                          float* const* outputChannelData, int numOutputChannels, int numSamples,
-                                          juce::AudioIODeviceCallbackContext const& context) override;
+    void audioDeviceIOCallbackWithContext(
+        float const* const* inputChannelData,
+        int numInputChannels,
+        float* const* outputChannelData,
+        int numOutputChannels,
+        int numSamples,
+        juce::AudioIODeviceCallbackContext const& context
+    ) override;
 
 private:
     juce::AudioThumbnail& _thumbnail;

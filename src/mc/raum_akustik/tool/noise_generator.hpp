@@ -5,8 +5,7 @@
 
 #include <random>
 
-namespace ra
-{
+namespace ra {
 
 struct NoiseGenerator final
     : juce::Component
@@ -19,9 +18,14 @@ struct NoiseGenerator final
 
     auto audioDeviceAboutToStart(juce::AudioIODevice*) -> void override;
     auto audioDeviceStopped() -> void override;
-    auto audioDeviceIOCallbackWithContext(float const* const* inputChannelData, int numInputChannels,
-                                          float* const* outputChannelData, int numOutputChannels, int numberOfSamples,
-                                          juce::AudioIODeviceCallbackContext const& context) -> void override;
+    auto audioDeviceIOCallbackWithContext(
+        float const* const* inputChannelData,
+        int numInputChannels,
+        float* const* outputChannelData,
+        int numOutputChannels,
+        int numberOfSamples,
+        juce::AudioIODeviceCallbackContext const& context
+    ) -> void override;
 
 private:
     std::mt19937 _urng;

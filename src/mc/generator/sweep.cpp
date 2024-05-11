@@ -2,8 +2,7 @@
 
 #include <mc/generator/oscillator.hpp>
 
-namespace ra
-{
+namespace ra {
 
 // x[n] = A * sin(2 * π * f[n] * n / fs + φ)
 //
@@ -28,9 +27,10 @@ auto generate(SineSweep const& spec) -> std::vector<float>
 {
     using Seconds = std::chrono::duration<double>;
 
-    auto scaleFrequency = [curve = spec.curve](auto f1, auto f2, auto t)
-    {
-        if (curve == SineSweepCurve::Logarithmic) { return std::pow(f1 * (f2 / f1), t); }
+    auto scaleFrequency = [curve = spec.curve](auto f1, auto f2, auto t) {
+        if (curve == SineSweepCurve::Logarithmic) {
+            return std::pow(f1 * (f2 / f1), t);
+        }
         return std::lerp(f1, f2, t);
     };
 
@@ -42,8 +42,7 @@ auto generate(SineSweep const& spec) -> std::vector<float>
     auto buffer = std::vector<float>(numSamples, 0.0F);
     auto osc    = SinOscillator<double>{fs};
 
-    for (auto i{0UL}; i < numSamples; ++i)
-    {
+    for (auto i{0UL}; i < numSamples; ++i) {
         auto const t         = static_cast<double>(i) / static_cast<double>(numSamples - 1);
         auto const frequency = scaleFrequency(f1, f2, t);
         buffer[i]            = static_cast<float>(osc(frequency));

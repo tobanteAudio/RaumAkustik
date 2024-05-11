@@ -3,8 +3,7 @@
 #include <mc/raum_akustik/app/application.hpp>
 #include <mc/raum_akustik/app/command_ids.hpp>
 
-namespace ra
-{
+namespace ra {
 // static auto writeToWavFile(juce::File const& file, std::vector<float> const& buffer, double fs, int bits = 24) ->
 // bool
 // {
@@ -18,7 +17,8 @@ namespace ra
 // }
 
 MainComponent::MainComponent()
-    : _audioInputView{raumAkusticApplication().deviceManager()}, _generatorTab{raumAkusticApplication().deviceManager()}
+    : _audioInputView{raumAkusticApplication().deviceManager()}
+    , _generatorTab{raumAkusticApplication().deviceManager()}
 {
 
     // writeToWavFile(juce::File{R"(C:\Developer\sweep.wav)"}, sweep, spec.sampleRate, 24);
@@ -89,8 +89,7 @@ auto MainComponent::getCommandInfo(juce::CommandID commandID, juce::ApplicationC
     using juce::KeyPress;
     using juce::ModifierKeys;
 
-    switch (commandID)
-    {
+    switch (commandID) {
         case CommandIDs::open:
             result.setInfo("Open", "Opens a project file", "File", 0);
             result.addDefaultKeypress('o', ModifierKeys::commandModifier);
@@ -135,10 +134,10 @@ auto MainComponent::getCommandInfo(juce::CommandID commandID, juce::ApplicationC
         default: break;
     }
 }
+
 auto MainComponent::perform(juce::ApplicationCommandTarget::InvocationInfo const& info) -> bool
 {
-    switch (info.commandID)
-    {
+    switch (info.commandID) {
         case CommandIDs::open: loadProject(); break;
         case CommandIDs::save:
         case CommandIDs::saveAs: saveProject(); break;
@@ -160,7 +159,9 @@ auto MainComponent::showAboutMessage() -> void
 auto MainComponent::saveProject() -> void
 {
     auto file = juce::File{juce::File::getSpecialLocation(juce::File::userHomeDirectory)}.getChildFile("test.mcra");
-    if (file.existsAsFile()) { file.deleteFile(); }
+    if (file.existsAsFile()) {
+        file.deleteFile();
+    }
     auto stream = juce::FileOutputStream{file};
     stream.writeText(_valueTree.toXmlString(), false, false, "\n");
 }
@@ -186,7 +187,9 @@ auto MainComponent::reloadUI() -> void
     _tabs.addTab("Generator", color, &_generatorTab, false);
     _tabs.addTab("First Reflections", color, _firstReflectionsView.get(), false);
     _tabs.addTab("Porous Absorber", color, _absorberSimulationView.get(), false);
-    if (tabIndex > 0 && tabIndex <= _tabs.getNumTabs()) { _tabs.setCurrentTabIndex(tabIndex, true); }
+    if (tabIndex > 0 && tabIndex <= _tabs.getNumTabs()) {
+        _tabs.setCurrentTabIndex(tabIndex, true);
+    }
 }
 
 auto MainComponent::toggleFullscreen() -> void

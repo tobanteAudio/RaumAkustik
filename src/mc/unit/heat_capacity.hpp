@@ -2,8 +2,7 @@
 
 #include <units/isq/si/heat_capacity.h>
 
-namespace ra
-{
+namespace ra {
 
 using namespace units::isq;
 

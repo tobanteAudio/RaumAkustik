@@ -7,8 +7,7 @@
 
 #include <complex>
 
-namespace ra
-{
+namespace ra {
 struct AtmosphericEnvironment
 {
     Kelvin<double> temperature{0};
@@ -82,15 +81,15 @@ struct PorousAbsorberProperties
     double absorptionFactorWithAirGap{};
 };
 
-[[nodiscard]] auto propertiesOfAbsorber(PorousAbsorberSpecs specs, AtmosphericEnvironment env, Hertz<double> frequency,
-                                        double angle) -> PorousAbsorberProperties;
+[[nodiscard]] auto
+propertiesOfAbsorber(PorousAbsorberSpecs specs, AtmosphericEnvironment env, Hertz<double> frequency, double angle)
+    -> PorousAbsorberProperties;
 
-namespace detail
-{
+namespace detail {
 
 [[nodiscard]] auto waveNumber(Kelvin<double> temperature, Hertz<double> frequency) -> double;
-[[nodiscard]] auto delanyBazleyTerm(KilogramPerCubicMetre<double> airDensity, Hertz<double> frequency,
-                                    double flowResistivity) -> double;
+[[nodiscard]] auto
+delanyBazleyTerm(KilogramPerCubicMetre<double> airDensity, Hertz<double> frequency, double flowResistivity) -> double;
 [[nodiscard]] auto yComponentOfWaveNumber(double waveNumber, double angle) -> double;
 [[nodiscard]] auto angleOfPropagation(std::complex<double> k, double ky) -> double;
 

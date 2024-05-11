@@ -4,8 +4,7 @@
 
 #include <juce_gui_extra/juce_gui_extra.h>
 
-namespace ra
-{
+namespace ra {
 struct PorousAbsorberSimulationView final
     : juce::Component
     , juce::TableListBoxModel
@@ -21,11 +20,11 @@ private:
     auto valueTreePropertyChanged(juce::ValueTree& tree, juce::Identifier const& property) -> void override;
 
     auto getNumRows() -> int override;
-    auto paintRowBackground(juce::Graphics& g, int rowNumber, int width, int height,
-                            bool rowIsSelected) -> void override;
+    auto
+    paintRowBackground(juce::Graphics& g, int rowNumber, int width, int height, bool rowIsSelected) -> void override;
 
-    auto paintCell(juce::Graphics& g, int rowNumber, int columnId, int width, int height,
-                   bool rowIsSelected) -> void override;
+    auto paintCell(juce::Graphics& g, int rowNumber, int columnId, int width, int height, bool rowIsSelected)
+        -> void override;
 
     auto updateSimulation() -> void;
 

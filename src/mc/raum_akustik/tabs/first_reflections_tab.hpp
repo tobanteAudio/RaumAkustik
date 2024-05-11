@@ -4,8 +4,7 @@
 
 #include "BinaryData.hpp"
 
-namespace ra
-{
+namespace ra {
 struct FirstReflectionsView final
     : juce::Component
     , juce::ValueTree::Listener
@@ -45,9 +44,11 @@ private:
     juce::CachedValue<bool> _renderRightReflections{_roomTree, "render_right_reflections", _undoManager};
 
     std::unique_ptr<juce::Drawable> _speakerIcon{
-        juce::Drawable::createFromImageData(mcbd::speaker_svg, mcbd::speaker_svgSize)};
+        juce::Drawable::createFromImageData(mcbd::speaker_svg, mcbd::speaker_svgSize)
+    };
     std::unique_ptr<juce::Drawable> _headIcon{
-        juce::Drawable::createFromImageData(mcbd::insert_emoticon_svg, mcbd::insert_emoticon_svgSize)};
+        juce::Drawable::createFromImageData(mcbd::insert_emoticon_svg, mcbd::insert_emoticon_svgSize)
+    };
 
     juce::PropertyPanel _roomProperties{};
     juce::PropertyPanel _renderProperties{};

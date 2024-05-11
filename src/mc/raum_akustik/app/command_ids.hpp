@@ -1,7 +1,6 @@
 #pragma once
 
-namespace ra
-{
+namespace ra {
 struct CommandIDs
 {
     enum Values

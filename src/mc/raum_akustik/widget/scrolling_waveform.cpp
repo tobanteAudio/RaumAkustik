@@ -2,8 +2,7 @@
 
 #include <juce_dsp/juce_dsp.h>
 
-namespace ra
-{
+namespace ra {
 
 ScrollingWaveform::ScrollingWaveform() : juce::AudioVisualiserComponent(1)
 {
@@ -15,21 +14,22 @@ auto ScrollingWaveform::audioDeviceAboutToStart(juce::AudioIODevice*) -> void { 
 
 auto ScrollingWaveform::audioDeviceStopped() -> void { clear(); }
 
-auto ScrollingWaveform::audioDeviceIOCallbackWithContext(float const* const* inputChannelData, int numInputChannels,
-                                                         float* const* outputChannelData, int numOutputChannels,
-                                                         int numberOfSamples,
-                                                         juce::AudioIODeviceCallbackContext const& context) -> void
+auto ScrollingWaveform::audioDeviceIOCallbackWithContext(
+    float const* const* inputChannelData,
+    int numInputChannels,
+    float* const* outputChannelData,
+    int numOutputChannels,
+    int numberOfSamples,
+    juce::AudioIODeviceCallbackContext const& context
+) -> void
 {
     juce::ignoreUnused(context);
 
-    for (int i = 0; i < numberOfSamples; ++i)
-    {
+    for (int i = 0; i < numberOfSamples; ++i) {
         float inputSample = 0;
 
-        for (int chan = 0; chan < numInputChannels; ++chan)
-        {
-            if (float const* inputChannel = inputChannelData[chan])
-            {
+        for (int chan = 0; chan < numInputChannels; ++chan) {
+            if (float const* inputChannel = inputChannelData[chan]) {
                 inputSample += inputChannel[i];  // find the sum of all the channels
             }
         }

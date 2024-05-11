@@ -2,8 +2,7 @@
 
 #include <units/isq/si/speed.h>
 
-namespace ra
-{
+namespace ra {
 using namespace units::isq;
 
 template<typename T>

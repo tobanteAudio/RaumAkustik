@@ -4,10 +4,9 @@
 
 #include <numbers>
 
-namespace ra
-{
-auto propertiesOfAbsorber(PorousAbsorberSpecs specs, AtmosphericEnvironment env, Hertz<double> frequency,
-                          double angle) -> PorousAbsorberProperties
+namespace ra {
+auto propertiesOfAbsorber(PorousAbsorberSpecs specs, AtmosphericEnvironment env, Hertz<double> frequency, double angle)
+    -> PorousAbsorberProperties
 {
     auto const airDensity = densityOfAir(env.temperature, env.pressure);
     auto const airIm      = impedanceOfAir(env.temperature, env.pressure);
@@ -20,7 +19,7 @@ auto propertiesOfAbsorber(PorousAbsorberSpecs specs, AtmosphericEnvironment env,
         p.X   = detail::delanyBazleyTerm(airDensity, frequency, specs.flowResisitivity);
         p.zca = airIm * std::complex{1 + 0.0571 * (std::pow(p.X, -0.754)), -0.087 * (std::pow(p.X, -0.732))};
         p.k   = twoPiC * frequency.number()
-              * std::complex{1 + 0.0978 * std::pow(p.X, -0.7), -0.189 * std::pow(p.X, -0.595)};
+            * std::complex{1 + 0.0978 * std::pow(p.X, -0.7), -0.189 * std::pow(p.X, -0.595)};
         p.ky                  = detail::yComponentOfWaveNumber(wn, angle);
         p.kx                  = std::sqrt((p.k * p.k) - std::pow(p.ky, 2));
         p.betaPorous          = detail::angleOfPropagation(p.k, p.ky);
@@ -44,7 +43,7 @@ auto propertiesOfAbsorber(PorousAbsorberSpecs specs, AtmosphericEnvironment env,
         p.betaAir   = std::asin(std::abs(p.kAirY / airIm)) * 180.0 / std::numbers::pi;
         p.kAirRatio = wn / p.kAirX;
         p.zAir      = nj * airIm * p.kAirRatio
-                 * (std::cos(wn * (specs.airGap / 1'000.0)) / std::sin(wn * (specs.airGap / 1'000.0)));
+               * (std::cos(wn * (specs.airGap / 1'000.0)) / std::sin(wn * (specs.airGap / 1'000.0)));
         p.ki = nj * p.zca * p.impedance.intermediateTerm;
 
         p.zaAir = ((p.ki * p.zAir) + (p.zca * p.zca)) / (p.zAir + p.ki);
@@ -57,16 +56,16 @@ auto propertiesOfAbsorber(PorousAbsorberSpecs specs, AtmosphericEnvironment env,
     return p;
 }
 
-namespace detail
-{
+namespace detail {
 
 auto waveNumber(Kelvin<double> temperature, Hertz<double> frequency) -> double
 {
     // 2p/l
     return ((2.0 * std::numbers::pi) / soundVelocity(temperature).number()) * frequency.number();
 }
-auto delanyBazleyTerm(KilogramPerCubicMetre<double> airDensity, Hertz<double> frequency,
-                      double flowResistivity) -> double
+
+auto delanyBazleyTerm(KilogramPerCubicMetre<double> airDensity, Hertz<double> frequency, double flowResistivity)
+    -> double
 {
     // Eq 5.11
     auto const tmp = (airDensity * frequency) / flowResistivity;

@@ -3,8 +3,7 @@
 #include <juce_audio_devices/juce_audio_devices.h>
 #include <juce_gui_basics/juce_gui_basics.h>
 
-namespace ra
-{
+namespace ra {
 struct RaumAkustikApplication : juce::JUCEApplication
 {
     RaumAkustikApplication() = default;

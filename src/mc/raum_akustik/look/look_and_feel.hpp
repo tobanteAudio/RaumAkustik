@@ -2,8 +2,7 @@
 
 #include <juce_gui_basics/juce_gui_basics.h>
 
-namespace ra
-{
+namespace ra {
 struct LookAndFeel final : juce::LookAndFeel_V4
 {
     LookAndFeel();

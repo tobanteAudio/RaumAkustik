@@ -1,30 +1,27 @@
 #include "measurement_recorder.hpp"
 
-namespace ra
-{
+namespace ra {
 
 MeasurementRecorder::MeasurementRecorder(juce::AudioThumbnail& thumbnail) : _thumbnail(thumbnail)
 {
     _writerThread.startThread();
 }
+
 MeasurementRecorder::~MeasurementRecorder() { stop(); }
 
 void MeasurementRecorder::startRecording(juce::File const& file)
 {
     stop();
 
-    if (_sampleRate > 0)
-    {
+    if (_sampleRate > 0) {
         // Create an OutputStream to write to our destination file...
         file.deleteFile();
 
-        if (auto fileStream = std::unique_ptr<juce::FileOutputStream>(file.createOutputStream()))
-        {
+        if (auto fileStream = std::unique_ptr<juce::FileOutputStream>(file.createOutputStream())) {
             // Now create a WAV writer object that writes to our output stream...
             juce::WavAudioFormat wavFormat;
 
-            if (auto writer = wavFormat.createWriterFor(fileStream.get(), _sampleRate, 1, 16, {}, 0))
-            {
+            if (auto writer = wavFormat.createWriterFor(fileStream.get(), _sampleRate, 1, 16, {}, 0)) {
                 fileStream.release();  // (passes responsibility for deleting the stream to the writer object that
                                        // is now using it)
 
@@ -49,7 +46,9 @@ void MeasurementRecorder::startRecording(juce::File const& file)
 
 void MeasurementRecorder::timerCallback()
 {
-    if (not _doneRecording.load()) { return; }
+    if (not _doneRecording.load()) {
+        return;
+    }
 
     stopTimer();
     stop();
@@ -86,25 +85,29 @@ void MeasurementRecorder::audioDeviceAboutToStart(juce::AudioIODevice* device)
 
 void MeasurementRecorder::audioDeviceStopped() { _sampleRate = 0; }
 
-void MeasurementRecorder::audioDeviceIOCallbackWithContext(float const* const* inputChannelData, int numInputChannels,
-                                                           float* const* outputChannelData, int numOutputChannels,
-                                                           int numSamples,
-                                                           juce::AudioIODeviceCallbackContext const& context)
+void MeasurementRecorder::audioDeviceIOCallbackWithContext(
+    float const* const* inputChannelData,
+    int numInputChannels,
+    float* const* outputChannelData,
+    int numOutputChannels,
+    int numSamples,
+    juce::AudioIODeviceCallbackContext const& context
+)
 {
     ignoreUnused(context);
 
     // We need to clear the output buffers, in case they're full of junk..
-    for (int i = 0; i < numOutputChannels; ++i)
-    {
-        if (outputChannelData[i] != nullptr) { juce::FloatVectorOperations::clear(outputChannelData[i], numSamples); }
+    for (int i = 0; i < numOutputChannels; ++i) {
+        if (outputChannelData[i] != nullptr) {
+            juce::FloatVectorOperations::clear(outputChannelData[i], numSamples);
+        }
     }
 
     juce::ScopedLock const sl(writerLock);
 
     auto const lastSample = std::ssize(_sweep) + juce::roundToInt(_sampleRate * 2.0);
 
-    if (activeWriter.load() != nullptr && numInputChannels >= _thumbnail.getNumChannels())
-    {
+    if (activeWriter.load() != nullptr && numInputChannels >= _thumbnail.getNumChannels()) {
         activeWriter.load()->write(inputChannelData, numSamples);
 
         // Create an AudioBuffer to wrap our incoming data, note that this does no allocations or copies, it simply
@@ -112,8 +115,7 @@ void MeasurementRecorder::audioDeviceIOCallbackWithContext(float const* const* i
         juce::AudioBuffer<float> buffer(const_cast<float**>(inputChannelData), _thumbnail.getNumChannels(), numSamples);
         _thumbnail.addBlock(nextSampleNum, buffer, 0, numSamples);
 
-        if (numOutputChannels > 0)
-        {
+        if (numOutputChannels > 0) {
             auto const* sweep = std::data(_sweep);
             auto const* end   = std::next(sweep, std::ssize(_sweep));
             auto const* first = std::min(end, std::next(sweep, nextSampleNum));
@@ -124,7 +126,9 @@ void MeasurementRecorder::audioDeviceIOCallbackWithContext(float const* const* i
         nextSampleNum += numSamples;
     }
 
-    if (nextSampleNum >= lastSample) { _doneRecording.store(true); }
+    if (nextSampleNum >= lastSample) {
+        _doneRecording.store(true);
+    }
 }
 
 MeasurementRecorderEditor::MeasurementRecorderEditor(juce::AudioDeviceManager& deviceManager)
@@ -136,8 +140,7 @@ MeasurementRecorderEditor::MeasurementRecorderEditor(juce::AudioDeviceManager& d
     recordButton.setColour(juce::TextButton::buttonColourId, juce::Colour(0xffff5c5c));
     recordButton.setColour(juce::TextButton::textColourOnId, juce::Colours::black);
 
-    recordButton.onClick = [this]
-    {
+    recordButton.onClick = [this] {
         if (recorder.isRecording())
             stopRecording();
         else
@@ -187,15 +190,12 @@ void MeasurementRecorderEditor::Thumbnail::paint(juce::Graphics& g)
     g.fillAll(juce::Colours::darkgrey);
     g.setColour(juce::Colours::lightgrey);
 
-    if (_thumbnail.getTotalLength() > 0.0)
-    {
+    if (_thumbnail.getTotalLength() > 0.0) {
         auto endTime = displayFullThumb ? _thumbnail.getTotalLength() : juce::jmax(30.0, _thumbnail.getTotalLength());
 
         auto thumbArea = getLocalBounds();
         _thumbnail.drawChannels(g, thumbArea.reduced(2), 0.0, endTime, 1.0f);
-    }
-    else
-    {
+    } else {
         g.setFont(14.0f);
         g.drawFittedText("(No file recorded)", getLocalBounds(), juce::Justification::centred, 2);
     }
@@ -203,7 +203,8 @@ void MeasurementRecorderEditor::Thumbnail::paint(juce::Graphics& g)
 
 void MeasurementRecorderEditor::Thumbnail::changeListenerCallback(juce::ChangeBroadcaster* source)
 {
-    if (source == &_thumbnail) repaint();
+    if (source == &_thumbnail)
+        repaint();
 }
 
 void MeasurementRecorderEditor::startRecording()

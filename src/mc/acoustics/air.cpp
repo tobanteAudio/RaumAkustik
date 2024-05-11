@@ -4,8 +4,7 @@
 
 #include <units/math.h>
 
-namespace ra
-{
+namespace ra {
 auto densityOfAir(Kelvin<double> temperature, Pascal<double> pressure) noexcept -> KilogramPerCubicMetre<double>
 {
     return pressure / (GasConstant<double> * temperature);
@@ -14,7 +13,7 @@ auto densityOfAir(Kelvin<double> temperature, Pascal<double> pressure) noexcept 
 auto soundVelocity(Kelvin<double> temperature) noexcept -> MetrePerSecond<double>
 {
     return sqrt((SpecificHeatRatio * OneAtmosphere<double>) / DensityAtZeroC<double>)
-           * sqrt(temperature / Kelvin<double>{273.15});
+         * sqrt(temperature / Kelvin<double>{273.15});
 }
 
 auto impedanceOfAir(Kelvin<double> temperature, Pascal<double> pressure) noexcept -> double

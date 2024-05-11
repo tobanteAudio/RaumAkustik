@@ -3,8 +3,7 @@
 #include <juce_audio_utils/juce_audio_utils.h>
 #include <juce_dsp/juce_dsp.h>
 
-namespace ra
-{
+namespace ra {
 
 struct Spectogram
     : juce::Component
@@ -16,9 +15,14 @@ struct Spectogram
 
     void audioDeviceAboutToStart(juce::AudioIODevice*) override;
     void audioDeviceStopped() override;
-    void audioDeviceIOCallbackWithContext(float const* const* inputChannelData, int numInputChannels,
-                                          float* const* outputChannelData, int numOutputChannels, int numberOfSamples,
-                                          juce::AudioIODeviceCallbackContext const& context) override;
+    void audioDeviceIOCallbackWithContext(
+        float const* const* inputChannelData,
+        int numInputChannels,
+        float* const* outputChannelData,
+        int numOutputChannels,
+        int numberOfSamples,
+        juce::AudioIODeviceCallbackContext const& context
+    ) override;
 
     void paint(juce::Graphics& g) override;
     void timerCallback() override;
