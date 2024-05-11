@@ -4,9 +4,6 @@
 
 #include <juce_dsp/juce_dsp.h>
 
-#include <blaze/math/DynamicVector.h>
-#include <blaze/math/Subvector.h>
-
 #include <span>
 
 namespace ra {
@@ -95,10 +92,10 @@ static auto toAudioBuffer(std::vector<float> const& in) -> juce::AudioBuffer<flo
 
 static auto getSpectrumPath(juce::AudioBuffer<float> const& in, double fs, juce::Rectangle<int> area) -> juce::Path
 {
-    auto const fftSize  = size_t(juce::nextPowerOfTwo(in.getNumSamples()));
+    auto const fftSize  = static_cast<size_t>(juce::nextPowerOfTwo(in.getNumSamples()));
     auto const fftOrder = std::bit_width(fftSize) - 1;
 
-    auto buf     = blaze::DynamicVector<std::complex<float>>(fftSize);
+    auto buf     = std::vector<std::complex<float>>(fftSize);
     auto* buffer = reinterpret_cast<float*>(buf.data());
     std::copy(in.getReadPointer(0), in.getReadPointer(0) + in.getNumSamples(), buffer);
 

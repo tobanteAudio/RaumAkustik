@@ -1,5 +1,4 @@
 [requires]
-blaze/3.8
 catch2/3.6.0
 mp-units/0.8.0
 
