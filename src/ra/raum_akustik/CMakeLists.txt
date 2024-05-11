@@ -1,5 +1,7 @@
 project(RaumAkustik VERSION 0.1.0)
 
+option(RA_BUILD_ASIO "Build with ASIO driver support. Needs to be installed manually" OFF)
+
 juce_add_binary_data(RaumAkustik_BinaryData
     HEADER_NAME
         "BinaryData.hpp"
@@ -74,14 +76,8 @@ target_compile_definitions(RaumAkustik
     PRIVATE
         JUCE_WEB_BROWSER=0
         JUCE_USE_CURL=0
-        JUCE_ASIO=1
         JUCE_APPLICATION_NAME_STRING="$<TARGET_PROPERTY:${PROJECT_NAME},JUCE_PRODUCT_NAME>"
         JUCE_APPLICATION_VERSION_STRING="$<TARGET_PROPERTY:${PROJECT_NAME},JUCE_VERSION>"
-)
-
-target_include_directories(RaumAkustik
-    PRIVATE
-        ${CMAKE_SOURCE_DIR}/3rd_party/asiosdk_2.3.3_2019-06-14/common
 )
 
 target_link_libraries(RaumAkustik
@@ -98,3 +94,9 @@ target_link_libraries(RaumAkustik
         juce::juce_recommended_lto_flags
         juce::juce_recommended_warning_flags
 )
+
+if(${CMAKE_SYSTEM_NAME} MATCHES "Windows" AND ${RA_BUILD_ASIO})
+    target_compile_definitions(RaumAkustik PRIVATE JUCE_ASIO=1)
+    target_include_directories(RaumAkustik PRIVATE ${CMAKE_SOURCE_DIR}/3rd_party/asiosdk_2.3.3_2019-06-14/common)
+endif()
+
