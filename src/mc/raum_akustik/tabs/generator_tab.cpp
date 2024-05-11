@@ -33,15 +33,15 @@ static auto frequencyToX(float minFreq, float maxFreq, float freq, float width)
     return width * ratio;
 }
 
-static auto amplitudeToY(float amplitude, const juce::Rectangle<float> bounds) -> float
+static auto amplitudeToY(float amplitude, juce::Rectangle<float> const bounds) -> float
 {
     auto const infinity = -96.0f;
     auto const dB       = juce::Decibels::gainToDecibels(amplitude, infinity);
     return juce::jmap(dB, infinity, 0.0f, bounds.getBottom(), bounds.getY());
 }
 
-static auto getFrequencyAndAmplitude(std::span<std::complex<float> const> bins, double sampleRate)
-    -> std::vector<FrequencyAndAmplitude>
+static auto getFrequencyAndAmplitude(std::span<std::complex<float> const> bins,
+                                     double sampleRate) -> std::vector<FrequencyAndAmplitude>
 {
     auto result = std::vector<FrequencyAndAmplitude>{};
     result.reserve(bins.size());

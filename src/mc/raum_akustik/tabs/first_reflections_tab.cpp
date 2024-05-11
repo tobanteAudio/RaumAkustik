@@ -262,8 +262,8 @@ auto FirstReflectionsView::connectValuesToTree() -> void
         });
 }
 
-auto FirstReflectionsView::valueTreePropertyChanged(juce::ValueTree& /*tree*/, juce::Identifier const& /*property*/)
-    -> void
+auto FirstReflectionsView::valueTreePropertyChanged(juce::ValueTree& /*tree*/,
+                                                    juce::Identifier const& /*property*/) -> void
 {
     repaint();
 }

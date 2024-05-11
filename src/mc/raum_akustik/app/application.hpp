@@ -9,8 +9,8 @@ struct RaumAkustikApplication : juce::JUCEApplication
 {
     RaumAkustikApplication() = default;
 
-    auto getApplicationName() -> const juce::String override;
-    auto getApplicationVersion() -> const juce::String override;
+    auto getApplicationName() -> juce::String const override;
+    auto getApplicationVersion() -> juce::String const override;
     auto moreThanOneInstanceAllowed() -> bool override;
 
     auto initialise(juce::String const& commandLine) -> void override;

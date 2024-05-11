@@ -15,7 +15,7 @@ void LatencyTester::beginTest()
 
     startTimer(50);
 
-    const juce::ScopedLock sl(lock);
+    juce::ScopedLock const sl(lock);
     createTestSound();
     recordedSound.clear();
     playingSampleNum = recordedSampleNum = 0;
@@ -84,7 +84,7 @@ void LatencyTester::audioDeviceIOCallbackWithContext(float const* const* inputCh
 {
     ignoreUnused(context);
 
-    const juce::ScopedLock sl(lock);
+    juce::ScopedLock const sl(lock);
 
     if (!testIsRunning)
     {
@@ -226,8 +226,7 @@ int LatencyTester::calculateLatencySamples() const
     return (recordedStart < 0) ? -1 : (recordedStart - referenceStart);
 }
 
-LatencyTesterEditor::LatencyTesterEditor(juce::AudioDeviceManager& deviceManager)
-    : audioDeviceManager{deviceManager}
+LatencyTesterEditor::LatencyTesterEditor(juce::AudioDeviceManager& deviceManager) : audioDeviceManager{deviceManager}
 {
     setOpaque(true);
 

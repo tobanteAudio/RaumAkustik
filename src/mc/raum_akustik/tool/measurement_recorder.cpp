@@ -37,7 +37,7 @@ void MeasurementRecorder::startRecording(juce::File const& file)
                 nextSampleNum = 0;
 
                 // And now, swap over our active writer pointer so that the audio callback will start using it..
-                const juce::ScopedLock sl(writerLock);
+                juce::ScopedLock const sl(writerLock);
                 activeWriter = _writer.get();
             }
         }
@@ -59,7 +59,7 @@ void MeasurementRecorder::stop()
 {
     // First, clear this pointer to stop the audio callback from using our writer object..
     {
-        const juce::ScopedLock sl(writerLock);
+        juce::ScopedLock const sl(writerLock);
         activeWriter = nullptr;
     }
 
@@ -99,7 +99,7 @@ void MeasurementRecorder::audioDeviceIOCallbackWithContext(float const* const* i
         if (outputChannelData[i] != nullptr) { juce::FloatVectorOperations::clear(outputChannelData[i], numSamples); }
     }
 
-    const juce::ScopedLock sl(writerLock);
+    juce::ScopedLock const sl(writerLock);
 
     auto const lastSample = std::ssize(_sweep) + juce::roundToInt(_sampleRate * 2.0);
 

@@ -40,8 +40,8 @@ struct FirstReflection
 
 namespace detail
 {
-inline auto firstReflectionSideWall(RoomDimensions dimensions, Point listenPosition, Speaker speaker, double x1)
-    -> double
+inline auto firstReflectionSideWall(RoomDimensions dimensions, Point listenPosition, Speaker speaker,
+                                    double x1) -> double
 {
     auto const y  = listenPosition.y - speaker.y;
     auto const x2 = dimensions.width - listenPosition.x;
