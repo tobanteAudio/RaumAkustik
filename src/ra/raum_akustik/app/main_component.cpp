@@ -1,7 +1,7 @@
 #include "main_component.hpp"
 
-#include <mc/raum_akustik/app/application.hpp>
-#include <mc/raum_akustik/app/command_ids.hpp>
+#include <ra/raum_akustik/app/application.hpp>
+#include <ra/raum_akustik/app/command_ids.hpp>
 
 namespace ra {
 // static auto writeToWavFile(juce::File const& file, std::vector<float> const& buffer, double fs, int bits = 24) ->

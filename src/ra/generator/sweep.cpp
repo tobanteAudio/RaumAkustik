@@ -1,6 +1,6 @@
 #include "sweep.hpp"
 
-#include <mc/generator/oscillator.hpp>
+#include <ra/generator/oscillator.hpp>
 
 namespace ra {
 

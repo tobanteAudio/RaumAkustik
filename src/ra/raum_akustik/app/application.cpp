@@ -1,6 +1,6 @@
 #include "application.hpp"
 
-#include <mc/raum_akustik/app/main_component.hpp>
+#include <ra/raum_akustik/app/main_component.hpp>
 
 namespace ra
 {

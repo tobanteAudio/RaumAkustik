@@ -1,14 +1,14 @@
 #pragma once
 
-#include <mc/raum_akustik/app/main_component.hpp>
-#include <mc/raum_akustik/app/menu_bar.hpp>
-#include <mc/raum_akustik/look/look_and_feel.hpp>
-#include <mc/raum_akustik/tabs/absorber_simulation_tab.hpp>
-#include <mc/raum_akustik/tabs/audio_input_tab.hpp>
-#include <mc/raum_akustik/tabs/first_reflections_tab.hpp>
-#include <mc/raum_akustik/tabs/generator_tab.hpp>
-#include <mc/raum_akustik/widget/level_meter.hpp>
-#include <mc/raum_akustik/widget/scrolling_waveform.hpp>
+#include <ra/raum_akustik/app/main_component.hpp>
+#include <ra/raum_akustik/app/menu_bar.hpp>
+#include <ra/raum_akustik/look/look_and_feel.hpp>
+#include <ra/raum_akustik/tabs/absorber_simulation_tab.hpp>
+#include <ra/raum_akustik/tabs/audio_input_tab.hpp>
+#include <ra/raum_akustik/tabs/first_reflections_tab.hpp>
+#include <ra/raum_akustik/tabs/generator_tab.hpp>
+#include <ra/raum_akustik/widget/level_meter.hpp>
+#include <ra/raum_akustik/widget/scrolling_waveform.hpp>
 
 #include <juce_gui_extra/juce_gui_extra.h>
 

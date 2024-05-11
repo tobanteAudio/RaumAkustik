@@ -1,7 +1,7 @@
 #pragma once
 
-#include <mc/generator/sweep.hpp>
-#include <mc/raum_akustik/widget/scrolling_waveform.hpp>
+#include <ra/generator/sweep.hpp>
+#include <ra/raum_akustik/widget/scrolling_waveform.hpp>
 
 #include <juce_audio_utils/juce_audio_utils.h>
 #include <juce_gui_basics/juce_gui_basics.h>

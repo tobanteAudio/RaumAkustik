@@ -30,4 +30,4 @@ include(Catch)
 
 add_subdirectory(3rd_party/JUCE EXCLUDE_FROM_ALL)
 add_subdirectory(src)
-add_subdirectory(src/mc/raum_akustik)
+add_subdirectory(src/ra/raum_akustik)

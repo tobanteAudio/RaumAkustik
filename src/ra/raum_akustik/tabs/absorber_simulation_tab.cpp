@@ -1,6 +1,6 @@
 #include "absorber_simulation_tab.hpp"
 
-#include <mc/unit/frequency.hpp>
+#include <ra/unit/frequency.hpp>
 
 namespace ra {
 

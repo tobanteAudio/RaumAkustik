@@ -1,8 +1,8 @@
 #pragma once
 
-#include <mc/raum_akustik/tool/latency_tester.hpp>
-#include <mc/raum_akustik/tool/noise_generator.hpp>
-#include <mc/raum_akustik/widget/spectogram.hpp>
+#include <ra/raum_akustik/tool/latency_tester.hpp>
+#include <ra/raum_akustik/tool/noise_generator.hpp>
+#include <ra/raum_akustik/widget/spectogram.hpp>
 
 #include <juce_audio_devices/juce_audio_devices.h>
 #include <juce_audio_utils/juce_audio_utils.h>
