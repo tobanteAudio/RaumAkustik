@@ -1,7 +1,5 @@
 project(RaumAkustik VERSION 0.1.0)
 
-find_package(FFTW3f REQUIRED)
-
 juce_add_binary_data(RaumAkustik_BinaryData
     HEADER_NAME
         "BinaryData.hpp"
@@ -77,7 +75,6 @@ target_compile_definitions(${PROJECT_NAME}
         JUCE_WEB_BROWSER=0
         JUCE_USE_CURL=0
         JUCE_ASIO=1
-        JUCE_DSP_USE_STATIC_FFTW=1
         JUCE_APPLICATION_NAME_STRING="$<TARGET_PROPERTY:${PROJECT_NAME},JUCE_PRODUCT_NAME>"
         JUCE_APPLICATION_VERSION_STRING="$<TARGET_PROPERTY:${PROJECT_NAME},JUCE_VERSION>"
 )
@@ -93,8 +90,6 @@ target_link_libraries(${PROJECT_NAME}
         juce::juce_audio_utils
         juce::juce_dsp
         juce::juce_gui_extra
-
-        FFTW3::fftw3f
 
         mc::acoustics
         RaumAkustik_BinaryData
