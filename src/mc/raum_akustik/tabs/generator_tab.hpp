@@ -23,10 +23,10 @@ struct GeneratorTab final
     auto valueTreePropertyChanged(juce::ValueTree& tree, juce::Identifier const& property) -> void override;
 
 private:
-    juce::PropertyPanel _sweepSpecPanel{};
+    juce::PropertyPanel _sweepSpecPanel;
     MeasurementRecorderEditor _recorder;
-    juce::Rectangle<int> _thumbnailBounds{};
-    juce::Rectangle<int> _spectrumBounds{};
+    juce::Rectangle<int> _thumbnailBounds;
+    juce::Rectangle<int> _spectrumBounds;
 
     juce::UndoManager* _undoManager{nullptr};
     juce::ValueTree _valueTree{"SineSweep"};
@@ -38,7 +38,7 @@ private:
     juce::CachedValue<double> _sampleRate{_valueTree, "sampleRate", _undoManager};
 
     juce::AudioFormatManager _formatManager;
-    juce::AudioBuffer<float> _thumbnailBuffer{};
+    juce::AudioBuffer<float> _thumbnailBuffer;
     juce::AudioThumbnailCache _thumbnailCache{1};
     juce::AudioThumbnail _thumbnail{32, _formatManager, _thumbnailCache};
 

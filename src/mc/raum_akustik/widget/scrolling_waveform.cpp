@@ -10,7 +10,7 @@ ScrollingWaveform::ScrollingWaveform() : juce::AudioVisualiserComponent(1)
     setBufferSize(2048);
 }
 
-auto ScrollingWaveform::audioDeviceAboutToStart(juce::AudioIODevice*) -> void { clear(); }
+auto ScrollingWaveform::audioDeviceAboutToStart(juce::AudioIODevice* /*device*/) -> void { clear(); }
 
 auto ScrollingWaveform::audioDeviceStopped() -> void { clear(); }
 

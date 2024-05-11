@@ -16,7 +16,7 @@ struct NoiseGenerator final
 
     auto resized() -> void override;
 
-    auto audioDeviceAboutToStart(juce::AudioIODevice*) -> void override;
+    auto audioDeviceAboutToStart(juce::AudioIODevice* /*device*/) -> void override;
     auto audioDeviceStopped() -> void override;
     auto audioDeviceIOCallbackWithContext(
         float const* const* inputChannelData,

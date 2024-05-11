@@ -10,7 +10,7 @@ Spectogram::Spectogram()
     setSize(700, 500);
 }
 
-void Spectogram::audioDeviceAboutToStart(juce::AudioIODevice*) {}
+void Spectogram::audioDeviceAboutToStart(juce::AudioIODevice* /*device*/) {}
 
 void Spectogram::audioDeviceStopped() {}
 
@@ -44,7 +44,7 @@ void Spectogram::paint(juce::Graphics& g)
 {
     g.fillAll(juce::Colours::black);
 
-    g.setOpacity(1.0f);
+    g.setOpacity(1.0F);
     g.drawImage(_image, getLocalBounds().toFloat());
 }
 
@@ -95,17 +95,17 @@ void Spectogram::drawNextLineOfSpectrogram()
     // show up the detail clearly
     auto const maxLevel = juce::FloatVectorOperations::findMinAndMax(_fftBuffer.data(), fftSize / 2);
 
-    auto const maxGain = juce::jmax(maxLevel.getEnd(), 1e-5f);
+    auto const maxGain = juce::jmax(maxLevel.getEnd(), 1e-5F);
     // auto const maxDB   = juce::Decibels::gainToDecibels(maxGain);
     // auto const minDB   = juce::Decibels::gainToDecibels(0.0F);
 
     for (auto y = 1; y < imageHeight; ++y) {
-        auto const skewedY = 1.0f - std::exp(std::log((float)y / (float)imageHeight) * 0.2f);
+        auto const skewedY = 1.0F - std::exp(std::log((float)y / (float)imageHeight) * 0.2F);
         auto const index   = static_cast<size_t>(juce::jlimit(0, fftSize / 2, (int)(skewedY * (int)fftSize / 2)));
 
         auto const gain      = _fftBuffer[index];
-        auto const levelGain = juce::jmap(gain, 0.0F, maxGain, 0.0f, 1.0f);
-        auto const colorGain = juce::Colour::fromHSV(levelGain, 1.0f, levelGain, 1.0f);
+        auto const levelGain = juce::jmap(gain, 0.0F, maxGain, 0.0F, 1.0F);
+        auto const colorGain = juce::Colour::fromHSV(levelGain, 1.0F, levelGain, 1.0F);
 
         // auto const dB      = juce::Decibels::gainToDecibels(gain);
         // auto const levelDB = juce::jmap(dB, minDB, maxDB, 0.0f, 1.0f);

@@ -21,7 +21,7 @@ struct RaumAkustikApplication : juce::JUCEApplication
 
 private:
     juce::AudioDeviceManager _deviceManager;
-    std::unique_ptr<juce::DocumentWindow> _mainWindow{};
+    std::unique_ptr<juce::DocumentWindow> _mainWindow;
 };
 
 [[nodiscard]] auto raumAkusticApplication() -> RaumAkustikApplication&;

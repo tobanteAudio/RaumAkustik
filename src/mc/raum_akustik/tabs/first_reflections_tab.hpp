@@ -50,10 +50,10 @@ private:
         juce::Drawable::createFromImageData(mcbd::insert_emoticon_svg, mcbd::insert_emoticon_svgSize)
     };
 
-    juce::PropertyPanel _roomProperties{};
-    juce::PropertyPanel _renderProperties{};
+    juce::PropertyPanel _roomProperties;
+    juce::PropertyPanel _renderProperties;
 
-    juce::Rectangle<int> _drawArea{};
+    juce::Rectangle<int> _drawArea;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(FirstReflectionsView)  // NOLINT
 };

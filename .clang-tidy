@@ -5,6 +5,7 @@ Checks: >
 
   bugprone-*,
   -bugprone-macro-parentheses,
+  -bugprone-chained-comparison,
 
 
   cert-*,
@@ -20,10 +21,12 @@ Checks: >
   -cppcoreguidelines-avoid-magic-numbers,
   -cppcoreguidelines-avoid-const-or-ref-data-members,
   -cppcoreguidelines-pro-bounds-constant-array-index,
+  -cppcoreguidelines-pro-bounds-pointer-arithmetic,
 
   hicpp-*,
 
   misc-*,
+  -misc-include-cleaner,
 
   modernize-*,
 

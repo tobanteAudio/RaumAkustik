@@ -11,7 +11,7 @@ struct ScrollingWaveform final
     ScrollingWaveform();
     ~ScrollingWaveform() override = default;
 
-    auto audioDeviceAboutToStart(juce::AudioIODevice*) -> void override;
+    auto audioDeviceAboutToStart(juce::AudioIODevice* /*device*/) -> void override;
     auto audioDeviceStopped() -> void override;
     auto audioDeviceIOCallbackWithContext(
         float const* const* inputChannelData,

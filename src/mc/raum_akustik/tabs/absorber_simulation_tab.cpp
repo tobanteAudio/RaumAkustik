@@ -7,7 +7,7 @@ namespace ra {
 namespace {
 auto positionForFrequency(Hertz<double> const freq) noexcept -> double
 {
-    return (std::log(freq.number() / 20.0) / std::log(2.0)) / 10.0;
+    return (std::log(freq.number() / 20.0) / std::numbers::ln2) / 10.0;
 }
 
 }  // namespace
@@ -85,7 +85,7 @@ PorousAbsorberSimulationView::PorousAbsorberSimulationView(juce::ValueTree vt, j
 
 auto PorousAbsorberSimulationView::paint(juce::Graphics& g) -> void
 {
-    juce::Graphics::ScopedSaveState state{g};
+    juce::Graphics::ScopedSaveState const state{g};
 
     g.reduceClipRegion(_plotArea);
 

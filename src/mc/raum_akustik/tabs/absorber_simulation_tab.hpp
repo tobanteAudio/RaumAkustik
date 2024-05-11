@@ -29,7 +29,7 @@ private:
     auto updateSimulation() -> void;
 
     juce::TableListBox _table{"Table", this};
-    juce::PropertyPanel _absorberSpecs{};
+    juce::PropertyPanel _absorberSpecs;
     juce::Rectangle<int> _plotArea;
 
     juce::UndoManager* _undoManager{nullptr};

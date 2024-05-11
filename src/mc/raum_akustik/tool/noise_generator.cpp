@@ -32,7 +32,7 @@ auto NoiseGenerator::resized() -> void
     _play.setBounds(area);
 }
 
-auto NoiseGenerator::audioDeviceAboutToStart(juce::AudioIODevice*) -> void {}
+auto NoiseGenerator::audioDeviceAboutToStart(juce::AudioIODevice* /*device*/) -> void {}
 
 auto NoiseGenerator::audioDeviceStopped() -> void {}
 

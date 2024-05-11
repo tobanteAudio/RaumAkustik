@@ -17,7 +17,7 @@ struct LevelMeter final
     auto resized() -> void override;
     auto timerCallback() -> void override;
 
-    auto audioDeviceAboutToStart(juce::AudioIODevice*) -> void override;
+    auto audioDeviceAboutToStart(juce::AudioIODevice* /*device*/) -> void override;
     auto audioDeviceStopped() -> void override;
     auto audioDeviceIOCallbackWithContext(
         float const* const* inputChannelData,
@@ -33,7 +33,7 @@ private:
     std::atomic<float> _rms{0.0F};
     std::atomic<float> _smoothValue{15.0F};
     juce::AudioBuffer<float> _rmsBuffer;
-    juce::dsp::StateVariableTPTFilter<float> _peakFilter{};
+    juce::dsp::StateVariableTPTFilter<float> _peakFilter;
     int _writePosition{0};
 
     juce::Label _peakLabel;
@@ -41,7 +41,7 @@ private:
     juce::ComboBox _unit;
     juce::Slider _refVoltage{juce::Slider::IncDecButtons, juce::Slider::TextBoxRight};
     juce::Slider _smooth{juce::Slider::IncDecButtons, juce::Slider::TextBoxRight};
-    juce::Rectangle<float> _meter{};
+    juce::Rectangle<float> _meter;
 };
 
 }  // namespace ra

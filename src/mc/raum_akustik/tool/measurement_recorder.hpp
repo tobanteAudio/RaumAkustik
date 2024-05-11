@@ -17,7 +17,7 @@ struct MeasurementRecorder final
 
     void startRecording(juce::File const& file);
     void stop();
-    bool isRecording() const;
+    auto isRecording() const -> bool;
 
     void timerCallback() override;
 
@@ -37,13 +37,13 @@ private:
     juce::TimeSliceThread _writerThread{"Audio Recorder Thread"};
     std::unique_ptr<juce::AudioFormatWriter::ThreadedWriter> _writer;
     double _sampleRate{0.0};
-    juce::int64 nextSampleNum{0};
+    juce::int64 _nextSampleNum{0};
 
-    std::vector<float> _sweep{};
+    std::vector<float> _sweep;
     std::atomic<bool> _doneRecording{false};
 
-    juce::CriticalSection writerLock;
-    std::atomic<juce::AudioFormatWriter::ThreadedWriter*> activeWriter{nullptr};
+    juce::CriticalSection _writerLock;
+    std::atomic<juce::AudioFormatWriter::ThreadedWriter*> _activeWriter{nullptr};
 };
 
 struct MeasurementRecorderEditor final : juce::Component
@@ -62,30 +62,30 @@ private:
         Thumbnail();
         ~Thumbnail() override;
 
-        juce::AudioThumbnail& getAudioThumbnail();
+        auto getAudioThumbnail() -> juce::AudioThumbnail&;
         void setDisplayFullThumbnail(bool displayFull);
 
         void paint(juce::Graphics& g) override;
         void changeListenerCallback(juce::ChangeBroadcaster* source) override;
 
     private:
-        juce::AudioFormatManager formatManager;
-        juce::AudioThumbnailCache thumbnailCache{10};
-        juce::AudioThumbnail _thumbnail{512, formatManager, thumbnailCache};
+        juce::AudioFormatManager _formatManager;
+        juce::AudioThumbnailCache _thumbnailCache{10};
+        juce::AudioThumbnail _thumbnail{512, _formatManager, _thumbnailCache};
 
-        bool displayFullThumb{false};
+        bool _displayFullThumb{false};
     };
 
     void startRecording();
     void stopRecording();
 
-    juce::AudioDeviceManager& audioDeviceManager;
+    juce::AudioDeviceManager& _audioDeviceManager;
 
     Thumbnail _thumbnail;
-    MeasurementRecorder recorder{_thumbnail.getAudioThumbnail()};
+    MeasurementRecorder _recorder{_thumbnail.getAudioThumbnail()};
 
-    juce::TextButton recordButton{"Record"};
-    juce::File lastRecording;
+    juce::TextButton _recordButton{"Record"};
+    juce::File _lastRecording;
 };
 
 }  // namespace ra

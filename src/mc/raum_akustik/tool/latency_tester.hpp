@@ -14,7 +14,7 @@ struct LatencyTester final
     void beginTest();
     void timerCallback() override;
 
-    juce::String getMessageDescribingResult(int latencySamples);
+    auto getMessageDescribingResult(int latencySamples) -> juce::String const;
     void audioDeviceAboutToStart(juce::AudioIODevice* device) override;
     void audioDeviceStopped() override;
     void audioDeviceIOCallbackWithContext(
@@ -31,20 +31,20 @@ private:
     void createTestSound();
 
     // Searches a buffer for a set of spikes that matches those in the test sound
-    int findOffsetOfSpikes(juce::AudioBuffer<float> const& buffer) const;
-    int calculateLatencySamples() const;
+    auto findOffsetOfSpikes(juce::AudioBuffer<float> const& buffer) const -> int;
+    auto calculateLatencySamples() const -> int;
 
-    juce::TextEditor& resultsBox;
-    juce::AudioBuffer<float> testSound, recordedSound;
-    juce::Array<int> spikePositions;
-    juce::CriticalSection lock;
+    juce::TextEditor& _resultsBox;
+    juce::AudioBuffer<float> _testSound, _recordedSound;
+    juce::Array<int> _spikePositions;
+    juce::CriticalSection _lock;
 
-    int playingSampleNum  = 0;
-    int recordedSampleNum = -1;
-    int bufferSize        = 0;
-    double sampleRate     = 0.0;
-    bool testIsRunning    = false;
-    int deviceInputLatency, deviceOutputLatency;
+    int _playingSampleNum  = 0;
+    int _recordedSampleNum = -1;
+    int _bufferSize        = 0;
+    double _sampleRate     = 0.0;
+    bool _testIsRunning    = false;
+    int _deviceInputLatency{}, _deviceOutputLatency{};
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(LatencyTester)
 };
@@ -60,12 +60,12 @@ struct LatencyTesterEditor final : juce::Component
     void resized() override;
 
 private:
-    juce::AudioDeviceManager& audioDeviceManager;
+    juce::AudioDeviceManager& _audioDeviceManager;
 
-    std::unique_ptr<LatencyTester> latencyTester;
+    std::unique_ptr<LatencyTester> _latencyTester;
 
-    juce::TextButton startTestButton{"Test Latency"};
-    juce::TextEditor resultsBox;
+    juce::TextButton _startTestButton{"Test Latency"};
+    juce::TextEditor _resultsBox;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(LatencyTesterEditor)
 };

@@ -29,10 +29,10 @@ struct PorousAbsorberSpecs
 struct PorousAbsorberImpedance
 {
     // Intermediate term cot(k*ta)
-    std::complex<double> intermediateTerm{};
+    std::complex<double> intermediateTerm;
 
     // Impedance at absorber surface (zsa)
-    std::complex<double> atSurface{};
+    std::complex<double> atSurface;
 };
 
 struct PorousAbsorberProperties
@@ -66,7 +66,7 @@ struct PorousAbsorberProperties
 
     PorousAbsorberImpedance impedance{};
 
-    std::complex<double> reflectionFactorNoAirGap{};
+    std::complex<double> reflectionFactorNoAirGap;
     double absorptionFactorNoAirGap{};
 
     std::complex<double> kAirY{0.0};
@@ -77,7 +77,7 @@ struct PorousAbsorberProperties
     std::complex<double> ki{0};
     std::complex<double> zaAir{0};
 
-    std::complex<double> reflectionFactorWithAirGap{};
+    std::complex<double> reflectionFactorWithAirGap;
     double absorptionFactorWithAirGap{};
 };
 

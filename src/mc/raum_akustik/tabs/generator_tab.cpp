@@ -34,9 +34,9 @@ static auto frequencyToX(float minFreq, float maxFreq, float freq, float width)
 
 static auto amplitudeToY(float amplitude, juce::Rectangle<float> const bounds) -> float
 {
-    auto const infinity = -96.0f;
+    auto const infinity = -96.0F;
     auto const dB       = juce::Decibels::gainToDecibels(amplitude, infinity);
-    return juce::jmap(dB, infinity, 0.0f, bounds.getBottom(), bounds.getY());
+    return juce::jmap(dB, infinity, 0.0F, bounds.getBottom(), bounds.getY());
 }
 
 static auto getFrequencyAndAmplitude(std::span<std::complex<float> const> bins, double sampleRate)
@@ -61,8 +61,9 @@ makePathFromAnalysis(std::span<FrequencyAndAmplitude const> analysis, float fs, 
     -> juce::Path
 {
     auto const size = static_cast<int>(analysis.size());
-    if (size == 0)
+    if (size == 0) {
         return {};
+    }
 
     auto frequencyLess = [](auto bin, auto target) { return bin.frequency < target; };
     auto first         = std::lower_bound(begin(analysis), end(analysis), 1.0F, frequencyLess);
@@ -75,11 +76,11 @@ makePathFromAnalysis(std::span<FrequencyAndAmplitude const> analysis, float fs, 
 
     auto const width  = bounds.getWidth();
     auto const startY = amplitudeToY(first->amplitude, bounds);
-    p.startNewSubPath(bounds.getX() + frequencyToX(1.0f, fs * 0.5F, first->frequency, width), startY);
+    p.startNewSubPath(bounds.getX() + frequencyToX(1.0F, fs * 0.5F, first->frequency, width), startY);
 
     for (; first != end(analysis); ++first) {
         auto const y = amplitudeToY(first->amplitude, bounds);
-        p.lineTo(bounds.getX() + frequencyToX(1.0f, fs * 0.5F, first->frequency, width), y);
+        p.lineTo(bounds.getX() + frequencyToX(1.0F, fs * 0.5F, first->frequency, width), y);
     }
 
     return p;

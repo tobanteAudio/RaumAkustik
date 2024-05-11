@@ -3,6 +3,8 @@
 #include <juce_audio_utils/juce_audio_utils.h>
 #include <juce_dsp/juce_dsp.h>
 
+#include <cstddef>
+
 namespace ra {
 
 struct Spectogram
@@ -13,7 +15,7 @@ struct Spectogram
     Spectogram();
     ~Spectogram() override = default;
 
-    void audioDeviceAboutToStart(juce::AudioIODevice*) override;
+    void audioDeviceAboutToStart(juce::AudioIODevice* /*device*/) override;
     void audioDeviceStopped() override;
     void audioDeviceIOCallbackWithContext(
         float const* const* inputChannelData,
@@ -45,7 +47,7 @@ private:
 
     int _fifoIndex{0};
     std::atomic<bool> _nextBlockReady{false};
-    std::array<float, fftSize * 2> _fftBuffer{};
+    std::array<float, static_cast<size_t>(fftSize) * 2UL> _fftBuffer{};
     std::array<float, fftSize> _fifoBuffer{};
 };
 

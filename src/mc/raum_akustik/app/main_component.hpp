@@ -35,10 +35,10 @@ private:
     auto reloadUI() -> void;
     auto toggleFullscreen() -> void;
 
-    juce::ApplicationCommandManager _commandManager{};
+    juce::ApplicationCommandManager _commandManager;
     juce::UndoManager _undoManager;
     juce::ValueTree _valueTree{"RaumAkustik"};
-    LookAndFeel _lnf{};
+    LookAndFeel _lnf;
 
     MenuBar _menuBar{_commandManager};
     LevelMeter _levelMeter;
@@ -47,8 +47,8 @@ private:
     juce::TabbedComponent _tabs{juce::TabbedButtonBar::TabsAtTop};
     AudioInputView _audioInputView;
     GeneratorTab _generatorTab;
-    std::unique_ptr<FirstReflectionsView> _firstReflectionsView{};
-    std::unique_ptr<PorousAbsorberSimulationView> _absorberSimulationView{};
+    std::unique_ptr<FirstReflectionsView> _firstReflectionsView;
+    std::unique_ptr<PorousAbsorberSimulationView> _absorberSimulationView;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(MainComponent)  // NOLINT
 };
