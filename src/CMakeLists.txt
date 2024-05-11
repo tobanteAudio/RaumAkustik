@@ -1,8 +1,8 @@
-project(mc_acoustics)
+project(ra_acoustics)
 
 find_package(mp-units REQUIRED)
 
-add_library(${PROJECT_NAME} STATIC)
+add_library(ra_acoustics STATIC)
 add_library(ra::acoustics ALIAS ${PROJECT_NAME})
 target_include_directories(${PROJECT_NAME}
     PUBLIC
