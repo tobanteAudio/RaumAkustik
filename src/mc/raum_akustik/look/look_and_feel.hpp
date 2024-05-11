@@ -2,7 +2,7 @@
 
 #include <juce_gui_basics/juce_gui_basics.h>
 
-namespace mc
+namespace ra
 {
 struct LookAndFeel final : juce::LookAndFeel_V4
 {
@@ -11,4 +11,4 @@ struct LookAndFeel final : juce::LookAndFeel_V4
 
     auto drawPopupMenuBackground(juce::Graphics& g, int width, int height) -> void override;
 };
-}  // namespace mc
+}  // namespace ra

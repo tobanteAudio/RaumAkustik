@@ -1,5 +1,5 @@
 add_library(mc_compiler_options INTERFACE)
-add_library(mc::compiler_options ALIAS mc_compiler_options)
+add_library(ra::compiler_options ALIAS mc_compiler_options)
 
 if (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
     target_compile_options(mc_compiler_options INTERFACE "/permissive-")

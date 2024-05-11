@@ -4,7 +4,7 @@ find_package(mp-units REQUIRED)
 find_package(blaze REQUIRED CONFIG)
 
 add_library(${PROJECT_NAME} STATIC)
-add_library(mc::acoustics ALIAS ${PROJECT_NAME})
+add_library(ra::acoustics ALIAS ${PROJECT_NAME})
 target_include_directories(${PROJECT_NAME}
     PUBLIC
         "${PROJECT_SOURCE_DIR}"
@@ -18,8 +18,8 @@ target_link_libraries(${PROJECT_NAME}
         mp-units::mp-units
         juce::juce_recommended_config_flags
         juce::juce_recommended_lto_flags
-        mc::compiler_options
-        mc::coverage
+        ra::compiler_options
+        ra::coverage
 )
 
 target_sources(${PROJECT_NAME}
@@ -49,7 +49,7 @@ target_sources(${PROJECT_NAME}
 
 add_executable("${PROJECT_NAME}_Tests")
 catch_discover_tests("${PROJECT_NAME}_Tests")
-target_link_libraries("${PROJECT_NAME}_Tests" PRIVATE mc::acoustics Catch2::Catch2WithMain)
+target_link_libraries("${PROJECT_NAME}_Tests" PRIVATE ra::acoustics Catch2::Catch2WithMain)
 target_sources("${PROJECT_NAME}_Tests"
     PRIVATE
         "mc/acoustics/air.test.cpp"

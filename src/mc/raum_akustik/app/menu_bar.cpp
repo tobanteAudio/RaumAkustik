@@ -4,7 +4,7 @@
 
 #include "BinaryData.hpp"
 
-namespace mc
+namespace ra
 {
 MenuBar::MenuBar(juce::ApplicationCommandManager& commandManager) : _commandManager{commandManager}
 {
@@ -78,4 +78,4 @@ auto MenuBar::getMenuForIndex(int menuIndex, juce::String const& /*menuName*/) -
 
 auto MenuBar::menuItemSelected(int /*menuItemID*/, int /*topLevelMenuIndex*/) -> void {}
 
-}  // namespace mc
+}  // namespace ra

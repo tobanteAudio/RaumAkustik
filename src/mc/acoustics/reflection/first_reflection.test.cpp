@@ -2,25 +2,25 @@
 
 #include <catch2/catch_test_macros.hpp>
 
-static constexpr auto Room = mc::RoomLayout{
-    mc::RoomDimensions{
+static constexpr auto Room = ra::RoomLayout{
+    ra::RoomDimensions{
         600,
         365,
         312,
     },
     {
-        mc::Speaker{
+        ra::Speaker{
             121,
             160,
             125,
         },
-        mc::Speaker{
+        ra::Speaker{
             121 + 123,
             160,
             125,
         },
     },
-    mc::Point{
+    ra::Point{
         121 + 123 / 2.0,
         160 + 123,
         120,
@@ -29,8 +29,8 @@ static constexpr auto Room = mc::RoomLayout{
 
 TEST_CASE("RaumAkustik: firstReflections", "")
 {
-    auto reflections = std::array<mc::FirstReflection, 2>{};
-    mc::firstReflections(begin(Room.speakers), end(Room.speakers), begin(reflections), Room.dimensions,
+    auto reflections = std::array<ra::FirstReflection, 2>{};
+    ra::firstReflections(begin(Room.speakers), end(Room.speakers), begin(reflections), Room.dimensions,
                          Room.listenPosition);
 
     REQUIRE(static_cast<int>(reflections[0].front) == 143);

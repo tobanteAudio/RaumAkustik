@@ -7,7 +7,7 @@
 
 #include <complex>
 
-namespace mc
+namespace ra
 {
 struct AtmosphericEnvironment
 {
@@ -96,4 +96,4 @@ namespace detail
 
 }  // namespace detail
 
-}  // namespace mc
+}  // namespace ra

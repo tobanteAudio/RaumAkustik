@@ -9,7 +9,7 @@
 
 #include <span>
 
-namespace mc
+namespace ra
 {
 
 struct FrequencyAndAmplitude
@@ -222,4 +222,4 @@ auto GeneratorTab::valueTreePropertyChanged(juce::ValueTree& /*tree*/, juce::Ide
     triggerAsyncUpdate();
 }
 
-}  // namespace mc
+}  // namespace ra

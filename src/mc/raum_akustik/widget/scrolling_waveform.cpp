@@ -2,7 +2,7 @@
 
 #include <juce_dsp/juce_dsp.h>
 
-namespace mc
+namespace ra
 {
 
 ScrollingWaveform::ScrollingWaveform() : juce::AudioVisualiserComponent(1)
@@ -45,4 +45,4 @@ auto ScrollingWaveform::audioDeviceIOCallbackWithContext(float const* const* inp
     output.fill(0.0F);
 }
 
-}  // namespace mc
+}  // namespace ra

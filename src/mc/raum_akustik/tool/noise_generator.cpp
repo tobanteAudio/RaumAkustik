@@ -1,6 +1,6 @@
 #include "noise_generator.hpp"
 
-namespace mc
+namespace ra
 {
 
 NoiseGenerator::NoiseGenerator()
@@ -59,4 +59,4 @@ auto NoiseGenerator::audioDeviceIOCallbackWithContext(float const* const* inputC
     for (auto i{0}; i < numberOfSamples; ++i) { channel[i] = _dist(_urng) * _gain; }
 }
 
-}  // namespace mc
+}  // namespace ra

@@ -2,7 +2,7 @@
 
 #include <mc/raum_akustik/app/main_component.hpp>
 
-namespace mc
+namespace ra
 {
 
 namespace
@@ -94,4 +94,4 @@ auto raumAkusticApplication() -> RaumAkustikApplication&
     return *raumAkustikApp;
 }
 
-}  // namespace mc
+}  // namespace ra

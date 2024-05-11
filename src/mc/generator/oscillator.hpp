@@ -3,7 +3,7 @@
 #include <cmath>
 #include <numbers>
 
-namespace mc
+namespace ra
 {
 
 template<typename Float>
@@ -28,4 +28,4 @@ private:
     Float _phase{0};
 };
 
-}  // namespace mc
+}  // namespace ra

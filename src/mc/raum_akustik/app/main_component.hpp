@@ -12,7 +12,7 @@
 
 #include <juce_gui_extra/juce_gui_extra.h>
 
-namespace mc
+namespace ra
 {
 struct MainComponent final
     : juce::Component
@@ -54,4 +54,4 @@ private:
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(MainComponent)  // NOLINT
 };
 
-}  // namespace mc
+}  // namespace ra

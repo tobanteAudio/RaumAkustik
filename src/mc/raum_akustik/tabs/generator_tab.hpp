@@ -5,7 +5,7 @@
 #include <juce_audio_utils/juce_audio_utils.h>
 #include <juce_gui_basics/juce_gui_basics.h>
 
-namespace mc
+namespace ra
 {
 
 struct GeneratorTab final
@@ -46,4 +46,4 @@ private:
     juce::Path _spectrumPath;
 };
 
-}  // namespace mc
+}  // namespace ra

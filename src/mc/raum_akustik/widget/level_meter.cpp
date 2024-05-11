@@ -1,6 +1,6 @@
 #include "level_meter.hpp"
 
-namespace mc
+namespace ra
 {
 
 // V = Vmax * 10^(dBFS / 20)
@@ -183,4 +183,4 @@ auto LevelMeter::audioDeviceIOCallbackWithContext(float const* const* inputChann
     output.fill(0.0F);
 }
 
-}  // namespace mc
+}  // namespace ra

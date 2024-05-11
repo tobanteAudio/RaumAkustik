@@ -2,7 +2,7 @@
 
 #include <mc/generator/oscillator.hpp>
 
-namespace mc
+namespace ra
 {
 
 // x[n] = A * sin(2 * π * f[n] * n / fs + φ)
@@ -52,4 +52,4 @@ auto generate(SineSweep const& spec) -> std::vector<float>
     return buffer;
 }
 
-}  // namespace mc
+}  // namespace ra

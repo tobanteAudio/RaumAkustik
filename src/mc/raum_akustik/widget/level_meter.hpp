@@ -3,7 +3,7 @@
 #include <juce_audio_utils/juce_audio_utils.h>
 #include <juce_dsp/juce_dsp.h>
 
-namespace mc
+namespace ra
 {
 
 struct LevelMeter final
@@ -40,4 +40,4 @@ private:
     juce::Rectangle<float> _meter{};
 };
 
-}  // namespace mc
+}  // namespace ra

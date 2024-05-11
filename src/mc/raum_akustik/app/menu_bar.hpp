@@ -2,7 +2,7 @@
 
 #include <juce_gui_extra/juce_gui_extra.h>
 
-namespace mc
+namespace ra
 {
 
 struct MenuBar final
@@ -23,4 +23,4 @@ private:
     juce::MenuBarComponent _menu{this};
 };
 
-}  // namespace mc
+}  // namespace ra

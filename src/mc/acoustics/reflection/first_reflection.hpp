@@ -5,7 +5,7 @@
 #define _USE_MATH_DEFINES  // NOLINT
 #include <cmath>
 
-namespace mc
+namespace ra
 {
 
 struct Point
@@ -73,4 +73,4 @@ auto firstReflections(InIt f, InIt l, OutIt o, RoomDimensions dimensions, Point 
     }
 }
 
-}  // namespace mc
+}  // namespace ra

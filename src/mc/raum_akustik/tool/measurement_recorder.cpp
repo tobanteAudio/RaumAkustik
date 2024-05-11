@@ -1,6 +1,6 @@
 #include "measurement_recorder.hpp"
 
-namespace mc
+namespace ra
 {
 
 MeasurementRecorder::MeasurementRecorder(juce::AudioThumbnail& thumbnail) : _thumbnail(thumbnail)
@@ -227,4 +227,4 @@ void MeasurementRecorderEditor::stopRecording()
     _thumbnail.setDisplayFullThumbnail(true);
 }
 
-}  // namespace mc
+}  // namespace ra

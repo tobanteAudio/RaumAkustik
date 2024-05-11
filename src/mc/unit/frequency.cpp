@@ -5,7 +5,7 @@
 #include <cmath>
 #include <numbers>
 
-namespace mc
+namespace ra
 {
 
 auto oactaveSubdivision(Hertz<double> startFrequency, double numSubdivisions, double index) -> Hertz<double>
@@ -18,4 +18,4 @@ auto frequencyToAngularVelocity(Hertz<double> hertz) -> RadianPerSecond<double>
     static constexpr auto twoPi = std::numbers::pi * 2.0;
     return RadianPerSecond<double>{twoPi * hertz.number()};
 }
-}  // namespace mc
+}  // namespace ra

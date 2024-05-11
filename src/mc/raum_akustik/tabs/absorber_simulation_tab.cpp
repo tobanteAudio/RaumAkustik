@@ -2,7 +2,7 @@
 
 #include <mc/unit/frequency.hpp>
 
-namespace mc
+namespace ra
 {
 
 namespace
@@ -194,4 +194,4 @@ auto PorousAbsorberSimulationView::updateSimulation() -> void
     _table.updateContent();
     repaint();
 }
-}  // namespace mc
+}  // namespace ra

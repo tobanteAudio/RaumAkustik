@@ -4,7 +4,7 @@
 
 #include "BinaryData.hpp"
 
-namespace mc
+namespace ra
 {
 struct FirstReflectionsView final
     : juce::Component
@@ -56,4 +56,4 @@ private:
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(FirstReflectionsView)  // NOLINT
 };
-}  // namespace mc
+}  // namespace ra

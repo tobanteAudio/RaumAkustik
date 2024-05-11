@@ -26,13 +26,13 @@ juce_add_binary_data(RaumAkustik_BinaryData
         "resources/svg/undo.svg"
 )
 
-juce_add_gui_app(${PROJECT_NAME}
+juce_add_gui_app(RaumAkustik
     PRODUCT_NAME "Raum Akustik"
-    BUNDLE_ID    "com.modern-circuits.raum-akustic"
+    BUNDLE_ID    "com.tobanteAudio.raum-akustic"
     ICON_BIG     "resources/png/raum_akustik_logo_black.png"
 )
 
-target_sources(${PROJECT_NAME}
+target_sources(RaumAkustik
     PRIVATE
         "app/application.cpp"
         "app/application.hpp"
@@ -70,7 +70,7 @@ target_sources(${PROJECT_NAME}
         "widget/spectogram.hpp"
 )
 
-target_compile_definitions(${PROJECT_NAME}
+target_compile_definitions(RaumAkustik
     PRIVATE
         JUCE_WEB_BROWSER=0
         JUCE_USE_CURL=0
@@ -79,19 +79,19 @@ target_compile_definitions(${PROJECT_NAME}
         JUCE_APPLICATION_VERSION_STRING="$<TARGET_PROPERTY:${PROJECT_NAME},JUCE_VERSION>"
 )
 
-target_include_directories(${PROJECT_NAME}
+target_include_directories(RaumAkustik
     PRIVATE
         ${CMAKE_SOURCE_DIR}/3rd_party/asiosdk_2.3.3_2019-06-14/common
 )
 
-target_link_libraries(${PROJECT_NAME}
+target_link_libraries(RaumAkustik
     PRIVATE
         juce::juce_audio_devices
         juce::juce_audio_utils
         juce::juce_dsp
         juce::juce_gui_extra
 
-        mc::acoustics
+        ra::acoustics
         RaumAkustik_BinaryData
 
         juce::juce_recommended_config_flags

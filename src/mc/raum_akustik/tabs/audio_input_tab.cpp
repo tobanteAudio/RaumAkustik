@@ -1,6 +1,6 @@
 #include "audio_input_tab.hpp"
 
-namespace mc
+namespace ra
 {
 
 AudioInputView::AudioInputView(juce::AudioDeviceManager& deviceManager)
@@ -35,4 +35,4 @@ auto AudioInputView::resized() -> void
     _latencyTester.setBounds(area);
 }
 
-}  // namespace mc
+}  // namespace ra

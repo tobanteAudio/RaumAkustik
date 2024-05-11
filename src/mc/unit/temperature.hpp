@@ -2,7 +2,7 @@
 
 #include <units/isq/si/thermodynamic_temperature.h>
 
-namespace mc
+namespace ra
 {
 using namespace units::isq;
 
@@ -14,4 +14,4 @@ using Kelvin = si::thermodynamic_temperature<si::kelvin, T>;
     return Kelvin<double>{celcius + 273.15};
 }
 
-}  // namespace mc
+}  // namespace ra

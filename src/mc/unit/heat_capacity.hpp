@@ -2,7 +2,7 @@
 
 #include <units/isq/si/heat_capacity.h>
 
-namespace mc
+namespace ra
 {
 
 using namespace units::isq;
@@ -15,4 +15,4 @@ inline constexpr auto SpecificHeatRatio = 1.402;
 template<typename T>
 inline constexpr auto GasConstant = JoulePerKilogramKelvin<T>{287.05};
 
-}  // namespace mc
+}  // namespace ra

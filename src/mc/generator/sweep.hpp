@@ -5,7 +5,7 @@
 #include <chrono>
 #include <vector>
 
-namespace mc
+namespace ra
 {
 
 enum struct SineSweepCurve
@@ -25,4 +25,4 @@ struct SineSweep
 
 [[nodiscard]] auto generate(SineSweep const& spec) -> std::vector<float>;
 
-}  // namespace mc
+}  // namespace ra

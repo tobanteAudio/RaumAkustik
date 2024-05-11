@@ -3,7 +3,7 @@
 #include <mc/raum_akustik/app/application.hpp>
 #include <mc/raum_akustik/app/command_ids.hpp>
 
-namespace mc
+namespace ra
 {
 // static auto writeToWavFile(juce::File const& file, std::vector<float> const& buffer, double fs, int bits = 24) ->
 // bool
@@ -194,4 +194,4 @@ auto MainComponent::toggleFullscreen() -> void
     getPeer()->setFullScreen(!getPeer()->isFullScreen());
     // if (getPeer()->isFullScreen()) { }
 }
-}  // namespace mc
+}  // namespace ra

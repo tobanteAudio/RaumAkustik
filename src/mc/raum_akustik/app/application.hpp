@@ -3,7 +3,7 @@
 #include <juce_audio_devices/juce_audio_devices.h>
 #include <juce_gui_basics/juce_gui_basics.h>
 
-namespace mc
+namespace ra
 {
 struct RaumAkustikApplication : juce::JUCEApplication
 {
@@ -26,4 +26,4 @@ private:
 };
 
 [[nodiscard]] auto raumAkusticApplication() -> RaumAkustikApplication&;
-}  // namespace mc
+}  // namespace ra

@@ -6,25 +6,25 @@
 
 TEST_CASE("RaumAkustik: densityOfAir", "")
 {
-    auto c20 = mc::Kelvin<double>{273.15 + 20.0};
-    auto c22 = mc::Kelvin<double>{273.15 + 22.0};
-    auto p   = mc::OneAtmosphere<double>;
+    auto c20 = ra::Kelvin<double>{273.15 + 20.0};
+    auto c22 = ra::Kelvin<double>{273.15 + 22.0};
+    auto p   = ra::OneAtmosphere<double>;
 
-    REQUIRE(mc::densityOfAir(c20, p).number() == Catch::Approx(mc::KilogramPerCubicMetre<double>{1.20412}.number()));
-    REQUIRE(mc::densityOfAir(c22, p).number() == Catch::Approx(mc::KilogramPerCubicMetre<double>{1.19596}.number()));
+    REQUIRE(ra::densityOfAir(c20, p).number() == Catch::Approx(ra::KilogramPerCubicMetre<double>{1.20412}.number()));
+    REQUIRE(ra::densityOfAir(c22, p).number() == Catch::Approx(ra::KilogramPerCubicMetre<double>{1.19596}.number()));
 }
 
 TEST_CASE("RaumAkustik: soundVelocity", "")
 {
-    REQUIRE(mc::soundVelocity(mc::celciusToKelvin(20.0)).number() == Catch::Approx(343.38));
-    REQUIRE(mc::soundVelocity(mc::celciusToKelvin(22.0)).number() == Catch::Approx(344.55));
+    REQUIRE(ra::soundVelocity(ra::celciusToKelvin(20.0)).number() == Catch::Approx(343.38));
+    REQUIRE(ra::soundVelocity(ra::celciusToKelvin(22.0)).number() == Catch::Approx(344.55));
 }
 
 TEST_CASE("RaumAkustik: impedanceOfAir", "")
 {
-    auto c20 = mc::Kelvin<double>{273.15 + 20.0};
-    auto c22 = mc::Kelvin<double>{273.15 + 22.0};
-    auto p   = mc::OneAtmosphere<double>;
-    REQUIRE(mc::impedanceOfAir(c20, p) == Catch::Approx(413.47));
-    REQUIRE(mc::impedanceOfAir(c22, p) == Catch::Approx(412.07));
+    auto c20 = ra::Kelvin<double>{273.15 + 20.0};
+    auto c22 = ra::Kelvin<double>{273.15 + 22.0};
+    auto p   = ra::OneAtmosphere<double>;
+    REQUIRE(ra::impedanceOfAir(c20, p) == Catch::Approx(413.47));
+    REQUIRE(ra::impedanceOfAir(c22, p) == Catch::Approx(412.07));
 }

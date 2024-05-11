@@ -1,6 +1,6 @@
 #include "spectogram.hpp"
 
-namespace mc
+namespace ra
 {
 
 Spectogram::Spectogram()
@@ -112,4 +112,4 @@ void Spectogram::drawNextLineOfSpectrogram()
     }
 }
 
-}  // namespace mc
+}  // namespace ra

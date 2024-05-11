@@ -5,7 +5,7 @@
 
 #include <random>
 
-namespace mc
+namespace ra
 {
 
 struct NoiseGenerator final
@@ -33,4 +33,4 @@ private:
     juce::ComboBox _gainSelect{"Gain"};
 };
 
-}  // namespace mc
+}  // namespace ra

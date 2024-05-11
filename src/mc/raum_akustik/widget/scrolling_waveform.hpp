@@ -2,7 +2,7 @@
 
 #include <juce_audio_utils/juce_audio_utils.h>
 
-namespace mc
+namespace ra
 {
 
 struct ScrollingWaveform final
@@ -19,4 +19,4 @@ struct ScrollingWaveform final
                                           juce::AudioIODeviceCallbackContext const& context) -> void override;
 };
 
-}  // namespace mc
+}  // namespace ra

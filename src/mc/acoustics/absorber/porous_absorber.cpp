@@ -4,7 +4,7 @@
 
 #include <numbers>
 
-namespace mc
+namespace ra
 {
 auto propertiesOfAbsorber(PorousAbsorberSpecs specs, AtmosphericEnvironment env, Hertz<double> frequency, double angle)
     -> PorousAbsorberProperties
@@ -85,4 +85,4 @@ auto angleOfPropagation(std::complex<double> k, double ky) -> double
 }
 
 }  // namespace detail
-}  // namespace mc
+}  // namespace ra

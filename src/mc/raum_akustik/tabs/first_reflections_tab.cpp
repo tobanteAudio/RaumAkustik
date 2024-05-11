@@ -1,6 +1,6 @@
 #include "first_reflections_tab.hpp"
 
-namespace mc
+namespace ra
 {
 namespace
 {
@@ -267,4 +267,4 @@ auto FirstReflectionsView::valueTreePropertyChanged(juce::ValueTree& /*tree*/, j
 {
     repaint();
 }
-}  // namespace mc
+}  // namespace ra

@@ -1,6 +1,6 @@
 #pragma once
 
-namespace mc
+namespace ra
 {
 struct CommandIDs
 {
@@ -19,4 +19,4 @@ struct CommandIDs
         about,
     };
 };
-}  // namespace mc
+}  // namespace ra

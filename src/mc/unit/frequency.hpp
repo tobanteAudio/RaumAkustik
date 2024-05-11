@@ -3,7 +3,7 @@
 #include <units/isq/si/angular_velocity.h>
 #include <units/isq/si/frequency.h>
 
-namespace mc
+namespace ra
 {
 using namespace units::isq;
 
@@ -17,4 +17,4 @@ using RadianPerSecond = si::angular_velocity<si::radian_per_second, T>;
     -> Hertz<double>;
 [[nodiscard]] auto frequencyToAngularVelocity(Hertz<double> hertz) -> RadianPerSecond<double>;
 
-}  // namespace mc
+}  // namespace ra

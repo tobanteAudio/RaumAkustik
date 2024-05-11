@@ -4,7 +4,7 @@
 
 #include <units/math.h>
 
-namespace mc
+namespace ra
 {
 auto densityOfAir(Kelvin<double> temperature, Pascal<double> pressure) noexcept -> KilogramPerCubicMetre<double>
 {
@@ -23,4 +23,4 @@ auto impedanceOfAir(Kelvin<double> temperature, Pascal<double> pressure) noexcep
     return i.number();
 }
 
-}  // namespace mc
+}  // namespace ra

@@ -2,7 +2,7 @@
 
 #include <juce_dsp/juce_dsp.h>
 
-namespace mc
+namespace ra
 {
 
 LatencyTester::LatencyTester(juce::TextEditor& editorBox) : resultsBox(editorBox) {}
@@ -281,4 +281,4 @@ void LatencyTesterEditor::resized()
     resultsBox.setBounds(b);
 }
 
-}  // namespace mc
+}  // namespace ra

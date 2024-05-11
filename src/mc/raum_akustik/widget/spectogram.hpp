@@ -3,7 +3,7 @@
 #include <juce_audio_utils/juce_audio_utils.h>
 #include <juce_dsp/juce_dsp.h>
 
-namespace mc
+namespace ra
 {
 
 struct Spectogram
@@ -45,4 +45,4 @@ private:
     std::array<float, fftSize> _fifoBuffer{};
 };
 
-}  // namespace mc
+}  // namespace ra
