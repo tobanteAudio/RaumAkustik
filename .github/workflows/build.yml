@@ -62,15 +62,18 @@ jobs:
         run: |
           sudo apt update -y
           sudo apt install -y libasound2-dev libx11-dev libxinerama-dev libxext-dev libfreetype6-dev libwebkit2gtk-4.0-dev libglu1-mesa-dev xvfb ninja-build ccache
+          pip3 install --upgrade conan
 
       - name: Install dependencies (macOS)
         if: runner.os == 'macOS'
-        run: brew install ninja osxutils
+        run: brew install conan ninja osxutils
 
       - name: Install dependencies (Windows)
         if: runner.os == 'Windows'
         shell: bash
-        run: choco install ninja ccache
+        run: |
+          choco install ninja ccache
+          pip3 install --upgrade conan
 
       # - name: Install clang
       #   if: runner.os != 'macOS'
@@ -82,10 +85,8 @@ jobs:
         with:
           arch: x64
 
-      - name: Install conan
-        run: |
-          pip3 install --upgrade conan
-          conan profile detect -f
+      - name: Setup conan
+        run: conan profile detect -f
 
       - name: Install ccache
         uses: hendrikmuhs/ccache-action@main
