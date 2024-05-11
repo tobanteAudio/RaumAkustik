@@ -31,18 +31,24 @@ jobs:
           - name: Linux
             os: ubuntu-22.04
             osx_target: ""
-            cxx_flags: "-march=sandybridge -mtune=skylake"
+            cxx_flags: "-march=x86-64-v3"
 
-          - name: macOS
+          - name: macOS-X64
             os: macos-13
             osx_target: "10.15"
-            cxx_flags: "-march=nehalem -mtune=haswell"
+            cxx_flags: "-march=x86-64-v3"
+            cmake_prefix_path: ""
+
+          - name: macOS-ARM64
+            os: macos-14
+            osx_target: "11.0"
+            cxx_flags: ""
             cmake_prefix_path: ""
 
           - name: Windows
             os: windows-latest
             osx_target: ""
-            cxx_flags: "-march=sandybridge -mtune=skylake"
+            cxx_flags: "-march=x86-64-v3"
 
     steps:
       - name: Checkout code
