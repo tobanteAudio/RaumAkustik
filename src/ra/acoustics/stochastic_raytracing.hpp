@@ -34,14 +34,17 @@ struct StochasticRaytracing
         double radius;
     };
 
+    using Result = std::vector<std::vector<double>>;
+
     explicit StochasticRaytracing(Room const& room) noexcept;
 
-    [[nodiscard]] auto operator()(Simulation const& simulation) const -> std::vector<std::vector<double>>;
+    [[nodiscard]] auto operator()(Simulation const& simulation) const -> Result;
 
 private:
     [[nodiscard]] auto randomRaysOnSphere(size_t count, std::mt19937& rng) const -> std::vector<Vec3>;
 
-    auto tarceRay(Simulation const& sim, Vec3 ray, std::span<double> histogram, std::mt19937& rng) const -> void;
+    auto tarceRay(Simulation const& sim, Vec3 ray, std::span<double> histogram, std::size_t freqIdx, std::mt19937& rng)
+        const -> void;
     [[nodiscard]] auto getImpactSurface(Point pos, Vec3 direction) const -> std::pair<std::ptrdiff_t, Vec3>;
     [[nodiscard]] static auto getWallNormal(std::ptrdiff_t index) -> Vec3;
 

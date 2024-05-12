@@ -4,7 +4,7 @@ namespace ra {
 
 StochasticRaytracing::StochasticRaytracing(Room const& room) noexcept : _room{room} {}
 
-auto StochasticRaytracing::operator()(Simulation const& simulation) const -> std::vector<std::vector<double>>
+auto StochasticRaytracing::operator()(Simulation const& simulation) const -> Result
 {
     auto rng = std::mt19937{std::random_device{}()};
 
@@ -12,17 +12,22 @@ auto StochasticRaytracing::operator()(Simulation const& simulation) const -> std
     auto const numTimeSteps = static_cast<std::size_t>(simulation.duration / simulation.timeStep);
 
     auto histogram = std::vector(simulation.frequencies.size(), std::vector<double>(numTimeSteps));
-    for (auto& frequency : histogram) {
+    for (auto frequency{0UL}; frequency < histogram.size(); ++frequency) {
         for (auto const& ray : rays) {
-            tarceRay(simulation, ray, frequency, rng);
+            tarceRay(simulation, ray, histogram[frequency], frequency, rng);
         }
     }
 
     return histogram;
 }
 
-auto StochasticRaytracing::tarceRay(Simulation const& sim, Vec3 ray, std::span<double> histogram, std::mt19937& rng)
-    const -> void
+auto StochasticRaytracing::tarceRay(
+    Simulation const& sim,
+    Vec3 ray,
+    std::span<double> histogram,
+    std::size_t freqIdx,
+    std::mt19937& rng
+) const -> void
 {
     static constexpr auto const speedOfSound = 343.0;
 
@@ -47,6 +52,8 @@ auto StochasticRaytracing::tarceRay(Simulation const& sim, Vec3 ray, std::span<d
         // Determine the surface that the ray encounters
         auto const [surfaceIdx, displacement] = getImpactSurface(rayPos, rayDir);
 
+        auto const surface = static_cast<RoomSurface>(surfaceIdx);
+
         // Determine the distance traveled by the ray
         auto const distance = std::sqrt(sum(pow(displacement, 2.0)));
 
@@ -62,12 +69,12 @@ auto StochasticRaytracing::tarceRay(Simulation const& sim, Vec3 ray, std::span<d
         // Apply surface reflection to ray's energy
         // This is the amount of energy that is not lost through
         // absorption.
-        rayEnergy = rayEnergy * _room.reflection.back;  // R[surfaceIdx, freq_idx]
+        rayEnergy = rayEnergy * _room.reflection.surface(surface)[freqIdx];  // R[surfaceIdx, freq_idx]
 
         // Apply diffuse reflection to ray energy
         // This is the fraction of energy used to determine what is
         // detected at the receiver
-        auto const recvEnergy = rayEnergy * _room.scattering.back;  // D[surfaceIdx, freq_idx]
+        auto const recvEnergy = rayEnergy * _room.scattering.surface(surface)[freqIdx];  // D[surfaceIdx, freq_idx]
 
         // Determine impact point-to-receiver direction.
         auto const recvDir = _room.receiver - impactPosition;
@@ -107,7 +114,7 @@ auto StochasticRaytracing::tarceRay(Simulation const& sim, Vec3 ray, std::span<d
         auto ref = rayDir - 2.0 * sum(rayDir * impactNormal) * impactNormal;
 
         // Combine the specular and random components
-        auto d = _room.scattering.back;  // D[_surface_idx, freq_idx];
+        auto d = _room.scattering.surface(surface)[freqIdx];  // D[_surface_idx, freq_idx];
         newDir = newDir / norm(newDir);
         ref    = ref / norm(ref);
         rayDir = d * newDir + (1 - d) * ref;
@@ -117,9 +124,9 @@ auto StochasticRaytracing::tarceRay(Simulation const& sim, Vec3 ray, std::span<d
 
 auto StochasticRaytracing::getImpactSurface(Point pos, Vec3 direction) const -> std::pair<std::ptrdiff_t, Vec3>
 {
-    auto const length = _room.dimensions.length / 100.0;
-    auto const width  = _room.dimensions.width / 100.0;
-    auto const height = _room.dimensions.height / 100.0;
+    auto const length = _room.dimensions.length;
+    auto const width  = _room.dimensions.width;
+    auto const height = _room.dimensions.height;
 
     auto surface      = static_cast<ptrdiff_t>(-1);
     auto displacement = 1000.0;
