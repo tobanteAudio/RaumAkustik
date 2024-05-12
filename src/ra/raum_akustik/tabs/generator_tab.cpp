@@ -142,7 +142,7 @@ GeneratorTab::GeneratorTab(juce::AudioDeviceManager& deviceManager) : _recorder{
     });
     addAndMakeVisible(_sweepSpecPanel);
     addAndMakeVisible(_recorder);
-    handleAsyncUpdate();
+    // handleAsyncUpdate();
 }
 
 auto GeneratorTab::paint(juce::Graphics& g) -> void

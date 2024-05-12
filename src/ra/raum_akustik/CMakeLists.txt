@@ -56,6 +56,8 @@ target_sources(RaumAkustik
         "tabs/first_reflections_tab.hpp"
         "tabs/generator_tab.cpp"
         "tabs/generator_tab.hpp"
+        "tabs/stochastic_raytracing_tab.cpp"
+        "tabs/stochastic_raytracing_tab.hpp"
 
         "tool/latency_tester.cpp"
         "tool/latency_tester.hpp"

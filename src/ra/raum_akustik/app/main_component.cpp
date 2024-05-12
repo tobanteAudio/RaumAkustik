@@ -18,7 +18,7 @@ namespace ra {
 
 MainComponent::MainComponent()
     : _audioInputView{raumAkusticApplication().deviceManager()}
-    , _generatorTab{raumAkusticApplication().deviceManager()}
+    // , _generatorTab{raumAkusticApplication().deviceManager()}
 {
 
     // writeToWavFile(juce::File{R"(C:\Developer\sweep.wav)"}, sweep, spec.sampleRate, 24);
@@ -44,6 +44,7 @@ MainComponent::MainComponent()
 
 MainComponent::~MainComponent()
 {
+    DBG(_valueTree.toXmlString());
     raumAkusticApplication().deviceManager().removeAudioCallback(&_levelMeter);
     raumAkusticApplication().deviceManager().removeAudioCallback(&_waveform);
     setLookAndFeel(nullptr);
@@ -184,8 +185,9 @@ auto MainComponent::reloadUI() -> void
 
     auto const color = getLookAndFeel().findColour(juce::ResizableWindow::backgroundColourId);
     _tabs.addTab("Audio Input", color, &_audioInputView, false);
-    _tabs.addTab("Generator", color, &_generatorTab, false);
+    // _tabs.addTab("Generator", color, &_generatorTab, false);
     _tabs.addTab("First Reflections", color, _firstReflectionsView.get(), false);
+    _tabs.addTab("Raytracing", color, std::addressof(_raytracing), false);
     _tabs.addTab("Porous Absorber", color, _absorberSimulationView.get(), false);
     if (tabIndex > 0 && tabIndex <= _tabs.getNumTabs()) {
         _tabs.setCurrentTabIndex(tabIndex, true);

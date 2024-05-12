@@ -1,28 +1,9 @@
 #include "first_reflections_tab.hpp"
 
+#include <ra/acoustics/room.hpp>
+
 namespace ra {
 namespace {
-struct Point
-{
-    double x{0};
-    double y{0};
-    double z{0};
-};
-
-struct RoomDimensions
-{
-    double length{0};
-    double width{0};
-    double height{0};
-};
-
-struct RoomLayout
-{
-    RoomDimensions dimensions{};
-    Point leftSpeaker{};
-    Point rightSpeaker{};
-    Point listenPosition{};
-};
 
 auto reflectionLeftSpeaker(RoomLayout const& room) -> double
 {
@@ -77,18 +58,10 @@ FirstReflectionsView::FirstReflectionsView(juce::ValueTree vt, juce::UndoManager
 void FirstReflectionsView::paint(juce::Graphics& g)
 {
     auto const room = RoomLayout{
-        RoomDimensions{
-                       _roomLength, _roomWidth,
-                       _roomHeight, },
-        Point{
-                       _leftX,          _leftY,
-                       _leftZ, },
-        Point{
-                       _rightX,_rightY,
-                       _rightZ, },
-        Point{
-                       _listenX,            _listenY,
-                       _listenZ, },
+        RoomDimensions{_roomLength, _roomWidth, _roomHeight},
+        Point{_leftX,      _leftY,     _leftZ     },
+        Point{_rightX,     _rightY,    _rightZ    },
+        Point{_listenX,    _listenY,   _listenZ   },
     };
 
     auto* const lnf = dynamic_cast<juce::LookAndFeel_V4*>(&getLookAndFeel());

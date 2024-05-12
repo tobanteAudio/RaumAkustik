@@ -24,6 +24,9 @@ target_sources(${PROJECT_NAME}
     PRIVATE
         "ra/acoustics/air.cpp"
         "ra/acoustics/air.hpp"
+        "ra/acoustics/room.hpp"
+        "ra/acoustics/stochastic_raytracing.cpp"
+        "ra/acoustics/stochastic_raytracing.hpp"
 
         "ra/acoustics/absorber/porous_absorber.cpp"
         "ra/acoustics/absorber/porous_absorber.hpp"
@@ -33,6 +36,8 @@ target_sources(${PROJECT_NAME}
         "ra/generator/oscillator.hpp"
         "ra/generator/sweep.cpp"
         "ra/generator/sweep.hpp"
+
+        "ra/math/vec3.hpp"
 
         "ra/unit/frequency.cpp"
         "ra/unit/frequency.hpp"

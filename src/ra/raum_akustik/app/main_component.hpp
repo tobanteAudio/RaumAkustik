@@ -7,6 +7,7 @@
 #include <ra/raum_akustik/tabs/audio_input_tab.hpp>
 #include <ra/raum_akustik/tabs/first_reflections_tab.hpp>
 #include <ra/raum_akustik/tabs/generator_tab.hpp>
+#include <ra/raum_akustik/tabs/stochastic_raytracing_tab.hpp>
 #include <ra/raum_akustik/widget/level_meter.hpp>
 #include <ra/raum_akustik/widget/scrolling_waveform.hpp>
 
@@ -46,8 +47,9 @@ private:
 
     juce::TabbedComponent _tabs{juce::TabbedButtonBar::TabsAtTop};
     AudioInputView _audioInputView;
-    GeneratorTab _generatorTab;
+    // GeneratorTab _generatorTab;
     std::unique_ptr<FirstReflectionsView> _firstReflectionsView;
+    StochasticRaytracingEditor _raytracing;
     std::unique_ptr<PorousAbsorberSimulationView> _absorberSimulationView;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(MainComponent)  // NOLINT
