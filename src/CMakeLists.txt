@@ -36,7 +36,6 @@ target_sources(${PROJECT_NAME}
 
         "ra/unit/frequency.cpp"
         "ra/unit/frequency.hpp"
-        "ra/unit/heat_capacity.hpp"
         "ra/unit/pressure.hpp"
         "ra/unit/temperature.hpp"
 )
