@@ -100,3 +100,10 @@ if(${CMAKE_SYSTEM_NAME} MATCHES "Windows" AND ${RA_BUILD_ASIO})
     target_include_directories(RaumAkustik PRIVATE ${CMAKE_SOURCE_DIR}/3rd_party/asiosdk_2.3.3_2019-06-14/common)
 endif()
 
+
+if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
+    if(${CMAKE_CXX_COMPILER_VERSION} VERSION_GREATER_EQUAL "15.0.0" AND ${CMAKE_CXX_COMPILER_VERSION} VERSION_LESS "15.1")
+        target_compile_definitions(RaumAkustik PRIVATE JUCE_SILENCE_XCODE_15_LINKER_WARNING=1)
+        target_link_options(RaumAkustik PRIVATE -Wl,-ld_classic)
+    endif()
+endif()
