@@ -6,8 +6,6 @@ namespace ra {
 using namespace units::isq;
 
 template<typename T>
-using Pascal = si::pressure<si::pascal, T>;
+inline constexpr auto OneAtmosphere = si::pressure<si::pascal, T>{T(101325.0)};
 
-template<typename T>
-inline constexpr auto OneAtmosphere = Pascal<T>{T(101325.0)};
 }  // namespace ra
