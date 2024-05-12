@@ -49,7 +49,7 @@ private:
     std::unique_ptr<RoomEditor> _roomEditor;
     AudioInputEditor _audioInputEditor;
     GeberatorEditor _generatorEditor;
-    StochasticRaytracingEditor _raytracingEditor;
+    std::unique_ptr<StochasticRaytracingEditor> _raytracingEditor;
     std::unique_ptr<PorousAbsorberSimulationEditor> _absorberSimulationEditor;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(MainComponent)  // NOLINT

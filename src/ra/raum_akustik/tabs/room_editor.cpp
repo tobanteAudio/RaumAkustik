@@ -44,7 +44,7 @@ auto reflectionLeftSpeakerFar(RoomLayout const& room) -> double
 
 RoomEditor::RoomEditor(juce::ValueTree vt, juce::UndoManager* um)
     : _undoManager{um}
-    , _roomTree{vt.getOrCreateChildWithName("FirstReflections", um)}
+    , _roomTree{vt.getOrCreateChildWithName("Room", um)}
 {
     _iconSize.setDefault(20.0);
 
@@ -55,21 +55,25 @@ RoomEditor::RoomEditor(juce::ValueTree vt, juce::UndoManager* um)
     setSize(600, 400);
 }
 
-void RoomEditor::paint(juce::Graphics& g)
+auto RoomEditor::getRoomLayout() const -> RoomLayout
 {
-    auto const room = RoomLayout{
+    return {
         RoomDimensions{_roomLength, _roomWidth, _roomHeight},
         Point{_leftX,      _leftY,     _leftZ     },
         Point{_rightX,     _rightY,    _rightZ    },
         Point{_listenX,    _listenY,   _listenZ   },
     };
+}
 
+void RoomEditor::paint(juce::Graphics& g)
+{
     auto* const lnf = dynamic_cast<juce::LookAndFeel_V4*>(&getLookAndFeel());
     jassert(lnf != nullptr);
 
     auto const iconSize = std::max<double>(_iconSize, 1.0);
     auto const iconRect = juce::Rectangle{0.0, 0.0, iconSize, iconSize};
 
+    auto const room = getRoomLayout();
     if (room.dimensions.length == 0.0) {
         return;
     }
@@ -204,36 +208,36 @@ auto RoomEditor::connectValuesToTree() -> void
     _roomProperties.addSection(
         "Room Dimensions",
         juce::Array<juce::PropertyComponent*>{
-            new juce::SliderPropertyComponent{_roomLength.getPropertyAsValue(), "Length", 0.0, 1000.0, 1.0},
-            new juce::SliderPropertyComponent{_roomWidth.getPropertyAsValue(),  "Width",  0.0, 1000.0, 1.0},
-            new juce::SliderPropertyComponent{_roomHeight.getPropertyAsValue(), "Height", 0.0, 1000.0, 1.0},
+            new juce::SliderPropertyComponent{_roomLength.getPropertyAsValue(), "Length", 0.0, 10.0, 0.01},
+            new juce::SliderPropertyComponent{_roomWidth.getPropertyAsValue(),  "Width",  0.0, 10.0, 0.01},
+            new juce::SliderPropertyComponent{_roomHeight.getPropertyAsValue(), "Height", 0.0, 10.0, 0.01},
     }
     );
 
     _roomProperties.addSection(
         "Listen Position",
         juce::Array<juce::PropertyComponent*>{
-            new juce::SliderPropertyComponent{_listenX.getPropertyAsValue(), "X", 0.0, 1000.0, 1.0},
-            new juce::SliderPropertyComponent{_listenY.getPropertyAsValue(), "Y", 0.0, 1000.0, 1.0},
-            new juce::SliderPropertyComponent{_listenZ.getPropertyAsValue(), "Z", 0.0, 1000.0, 1.0},
+            new juce::SliderPropertyComponent{_listenX.getPropertyAsValue(), "X", 0.0, 10.0, 0.01},
+            new juce::SliderPropertyComponent{_listenY.getPropertyAsValue(), "Y", 0.0, 10.0, 0.01},
+            new juce::SliderPropertyComponent{_listenZ.getPropertyAsValue(), "Z", 0.0, 10.0, 0.01},
     }
     );
 
     _roomProperties.addSection(
         "Left Speaker",
         juce::Array<juce::PropertyComponent*>{
-            new juce::SliderPropertyComponent{_leftX.getPropertyAsValue(), "X", 0.0, 1000.0, 1.0},
-            new juce::SliderPropertyComponent{_leftY.getPropertyAsValue(), "Y", 0.0, 1000.0, 1.0},
-            new juce::SliderPropertyComponent{_leftZ.getPropertyAsValue(), "Z", 0.0, 1000.0, 1.0},
+            new juce::SliderPropertyComponent{_leftX.getPropertyAsValue(), "X", 0.0, 10.0, 0.01},
+            new juce::SliderPropertyComponent{_leftY.getPropertyAsValue(), "Y", 0.0, 10.0, 0.01},
+            new juce::SliderPropertyComponent{_leftZ.getPropertyAsValue(), "Z", 0.0, 10.0, 0.01},
     }
     );
 
     _roomProperties.addSection(
         "Right Speaker",
         juce::Array<juce::PropertyComponent*>{
-            new juce::SliderPropertyComponent{_rightX.getPropertyAsValue(), "X", 0.0, 1000.0, 1.0},
-            new juce::SliderPropertyComponent{_rightY.getPropertyAsValue(), "Y", 0.0, 1000.0, 1.0},
-            new juce::SliderPropertyComponent{_rightZ.getPropertyAsValue(), "Z", 0.0, 1000.0, 1.0},
+            new juce::SliderPropertyComponent{_rightX.getPropertyAsValue(), "X", 0.0, 10.0, 0.01},
+            new juce::SliderPropertyComponent{_rightY.getPropertyAsValue(), "Y", 0.0, 10.0, 0.01},
+            new juce::SliderPropertyComponent{_rightZ.getPropertyAsValue(), "Z", 0.0, 10.0, 0.01},
     }
     );
 
@@ -246,8 +250,7 @@ auto RoomEditor::connectValuesToTree() -> void
     );
 }
 
-auto RoomEditor::valueTreePropertyChanged(juce::ValueTree& /*tree*/, juce::Identifier const& /*property*/)
-    -> void
+auto RoomEditor::valueTreePropertyChanged(juce::ValueTree& /*tree*/, juce::Identifier const& /*property*/) -> void
 {
     repaint();
 }

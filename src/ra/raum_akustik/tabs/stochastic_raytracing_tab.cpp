@@ -5,7 +5,7 @@
 
 namespace ra {
 
-StochasticRaytracingEditor::StochasticRaytracingEditor()
+StochasticRaytracingEditor::StochasticRaytracingEditor(RoomEditor& roomEditor) : _roomEditor{roomEditor}
 {
     _properties.addProperties(juce::Array<juce::PropertyComponent*>{
         std::make_unique<juce::SliderPropertyComponent>(_rays, "Rays", 1'000.0, 100'000.0, 1.0).release(),
@@ -62,42 +62,25 @@ auto StochasticRaytracingEditor::resized() -> void
 
 auto StochasticRaytracingEditor::run() -> void
 {
-    static constexpr auto const source = Point{
-        .x = 1.6,
-        .y = 1.21,
-        .z = 1.25,
-    };
-    static constexpr auto const receiver = Point{
-        .x = 1.6 + 1.21,
-        .y = 1.21 + 1.21 / 2.0,
-        .z = 1.2,
-    };
-    static constexpr auto const dimensions = RoomDimensions{
-        .length = 6.0,
-        .width  = 3.65,
-        .height = 3.12,
-    };
-
     auto const simulation = StochasticRaytracing::Simulation{
-        .frequencies      = std::vector{31.25, 62.5, 125.0, 250.0, 500.0, 1000.0, 2000.0, 4000.0, 8000.0, 16'000.0},
-        .raysPerFrequency = static_cast<size_t>(static_cast<double>(_rays.getValue())),
-        .duration         = std::chrono::duration<double>{static_cast<double>(_duration.getValue())},
-        .timeStep         = std::chrono::duration<double>{0.001},
-        .radius           = 0.0875,
+        .frequencies = std::vector{31.25, 62.5, 125.0, 250.0, 500.0, 1000.0, 2000.0, 4000.0, 8000.0, 16'000.0},
+        .rays        = static_cast<size_t>(static_cast<double>(_rays.getValue())),
+        .duration    = std::chrono::duration<double>{static_cast<double>(_duration.getValue())},
+        .timeStep    = std::chrono::duration<double>{0.001},
+        .radius      = 0.0875,
     };
 
+    auto const roomLayout      = _roomEditor.getRoomLayout();
     auto const paintedConcrete = std::vector{0.01, 0.01, 0.01, 0.05, 0.06, 0.07, 0.09, 0.08, 0.08, 0.08};
     auto const woodFloor       = std::vector{0.15, 0.15, 0.15, 0.11, 0.1, 0.07, 0.06, 0.07, 0.07, 0.07};
-
-    auto const absorption = RoomAbsorption{
-        .front   = paintedConcrete,
-        .back    = paintedConcrete,
-        .left    = paintedConcrete,
-        .right   = paintedConcrete,
-        .ceiling = paintedConcrete,
-        .floor   = woodFloor,
+    auto const absorption      = RoomAbsorption{
+             .front   = paintedConcrete,
+             .back    = paintedConcrete,
+             .left    = paintedConcrete,
+             .right   = paintedConcrete,
+             .ceiling = paintedConcrete,
+             .floor   = woodFloor,
     };
-
     auto const scattering = RoomScattering{
         .front   = {0.05, 0.05, 0.05, 0.3,  0.4, 0.5, 0.55, 0.6, 0.6, 0.6},
         .back    = {0.05, 0.05, 0.05, 0.3,  0.4, 0.5, 0.55, 0.6, 0.6, 0.6},
@@ -108,12 +91,12 @@ auto StochasticRaytracingEditor::run() -> void
     };
 
     auto const room = StochasticRaytracing::Room{
-        .dimensions = dimensions,
+        .dimensions = roomLayout.dimensions,
         .absorption = absorption,
         .reflection = makeReflection(absorption),
         .scattering = scattering,
-        .source     = source,
-        .receiver   = receiver,
+        .source     = roomLayout.leftSpeaker,
+        .receiver   = roomLayout.listenPosition,
     };
 
     auto raytracer = StochasticRaytracing{room};

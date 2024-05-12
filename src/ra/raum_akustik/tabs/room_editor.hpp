@@ -1,8 +1,10 @@
 #pragma once
 
-#include <juce_gui_extra/juce_gui_extra.h>
+#include <ra/acoustics/room.hpp>
 
 #include "BinaryData.hpp"
+
+#include <juce_gui_extra/juce_gui_extra.h>
 
 namespace ra {
 struct RoomEditor final
@@ -11,6 +13,8 @@ struct RoomEditor final
 {
     RoomEditor(juce::ValueTree vt, juce::UndoManager* um);
     ~RoomEditor() override = default;
+
+    [[nodiscard]] auto getRoomLayout() const -> RoomLayout;
 
     void paint(juce::Graphics& g) override;
     void resized() override;
@@ -24,9 +28,9 @@ private:
 
     juce::CachedValue<double> _iconSize{_roomTree, "icon_size", _undoManager};
 
-    juce::CachedValue<double> _roomLength{_roomTree, "room_length", _undoManager};
-    juce::CachedValue<double> _roomWidth{_roomTree, "room_width", _undoManager};
-    juce::CachedValue<double> _roomHeight{_roomTree, "room_height", _undoManager};
+    juce::CachedValue<double> _roomLength{_roomTree, "length", _undoManager};
+    juce::CachedValue<double> _roomWidth{_roomTree, "width", _undoManager};
+    juce::CachedValue<double> _roomHeight{_roomTree, "height", _undoManager};
 
     juce::CachedValue<double> _listenX{_roomTree, "listen_x", _undoManager};
     juce::CachedValue<double> _listenY{_roomTree, "listen_y", _undoManager};

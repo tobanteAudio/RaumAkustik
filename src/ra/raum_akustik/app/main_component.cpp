@@ -10,6 +10,27 @@ MainComponent::MainComponent()
     : _audioInputEditor{raumAkusticApplication().deviceManager()}
     , _generatorEditor{raumAkusticApplication().deviceManager()}
 {
+    auto room = juce::ValueTree{"Room"};
+    room.setProperty("icon_size", 50.0, nullptr);
+
+    room.setProperty("length", 6.0, nullptr);
+    room.setProperty("width", 3.65, nullptr);
+    room.setProperty("height", 3.12, nullptr);
+
+    room.setProperty("listen_x", 1.83, nullptr);
+    room.setProperty("listen_y", 2.00, nullptr);
+    room.setProperty("listen_z", 1.00, nullptr);
+
+    room.setProperty("left_x", 1.33, nullptr);
+    room.setProperty("left_y", 1.00, nullptr);
+    room.setProperty("left_z", 1.20, nullptr);
+
+    room.setProperty("right_x", 2.33, nullptr);
+    room.setProperty("right_y", 1.00, nullptr);
+    room.setProperty("right_z", 1.20, nullptr);
+
+    _valueTree.appendChild(room, nullptr);
+
     addAndMakeVisible(_menuBar);
     addAndMakeVisible(_levelMeter);
     addAndMakeVisible(_waveform);
@@ -189,14 +210,19 @@ auto MainComponent::reloadUI() -> void
     auto tabIndex = _tabs.getCurrentTabIndex();
     _tabs.clearTabs();
 
+    _absorberSimulationEditor.reset();
+    _raytracingEditor.reset();
+    _roomEditor.reset();
+
     _roomEditor               = std::make_unique<RoomEditor>(_valueTree, &_undoManager);
+    _raytracingEditor         = std::make_unique<StochasticRaytracingEditor>(*_roomEditor);
     _absorberSimulationEditor = std::make_unique<PorousAbsorberSimulationEditor>(_valueTree, &_undoManager);
 
     auto const color = getLookAndFeel().findColour(juce::ResizableWindow::backgroundColourId);
     _tabs.addTab("Room", color, _roomEditor.get(), false);
     _tabs.addTab("Audio Input", color, std::addressof(_audioInputEditor), false);
     _tabs.addTab("Generator", color, std::addressof(_generatorEditor), false);
-    _tabs.addTab("Raytracing", color, std::addressof(_raytracingEditor), false);
+    _tabs.addTab("Raytracing", color, _raytracingEditor.get(), false);
     _tabs.addTab("Porous Absorber", color, _absorberSimulationEditor.get(), false);
     if (tabIndex > 0 and tabIndex <= _tabs.getNumTabs()) {
         _tabs.setCurrentTabIndex(tabIndex, true);
@@ -204,4 +230,5 @@ auto MainComponent::reloadUI() -> void
 }
 
 auto MainComponent::toggleFullscreen() -> void { getPeer()->setFullScreen(!getPeer()->isFullScreen()); }
+
 }  // namespace ra

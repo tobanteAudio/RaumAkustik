@@ -1,6 +1,7 @@
 #pragma once
 
 #include <ra/acoustics/stochastic_raytracing.hpp>
+#include <ra/raum_akustik/tabs/room_editor.hpp>
 
 #include <juce_gui_extra/juce_gui_extra.h>
 
@@ -8,7 +9,7 @@ namespace ra {
 
 struct StochasticRaytracingEditor final : juce::Component
 {
-    StochasticRaytracingEditor();
+    explicit StochasticRaytracingEditor(RoomEditor& roomEditor);
     ~StochasticRaytracingEditor() override = default;
 
     auto paint(juce::Graphics& g) -> void override;
@@ -38,6 +39,8 @@ private:
     };
 
     auto run() -> void;
+
+    RoomEditor& _roomEditor;
 
     std::optional<StochasticRaytracing::Result> _result;
     double _maxGain{0.0};

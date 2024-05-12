@@ -8,7 +8,7 @@ auto StochasticRaytracing::operator()(Simulation const& simulation) const -> Res
 {
     auto rng = std::mt19937{std::random_device{}()};
 
-    auto const rays         = randomRaysOnSphere(simulation.raysPerFrequency, rng);
+    auto const rays         = randomRaysOnSphere(simulation.rays, rng);
     auto const numTimeSteps = static_cast<std::size_t>(simulation.duration / simulation.timeStep);
 
     auto histogram = std::vector(simulation.frequencies.size(), std::vector<double>(numTimeSteps));

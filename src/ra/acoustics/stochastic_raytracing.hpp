@@ -28,7 +28,7 @@ struct StochasticRaytracing
     struct Simulation
     {
         std::vector<double> frequencies;
-        std::size_t raysPerFrequency;
+        std::size_t rays;
         std::chrono::duration<double> duration;
         std::chrono::duration<double> timeStep;
         double radius;
