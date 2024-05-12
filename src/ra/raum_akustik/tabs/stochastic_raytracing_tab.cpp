@@ -7,45 +7,57 @@ namespace ra {
 
 StochasticRaytracingEditor::StochasticRaytracingEditor()
 {
+    _properties.addProperties(juce::Array<juce::PropertyComponent*>{
+        std::make_unique<juce::SliderPropertyComponent>(_rays, "Rays", 1'000.0, 100'000.0, 1.0).release(),
+        std::make_unique<juce::SliderPropertyComponent>(_duration, "Duration", 1.0, 10.0, 0.1).release(),
+    });
+
     _render.onClick = [this] { run(); };
+
+    addAndMakeVisible(_properties);
     addAndMakeVisible(_render);
+    for (auto i{0}; i < 10; ++i) {
+        addAndMakeVisible(_plots.add(std::make_unique<Plot>()));
+    }
 }
 
 auto StochasticRaytracingEditor::paint(juce::Graphics& g) -> void
 {
-    g.fillAll(juce::Colours::white);
+    auto plotBounds = [](auto* comp) { return comp->getBounds(); };
+    auto getUnion   = [](auto l, auto r) { return l.getUnion(r); };
+    auto plots      = std::transform_reduce(_plots.begin(), _plots.end(), juce::Rectangle<int>{}, getUnion, plotBounds);
+    g.setColour(juce::Colours::white);
+    g.fillRect(plots.expanded(8.0F));
 
     if (not _result) {
         return;
-    }
-
-    for (auto i{0U}; i < _result->size(); ++i) {
-        plotFrequency(g, _plots[i].reduced(16.0F), std::span{_result->at(i)});
     }
 }
 
 auto StochasticRaytracingEditor::resized() -> void
 {
     auto area = getLocalBounds();
-    _render.setBounds(area.removeFromBottom(100));
-    _plots.resize(10);
+
+    auto panel = area.removeFromRight(area.proportionOfWidth(0.175));
+    _properties.setBounds(panel.removeFromTop(panel.proportionOfHeight(0.9)));
+    _render.setBounds(panel);
 
     auto top   = area.removeFromTop(area.proportionOfHeight(0.5));
     auto width = area.proportionOfWidth(1.0 / 5.0);
 
     // top
-    _plots[0] = top.removeFromLeft(width).toFloat();
-    _plots[1] = top.removeFromLeft(width).toFloat();
-    _plots[2] = top.removeFromLeft(width).toFloat();
-    _plots[3] = top.removeFromLeft(width).toFloat();
-    _plots[4] = top.removeFromLeft(width).toFloat();
+    _plots[0]->setBounds(top.removeFromLeft(width).reduced(8.0F));
+    _plots[1]->setBounds(top.removeFromLeft(width).reduced(8.0F));
+    _plots[2]->setBounds(top.removeFromLeft(width).reduced(8.0F));
+    _plots[3]->setBounds(top.removeFromLeft(width).reduced(8.0F));
+    _plots[4]->setBounds(top.removeFromLeft(width).reduced(8.0F));
 
     // bottom
-    _plots[5] = area.removeFromLeft(width).toFloat();
-    _plots[6] = area.removeFromLeft(width).toFloat();
-    _plots[7] = area.removeFromLeft(width).toFloat();
-    _plots[8] = area.removeFromLeft(width).toFloat();
-    _plots[9] = area.removeFromLeft(width).toFloat();
+    _plots[5]->setBounds(area.removeFromLeft(width).reduced(8.0F));
+    _plots[6]->setBounds(area.removeFromLeft(width).reduced(8.0F));
+    _plots[7]->setBounds(area.removeFromLeft(width).reduced(8.0F));
+    _plots[8]->setBounds(area.removeFromLeft(width).reduced(8.0F));
+    _plots[9]->setBounds(area.removeFromLeft(width).reduced(8.0F));
 }
 
 auto StochasticRaytracingEditor::run() -> void
@@ -68,8 +80,8 @@ auto StochasticRaytracingEditor::run() -> void
 
     auto const simulation = StochasticRaytracing::Simulation{
         .frequencies      = std::vector{31.25, 62.5, 125.0, 250.0, 500.0, 1000.0, 2000.0, 4000.0, 8000.0, 16'000.0},
-        .raysPerFrequency = 10'000U,
-        .duration         = std::chrono::duration<double>{2.0},
+        .raysPerFrequency = static_cast<size_t>(static_cast<double>(_rays.getValue())),
+        .duration         = std::chrono::duration<double>{static_cast<double>(_duration.getValue())},
         .timeStep         = std::chrono::duration<double>{0.001},
         .radius           = 0.0875,
     };
@@ -115,15 +127,37 @@ auto StochasticRaytracingEditor::run() -> void
         _maxGain = std::max(_maxGain, *std::max_element(frequency.begin(), frequency.end()));
     }
 
+    for (auto i{0U}; i < _result->size(); ++i) {
+        _plots[static_cast<int>(i)]
+            ->plot(juce::String(simulation.frequencies[i]) + "Hz", _result->at(i), simulation.duration, _maxGain);
+    }
+
     repaint();
 }
 
-auto StochasticRaytracingEditor::plotFrequency(
-    juce::Graphics& g,
-    juce::Rectangle<float> const& area,
-    std::span<double const> histogram
+auto StochasticRaytracingEditor::Plot::plot(
+    juce::String title,
+    std::vector<double> const& data,
+    std::chrono::duration<double> duration,
+    double maxGain
 ) -> void
 {
+    _title    = std::move(title);
+    _data     = data;
+    _duration = duration;
+    _maxGain  = maxGain;
+    repaint();
+}
+
+auto StochasticRaytracingEditor::Plot::paint(juce::Graphics& g) -> void
+{
+    if (_data.empty()) {
+        return;
+    }
+
+    auto area        = getLocalBounds().toFloat();
+    auto const title = area.removeFromTop(std::max(16.0F, area.proportionOfHeight(0.1F)));
+
     auto const gainToY = [&](auto gain) {
         static constexpr auto const minDB = -80.0F;
         static constexpr auto const maxDB = 0.0F;
@@ -137,6 +171,10 @@ auto StochasticRaytracingEditor::plotFrequency(
     g.setColour(juce::Colours::black);
     g.drawRect(area, 1.0F);
 
+    // title
+    g.setFont(juce::Font{}.withPointHeight(14.0F));
+    g.drawText(_title, title, juce::Justification::centred);
+
     // grid
     // dB
     auto const dBm10 = gainToY(juce::Decibels::decibelsToGain(-10.0));
@@ -149,21 +187,21 @@ auto StochasticRaytracingEditor::plotFrequency(
     g.drawLine(juce::Line<float>(area.getBottomLeft().withY(dBm60), area.getBottomRight().withY(dBm60)));
 
     // time
-    auto const sec05 = juce::roundToInt(area.getX() + area.proportionOfWidth(0.25));
-    auto const sec1  = juce::roundToInt(area.getX() + area.proportionOfWidth(0.5));
-    auto const sec15 = juce::roundToInt(area.getX() + area.proportionOfWidth(0.75));
+    auto const sec05 = juce::roundToInt(area.getX() + area.proportionOfWidth(0.5 / _duration.count()));
+    auto const sec1  = juce::roundToInt(area.getX() + area.proportionOfWidth(1.0 / _duration.count()));
+    auto const sec15 = juce::roundToInt(area.getX() + area.proportionOfWidth(1.5 / _duration.count()));
     g.drawVerticalLine(sec05, area.getY(), area.getBottom());
     g.drawVerticalLine(sec1, area.getY(), area.getBottom());
     g.drawVerticalLine(sec15, area.getY(), area.getBottom());
 
     // plot
     auto path = juce::Path{};
-    path.startNewSubPath({0.0F, gainToY(histogram[0] / _maxGain)});
+    path.startNewSubPath({0.0F, gainToY(_data[0] / _maxGain)});
 
-    auto const deltaX = area.getWidth() / static_cast<float>(histogram.size());
-    for (auto i{1U}; i < histogram.size(); ++i) {
+    auto const deltaX = area.getWidth() / static_cast<float>(_data.size());
+    for (auto i{1U}; i < _data.size(); ++i) {
         auto const x = area.getX() + deltaX * static_cast<float>(i);
-        path.lineTo({x, gainToY(histogram[i] / _maxGain)});
+        path.lineTo({x, gainToY(_data[i] / _maxGain)});
     }
 
     path.lineTo(area.getBottomRight());
