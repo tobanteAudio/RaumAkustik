@@ -12,7 +12,8 @@ TEST_CASE("RaumAkustik: propertiesOfAbsorber", "")
 {
 
     {
-        auto const props = ra::propertiesOfAbsorber({100.0, 8'000.0, 100.0}, C20, ra::Hertz<double>{50.0}, 0.0);
+        auto const props
+            = ra::propertiesOfAbsorber({100.0, 8'000.0, 100.0}, C20, ra::si::frequency<ra::si::hertz>{50.0}, 0.0);
         REQUIRE(props.X == Catch::Approx(0.0075257395));
         REQUIRE(props.zca.real() == Catch::Approx(1355.71904994104));
         REQUIRE(props.zca.imag() == Catch::Approx(-1289.23418591288));
@@ -53,7 +54,7 @@ TEST_CASE("RaumAkustik: propertiesOfAbsorber", "")
     }
 
     {
-        auto const props = ra::propertiesOfAbsorber({100.0, 8'000.0}, C22, ra::Hertz<double>{50.0}, 0.0);
+        auto const props = ra::propertiesOfAbsorber({100.0, 8'000.0}, C22, ra::si::frequency<ra::si::hertz>{50.0}, 0.0);
         REQUIRE(props.X == Catch::Approx(0.0074747434));
         REQUIRE(props.zca.real() == Catch::Approx(1355.9444611324));
         REQUIRE(props.zca.imag() == Catch::Approx(-1291.26947073563));
@@ -62,7 +63,8 @@ TEST_CASE("RaumAkustik: propertiesOfAbsorber", "")
     }
 
     {
-        auto const props = ra::propertiesOfAbsorber({100.0, 8'000.0, 100.0}, C22, ra::Hertz<double>{50.0}, 15.0);
+        auto const props
+            = ra::propertiesOfAbsorber({100.0, 8'000.0, 100.0}, C22, ra::si::frequency<ra::si::hertz>{50.0}, 15.0);
         REQUIRE(props.X == Catch::Approx(0.0074747434));
         REQUIRE(props.zca.real() == Catch::Approx(1355.9444611324));
         REQUIRE(props.zca.imag() == Catch::Approx(-1291.26947073563));
@@ -73,43 +75,73 @@ TEST_CASE("RaumAkustik: propertiesOfAbsorber", "")
 
 TEST_CASE("RaumAkustik: detail::waveNumber", "")
 {
-    REQUIRE(ra::detail::waveNumber(ra::celciusToKelvin(20.0), ra::Hertz<double>{50.0}) == Catch::Approx(0.9149));
-    REQUIRE(ra::detail::waveNumber(ra::celciusToKelvin(22.0), ra::Hertz<double>{50.0}) == Catch::Approx(0.9118));
+    REQUIRE(
+        ra::detail::waveNumber(ra::celciusToKelvin(20.0), ra::si::frequency<ra::si::hertz>{50.0})
+        == Catch::Approx(0.9149)
+    );
+    REQUIRE(
+        ra::detail::waveNumber(ra::celciusToKelvin(22.0), ra::si::frequency<ra::si::hertz>{50.0})
+        == Catch::Approx(0.9118)
+    );
 }
 
 TEST_CASE("RaumAkustik: detail::delanyBazleyTerm", "")
 {
     {
         auto const density = ra::densityOfAir(ra::celciusToKelvin(20.0), ra::OneAtmosphere<double>);
-        REQUIRE(ra::detail::delanyBazleyTerm(density, ra::Hertz<double>{50.0}, 8'000.0) == Catch::Approx(0.0075257395));
+        REQUIRE(
+            ra::detail::delanyBazleyTerm(density, ra::si::frequency<ra::si::hertz>{50.0}, 8'000.0)
+            == Catch::Approx(0.0075257395)
+        );
     }
     {
         auto const density = ra::densityOfAir(ra::celciusToKelvin(22.0), ra::OneAtmosphere<double>);
-        REQUIRE(ra::detail::delanyBazleyTerm(density, ra::Hertz<double>{50.0}, 8'000.0) == Catch::Approx(0.0074747434));
+        REQUIRE(
+            ra::detail::delanyBazleyTerm(density, ra::si::frequency<ra::si::hertz>{50.0}, 8'000.0)
+            == Catch::Approx(0.0074747434)
+        );
     }
 }
 
 TEST_CASE("RaumAkustik: detail::yComponentOfWaveNumber", "")
 {
     using namespace ra::detail;
-    REQUIRE(yComponentOfWaveNumber(waveNumber(ra::celciusToKelvin(20.0), ra::Hertz<double>{50.0}), 0.0)
-            == Catch::Approx(0.0));
-    REQUIRE(yComponentOfWaveNumber(waveNumber(ra::celciusToKelvin(22.0), ra::Hertz<double>{50.0}), 0.0)
-            == Catch::Approx(0.0));
+    REQUIRE(
+        yComponentOfWaveNumber(waveNumber(ra::celciusToKelvin(20.0), ra::si::frequency<ra::si::hertz>{50.0}), 0.0)
+        == Catch::Approx(0.0)
+    );
+    REQUIRE(
+        yComponentOfWaveNumber(waveNumber(ra::celciusToKelvin(22.0), ra::si::frequency<ra::si::hertz>{50.0}), 0.0)
+        == Catch::Approx(0.0)
+    );
 
-    REQUIRE(yComponentOfWaveNumber(waveNumber(ra::celciusToKelvin(20.0), ra::Hertz<double>{50.0}), 15.0)
-            == Catch::Approx(0.2367929161));
-    REQUIRE(yComponentOfWaveNumber(waveNumber(ra::celciusToKelvin(22.0), ra::Hertz<double>{50.0}), 15.0)
-            == Catch::Approx(0.2359892724));
+    REQUIRE(
+        yComponentOfWaveNumber(waveNumber(ra::celciusToKelvin(20.0), ra::si::frequency<ra::si::hertz>{50.0}), 15.0)
+        == Catch::Approx(0.2367929161)
+    );
+    REQUIRE(
+        yComponentOfWaveNumber(waveNumber(ra::celciusToKelvin(22.0), ra::si::frequency<ra::si::hertz>{50.0}), 15.0)
+        == Catch::Approx(0.2359892724)
+    );
 }
 
 TEST_CASE("RaumAkustik: detail::angleOfPropagation", "")
 {
     auto const specs = ra::PorousAbsorberSpecs{100.0, 8'000.0};
-    REQUIRE(ra::propertiesOfAbsorber(specs, C20, ra::Hertz<double>{50.0}, 0.0).betaPorous == Catch::Approx(0.0));
-    REQUIRE(ra::propertiesOfAbsorber(specs, C22, ra::Hertz<double>{50.0}, 0.0).betaPorous == Catch::Approx(0.0));
-    REQUIRE(ra::propertiesOfAbsorber(specs, C20, ra::Hertz<double>{50.0}, 15.0).betaPorous
-            == Catch::Approx(2.8036973865));
-    REQUIRE(ra::propertiesOfAbsorber(specs, C22, ra::Hertz<double>{50.0}, 15.0).betaPorous
-            == Catch::Approx(2.7931256656));
+    REQUIRE(
+        ra::propertiesOfAbsorber(specs, C20, ra::si::frequency<ra::si::hertz>{50.0}, 0.0).betaPorous
+        == Catch::Approx(0.0)
+    );
+    REQUIRE(
+        ra::propertiesOfAbsorber(specs, C22, ra::si::frequency<ra::si::hertz>{50.0}, 0.0).betaPorous
+        == Catch::Approx(0.0)
+    );
+    REQUIRE(
+        ra::propertiesOfAbsorber(specs, C20, ra::si::frequency<ra::si::hertz>{50.0}, 15.0).betaPorous
+        == Catch::Approx(2.8036973865)
+    );
+    REQUIRE(
+        ra::propertiesOfAbsorber(specs, C22, ra::si::frequency<ra::si::hertz>{50.0}, 15.0).betaPorous
+        == Catch::Approx(2.7931256656)
+    );
 }

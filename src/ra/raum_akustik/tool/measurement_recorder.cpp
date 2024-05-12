@@ -77,8 +77,8 @@ void MeasurementRecorder::audioDeviceAboutToStart(juce::AudioIODevice* device)
     _sampleRate = device->getCurrentSampleRate();
 
     _sweep = generate(SineSweep{
-        .from       = Hertz<double>{20.0},
-        .to         = Hertz<double>{20'000.0},
+        .from       = si::frequency<si::hertz>{20.0},
+        .to         = si::frequency<si::hertz>{20'000.0},
         .curve      = SineSweepCurve::Logarithmic,
         .duration   = std::chrono::milliseconds{10'000},
         .sampleRate = _sampleRate,

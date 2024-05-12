@@ -202,8 +202,8 @@ auto GeneratorTab::resized() -> void
 auto GeneratorTab::handleAsyncUpdate() -> void
 {
     auto const spec = SineSweep{
-        .from       = Hertz<double>{static_cast<double>(_from)},
-        .to         = Hertz<double>{static_cast<double>(_to)},
+        .from       = si::frequency<si::hertz>{static_cast<double>(_from)},
+        .to         = si::frequency<si::hertz>{static_cast<double>(_to)},
         .curve      = static_cast<bool>(_curve) ? SineSweepCurve::Logarithmic : SineSweepCurve::Linear,
         .duration   = std::chrono::milliseconds{juce::roundToInt(static_cast<double>(_duration))},
         .sampleRate = static_cast<double>(_sampleRate),

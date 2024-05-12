@@ -16,8 +16,8 @@ enum struct SineSweepCurve
 
 struct SineSweep
 {
-    Hertz<double> from{20.0};
-    Hertz<double> to{20'000.0};
+    si::frequency<si::hertz> from{20.0};
+    si::frequency<si::hertz> to{20'000.0};
     SineSweepCurve curve{SineSweepCurve::Linear};
     std::chrono::milliseconds duration{1'000};
     double sampleRate{44'100.0};

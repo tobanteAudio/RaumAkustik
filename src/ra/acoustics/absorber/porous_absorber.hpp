@@ -85,16 +85,22 @@ struct PorousAbsorberProperties
     double absorptionFactorWithAirGap{};
 };
 
-[[nodiscard]] auto
-propertiesOfAbsorber(PorousAbsorberSpecs specs, AtmosphericEnvironment env, Hertz<double> frequency, double angle)
-    -> PorousAbsorberProperties;
+[[nodiscard]] auto propertiesOfAbsorber(
+    PorousAbsorberSpecs specs,
+    AtmosphericEnvironment env,
+    si::frequency<si::hertz> frequency,
+    double angle
+) -> PorousAbsorberProperties;
 
 namespace detail {
 
-[[nodiscard]] auto waveNumber(si::thermodynamic_temperature<si::kelvin> temperature, Hertz<double> frequency) -> double;
 [[nodiscard]] auto
-delanyBazleyTerm(si::density<si::kilogram_per_metre_cub> airDensity, Hertz<double> frequency, double flowResistivity)
-    -> double;
+waveNumber(si::thermodynamic_temperature<si::kelvin> temperature, si::frequency<si::hertz> frequency) -> double;
+[[nodiscard]] auto delanyBazleyTerm(
+    si::density<si::kilogram_per_metre_cub> airDensity,
+    si::frequency<si::hertz> frequency,
+    double flowResistivity
+) -> double;
 [[nodiscard]] auto yComponentOfWaveNumber(double waveNumber, double angle) -> double;
 [[nodiscard]] auto angleOfPropagation(std::complex<double> k, double ky) -> double;
 

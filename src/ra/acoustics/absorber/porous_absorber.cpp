@@ -5,8 +5,12 @@
 #include <numbers>
 
 namespace ra {
-auto propertiesOfAbsorber(PorousAbsorberSpecs specs, AtmosphericEnvironment env, Hertz<double> frequency, double angle)
-    -> PorousAbsorberProperties
+auto propertiesOfAbsorber(
+    PorousAbsorberSpecs specs,
+    AtmosphericEnvironment env,
+    si::frequency<si::hertz> frequency,
+    double angle
+) -> PorousAbsorberProperties
 {
     auto const airDensity = densityOfAir(env.temperature, env.pressure);
     auto const airIm      = impedanceOfAir(env.temperature, env.pressure);
@@ -58,7 +62,7 @@ auto propertiesOfAbsorber(PorousAbsorberSpecs specs, AtmosphericEnvironment env,
 
 namespace detail {
 
-auto waveNumber(si::thermodynamic_temperature<si::kelvin> temperature, Hertz<double> frequency) -> double
+auto waveNumber(si::thermodynamic_temperature<si::kelvin> temperature, si::frequency<si::hertz> frequency) -> double
 {
     // 2p/l
     return ((2.0 * std::numbers::pi) / soundVelocity(temperature).number()) * frequency.number();
@@ -66,7 +70,7 @@ auto waveNumber(si::thermodynamic_temperature<si::kelvin> temperature, Hertz<dou
 
 auto delanyBazleyTerm(
     si::density<si::kilogram_per_metre_cub> airDensity,
-    Hertz<double> frequency,
+    si::frequency<si::hertz> frequency,
     double flowResistivity
 ) -> double
 {
