@@ -6,8 +6,8 @@
 
 TEST_CASE("RaumAkustik: densityOfAir", "")
 {
-    auto c20 = ra::Kelvin<double>{273.15 + 20.0};
-    auto c22 = ra::Kelvin<double>{273.15 + 22.0};
+    auto c20 = ra::si::thermodynamic_temperature<ra::si::kelvin>{273.15 + 20.0};
+    auto c22 = ra::si::thermodynamic_temperature<ra::si::kelvin>{273.15 + 22.0};
     auto p   = ra::OneAtmosphere<double>;
 
     REQUIRE(
@@ -28,8 +28,8 @@ TEST_CASE("RaumAkustik: soundVelocity", "")
 
 TEST_CASE("RaumAkustik: impedanceOfAir", "")
 {
-    auto c20 = ra::Kelvin<double>{273.15 + 20.0};
-    auto c22 = ra::Kelvin<double>{273.15 + 22.0};
+    auto c20 = ra::si::thermodynamic_temperature<ra::si::kelvin>{273.15 + 20.0};
+    auto c22 = ra::si::thermodynamic_temperature<ra::si::kelvin>{273.15 + 22.0};
     auto p   = ra::OneAtmosphere<double>;
     REQUIRE(ra::impedanceOfAir(c20, p) == Catch::Approx(413.47));
     REQUIRE(ra::impedanceOfAir(c22, p) == Catch::Approx(412.07));

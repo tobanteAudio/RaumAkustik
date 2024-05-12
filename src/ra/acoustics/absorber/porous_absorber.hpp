@@ -14,7 +14,7 @@ using namespace units::isq;
 
 struct AtmosphericEnvironment
 {
-    Kelvin<double> temperature{0};
+    si::thermodynamic_temperature<si::kelvin> temperature{0};
     units::isq::si::pressure<si::pascal> pressure{0};
 };
 
@@ -91,7 +91,7 @@ propertiesOfAbsorber(PorousAbsorberSpecs specs, AtmosphericEnvironment env, Hert
 
 namespace detail {
 
-[[nodiscard]] auto waveNumber(Kelvin<double> temperature, Hertz<double> frequency) -> double;
+[[nodiscard]] auto waveNumber(si::thermodynamic_temperature<si::kelvin> temperature, Hertz<double> frequency) -> double;
 [[nodiscard]] auto
 delanyBazleyTerm(si::density<si::kilogram_per_metre_cub> airDensity, Hertz<double> frequency, double flowResistivity)
     -> double;

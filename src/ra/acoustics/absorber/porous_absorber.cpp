@@ -58,7 +58,7 @@ auto propertiesOfAbsorber(PorousAbsorberSpecs specs, AtmosphericEnvironment env,
 
 namespace detail {
 
-auto waveNumber(Kelvin<double> temperature, Hertz<double> frequency) -> double
+auto waveNumber(si::thermodynamic_temperature<si::kelvin> temperature, Hertz<double> frequency) -> double
 {
     // 2p/l
     return ((2.0 * std::numbers::pi) / soundVelocity(temperature).number()) * frequency.number();

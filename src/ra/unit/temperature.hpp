@@ -5,12 +5,9 @@
 namespace ra {
 using namespace units::isq;
 
-template<typename T>
-using Kelvin = si::thermodynamic_temperature<si::kelvin, T>;
-
-[[nodiscard]] constexpr auto celciusToKelvin(double celcius) noexcept -> Kelvin<double>
+[[nodiscard]] constexpr auto celciusToKelvin(double celcius) noexcept -> si::thermodynamic_temperature<si::kelvin>
 {
-    return Kelvin<double>{celcius + 273.15};
+    return si::thermodynamic_temperature<si::kelvin>{celcius + 273.15};
 }
 
 }  // namespace ra
