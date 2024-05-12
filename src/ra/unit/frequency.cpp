@@ -12,9 +12,9 @@ auto oactaveSubdivision(Hertz<double> startFrequency, double numSubdivisions, do
     return Hertz<double>{std::pow(2.0, std::log2(startFrequency.number()) + index / numSubdivisions)};
 }
 
-auto toAngularVelocity(Hertz<double> hertz) -> units::isq::si::angular_velocity<si::radian_per_second>
+auto toAngularVelocity(Hertz<double> hertz) -> si::angular_velocity<si::radian_per_second>
 {
     static constexpr auto twoPi = std::numbers::pi * 2.0;
-    return units::isq::si::angular_velocity<si::radian_per_second>{twoPi * hertz.number()};
+    return si::angular_velocity<si::radian_per_second>{twoPi * hertz.number()};
 }
 }  // namespace ra

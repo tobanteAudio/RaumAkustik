@@ -11,6 +11,6 @@ using Hertz = si::frequency<si::hertz, T>;
 
 [[nodiscard]] auto
 oactaveSubdivision(Hertz<double> startFrequency, double numSubdivisions, double index) -> Hertz<double>;
-[[nodiscard]] auto toAngularVelocity(Hertz<double> hertz) -> units::isq::si::angular_velocity<si::radian_per_second>;
+[[nodiscard]] auto toAngularVelocity(Hertz<double> hertz) -> si::angular_velocity<si::radian_per_second>;
 
 }  // namespace ra

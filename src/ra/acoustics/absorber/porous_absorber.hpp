@@ -15,7 +15,7 @@ using namespace units::isq;
 struct AtmosphericEnvironment
 {
     si::thermodynamic_temperature<si::kelvin> temperature{0};
-    units::isq::si::pressure<si::pascal> pressure{0};
+    si::pressure<si::pascal> pressure{0};
 };
 
 struct PorousAbsorberSpecs
