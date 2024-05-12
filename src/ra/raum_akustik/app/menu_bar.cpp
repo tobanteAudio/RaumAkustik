@@ -57,6 +57,8 @@ auto MenuBar::getMenuForIndex(int menuIndex, juce::String const& /*menuName*/) -
         menu.addCommandItem(&_commandManager, CommandIDs::gotoTabRight, {}, forwardIcon->createCopy());
         menu.addSeparator();
         menu.addCommandItem(&_commandManager, CommandIDs::fullscreen, {}, fullscreenIcon->createCopy());
+        menu.addCommandItem(&_commandManager, CommandIDs::toggleLevelMeter, {}, {});
+        menu.addCommandItem(&_commandManager, CommandIDs::toggleWaveform, {}, {});
         return menu;
     }
 

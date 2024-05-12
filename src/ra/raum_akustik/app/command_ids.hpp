@@ -15,6 +15,8 @@ struct CommandIDs
         gotoTabLeft,
         gotoTabRight,
         fullscreen,
+        toggleLevelMeter,
+        toggleWaveform,
         about,
     };
 };

@@ -46,8 +46,12 @@ auto MainComponent::resized() -> void
 {
     auto area = getLocalBounds();
     _menuBar.setBounds(area.removeFromTop(juce::LookAndFeel::getDefaultLookAndFeel().getDefaultMenuBarHeight()));
-    _waveform.setBounds(area.removeFromTop(area.proportionOfHeight(0.075)));
-    _levelMeter.setBounds(area.removeFromRight(area.proportionOfWidth(0.075)));
+    if (_waveform.isVisible()) {
+        _waveform.setBounds(area.removeFromTop(area.proportionOfHeight(0.075)));
+    }
+    if (_levelMeter.isVisible()) {
+        _levelMeter.setBounds(area.removeFromRight(area.proportionOfWidth(0.075)));
+    }
     _tabs.setBounds(area.reduced(10));
 }
 
@@ -68,6 +72,8 @@ auto MainComponent::getAllCommands(juce::Array<juce::CommandID>& c) -> void
         CommandIDs::gotoTabLeft,
         CommandIDs::gotoTabRight,
         CommandIDs::fullscreen,
+        CommandIDs::toggleLevelMeter,
+        CommandIDs::toggleWaveform,
         CommandIDs::about,
     });
 }
@@ -115,6 +121,14 @@ auto MainComponent::getCommandInfo(juce::CommandID commandID, juce::ApplicationC
             result.setTicked(getPeer() == nullptr ? false : getPeer()->isFullScreen());
             result.addDefaultKeypress(KeyPress::F11Key, ModifierKeys::noModifiers);
             break;
+        case CommandIDs::toggleLevelMeter:
+            result.setInfo("Toggle Level Meter", "Toggle level-meter", "View", 0);
+            result.setTicked(_levelMeter.isVisible());
+            break;
+        case CommandIDs::toggleWaveform:
+            result.setInfo("Toggle Waveform", "Toggle scrolling waveform", "View", 0);
+            result.setTicked(_waveform.isVisible());
+            break;
         case CommandIDs::about:
             result.setInfo("About", "Open about page", "Help", 0);
             result.addDefaultKeypress('h', ModifierKeys::commandModifier);
@@ -132,6 +146,14 @@ auto MainComponent::perform(juce::ApplicationCommandTarget::InvocationInfo const
         case CommandIDs::undo: _undoManager.undo(); break;
         case CommandIDs::redo: _undoManager.redo(); break;
         case CommandIDs::fullscreen: toggleFullscreen(); break;
+        case CommandIDs::toggleLevelMeter:
+            _levelMeter.setVisible(not _levelMeter.isVisible());
+            resized();
+            break;
+        case CommandIDs::toggleWaveform:
+            _waveform.setVisible(not _waveform.isVisible());
+            resized();
+            break;
         case CommandIDs::about: showAboutMessage(); break;
         default: return false;
     }
