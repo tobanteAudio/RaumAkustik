@@ -5,13 +5,13 @@
 #include <juce_gui_extra/juce_gui_extra.h>
 
 namespace ra {
-struct PorousAbsorberSimulationView final
+struct PorousAbsorberSimulationEditor final
     : juce::Component
     , juce::TableListBoxModel
     , juce::ValueTree::Listener
 {
-    PorousAbsorberSimulationView(juce::ValueTree vt, juce::UndoManager* um);
-    ~PorousAbsorberSimulationView() override = default;
+    PorousAbsorberSimulationEditor(juce::ValueTree vt, juce::UndoManager* um);
+    ~PorousAbsorberSimulationEditor() override = default;
 
     auto paint(juce::Graphics& g) -> void override;
     auto resized() -> void override;
@@ -49,6 +49,6 @@ private:
 
     std::vector<std::pair<si::frequency<si::hertz>, PorousAbsorberProperties>> _props;
 
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(PorousAbsorberSimulationView)  // NOLINT
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(PorousAbsorberSimulationEditor)  // NOLINT
 };
 }  // namespace ra

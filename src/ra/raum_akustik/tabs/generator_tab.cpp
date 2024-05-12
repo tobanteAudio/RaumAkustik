@@ -83,14 +83,15 @@ makePathFromAnalysis(std::span<FrequencyAndAmplitude const> analysis, float fs, 
     return p;
 }
 
-static auto toAudioBuffer(std::vector<float> const& in) -> juce::AudioBuffer<float>
+[[maybe_unused]] static auto toAudioBuffer(std::vector<float> const& in) -> juce::AudioBuffer<float>
 {
     auto buf = juce::AudioBuffer<float>{1, static_cast<int>(in.size())};
     std::copy(in.begin(), in.end(), buf.getWritePointer(0));
     return buf;
 }
 
-static auto getSpectrumPath(juce::AudioBuffer<float> const& in, double fs, juce::Rectangle<int> area) -> juce::Path
+[[maybe_unused]] static auto
+getSpectrumPath(juce::AudioBuffer<float> const& in, double fs, juce::Rectangle<int> area) -> juce::Path
 {
     auto const fftSize  = static_cast<size_t>(juce::nextPowerOfTwo(in.getNumSamples()));
     auto const fftOrder = std::bit_width(fftSize) - 1;
@@ -111,7 +112,7 @@ static auto getSpectrumPath(juce::AudioBuffer<float> const& in, double fs, juce:
     return makePathFromAnalysis(amplitudes, float(fs), area.toFloat());
 }
 
-GeneratorTab::GeneratorTab(juce::AudioDeviceManager& deviceManager) : _recorder{deviceManager}
+GeberatorEditor::GeberatorEditor(juce::AudioDeviceManager& deviceManager) : _recorder{deviceManager}
 {
     _valueTree.setProperty("from", 20.0, nullptr);
     _valueTree.setProperty("to", 20'000.0, nullptr);
@@ -145,7 +146,7 @@ GeneratorTab::GeneratorTab(juce::AudioDeviceManager& deviceManager) : _recorder{
     // handleAsyncUpdate();
 }
 
-auto GeneratorTab::paint(juce::Graphics& g) -> void
+auto GeberatorEditor::paint(juce::Graphics& g) -> void
 {
     g.setColour(juce::Colours::black);
     g.fillRect(_thumbnailBounds);
@@ -185,7 +186,7 @@ auto GeneratorTab::paint(juce::Graphics& g) -> void
     g.strokePath(_spectrumPath, juce::PathStrokeType{1.0F});
 }
 
-auto GeneratorTab::resized() -> void
+auto GeberatorEditor::resized() -> void
 {
     auto area = getLocalBounds();
 
@@ -199,28 +200,28 @@ auto GeneratorTab::resized() -> void
     handleAsyncUpdate();
 }
 
-auto GeneratorTab::handleAsyncUpdate() -> void
+auto GeberatorEditor::handleAsyncUpdate() -> void
 {
-    auto const spec = SineSweep{
-        .from       = si::frequency<si::hertz>{static_cast<double>(_from)},
-        .to         = si::frequency<si::hertz>{static_cast<double>(_to)},
-        .curve      = static_cast<bool>(_curve) ? SineSweepCurve::Logarithmic : SineSweepCurve::Linear,
-        .duration   = std::chrono::milliseconds{juce::roundToInt(static_cast<double>(_duration))},
-        .sampleRate = static_cast<double>(_sampleRate),
-    };
+    // auto const spec = SineSweep{
+    //     .from       = si::frequency<si::hertz>{static_cast<double>(_from)},
+    //     .to         = si::frequency<si::hertz>{static_cast<double>(_to)},
+    //     .curve      = static_cast<bool>(_curve) ? SineSweepCurve::Logarithmic : SineSweepCurve::Linear,
+    //     .duration   = std::chrono::milliseconds{juce::roundToInt(static_cast<double>(_duration))},
+    //     .sampleRate = static_cast<double>(_sampleRate),
+    // };
 
-    auto const sweep = toAudioBuffer(generate(spec));
-    _thumbnailBuffer.makeCopyOf(sweep);
-    _thumbnail.clear();
-    _thumbnail.reset(1, spec.sampleRate, 1);
-    _thumbnail.addBlock(0, _thumbnailBuffer, 0, _thumbnailBuffer.getNumSamples());
+    // auto const sweep = toAudioBuffer(generate(spec));
+    // _thumbnailBuffer.makeCopyOf(sweep);
+    // _thumbnail.clear();
+    // _thumbnail.reset(1, spec.sampleRate, 1);
+    // _thumbnail.addBlock(0, _thumbnailBuffer, 0, _thumbnailBuffer.getNumSamples());
 
-    _spectrumPath = getSpectrumPath(sweep, spec.sampleRate, _spectrumBounds);
+    // _spectrumPath = getSpectrumPath(sweep, spec.sampleRate, _spectrumBounds);
 }
 
-auto GeneratorTab::changeListenerCallback(juce::ChangeBroadcaster* /*source*/) -> void { repaint(); }
+auto GeberatorEditor::changeListenerCallback(juce::ChangeBroadcaster* /*source*/) -> void { repaint(); }
 
-auto GeneratorTab::valueTreePropertyChanged(juce::ValueTree& /*tree*/, juce::Identifier const& /*property*/) -> void
+auto GeberatorEditor::valueTreePropertyChanged(juce::ValueTree& /*tree*/, juce::Identifier const& /*property*/) -> void
 {
     triggerAsyncUpdate();
 }

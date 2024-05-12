@@ -2,7 +2,7 @@
 
 namespace ra {
 
-AudioInputView::AudioInputView(juce::AudioDeviceManager& deviceManager)
+AudioInputEditor::AudioInputEditor(juce::AudioDeviceManager& deviceManager)
     : _deviceManager{deviceManager}
     , _deviceSelector{deviceManager, 0, 256, 0, 256, true, true, true, false}
 {
@@ -15,15 +15,15 @@ AudioInputView::AudioInputView(juce::AudioDeviceManager& deviceManager)
     _deviceManager.addAudioCallback(&_noise);
 }
 
-AudioInputView::~AudioInputView()
+AudioInputEditor::~AudioInputEditor()
 {
     _deviceManager.removeAudioCallback(&_spectogram);
     _deviceManager.removeAudioCallback(&_noise);
 }
 
-auto AudioInputView::paint(juce::Graphics& /*g*/) -> void {}
+auto AudioInputEditor::paint(juce::Graphics& /*g*/) -> void {}
 
-auto AudioInputView::resized() -> void
+auto AudioInputEditor::resized() -> void
 {
     auto area = getLocalBounds();
 

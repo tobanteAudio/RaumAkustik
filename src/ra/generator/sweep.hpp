@@ -5,8 +5,7 @@
 #include <chrono>
 #include <vector>
 
-namespace ra
-{
+namespace ra {
 
 enum struct SineSweepCurve
 {

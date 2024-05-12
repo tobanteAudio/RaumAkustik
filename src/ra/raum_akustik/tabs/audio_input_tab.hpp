@@ -10,10 +10,10 @@
 
 namespace ra {
 
-struct AudioInputView final : juce::Component
+struct AudioInputEditor final : juce::Component
 {
-    explicit AudioInputView(juce::AudioDeviceManager& deviceManager);
-    ~AudioInputView() override;
+    explicit AudioInputEditor(juce::AudioDeviceManager& deviceManager);
+    ~AudioInputEditor() override;
 
     auto paint(juce::Graphics& g) -> void override;
     auto resized() -> void override;
@@ -25,7 +25,7 @@ private:
     Spectogram _spectogram;
     NoiseGenerator _noise;
 
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(AudioInputView)  // NOLINT
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(AudioInputEditor)  // NOLINT
 };
 
 }  // namespace ra

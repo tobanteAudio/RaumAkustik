@@ -5,8 +5,8 @@
 #include <ra/raum_akustik/look/look_and_feel.hpp>
 #include <ra/raum_akustik/tabs/absorber_simulation_tab.hpp>
 #include <ra/raum_akustik/tabs/audio_input_tab.hpp>
-#include <ra/raum_akustik/tabs/first_reflections_tab.hpp>
 #include <ra/raum_akustik/tabs/generator_tab.hpp>
+#include <ra/raum_akustik/tabs/room_editor.hpp>
 #include <ra/raum_akustik/tabs/stochastic_raytracing_tab.hpp>
 #include <ra/raum_akustik/widget/level_meter.hpp>
 #include <ra/raum_akustik/widget/scrolling_waveform.hpp>
@@ -44,13 +44,13 @@ private:
     MenuBar _menuBar{_commandManager};
     LevelMeter _levelMeter;
     ScrollingWaveform _waveform;
-
     juce::TabbedComponent _tabs{juce::TabbedButtonBar::TabsAtTop};
-    AudioInputView _audioInputView;
-    // GeneratorTab _generatorTab;
-    std::unique_ptr<FirstReflectionsView> _firstReflectionsView;
-    StochasticRaytracingEditor _raytracing;
-    std::unique_ptr<PorousAbsorberSimulationView> _absorberSimulationView;
+
+    std::unique_ptr<RoomEditor> _roomEditor;
+    AudioInputEditor _audioInputEditor;
+    GeberatorEditor _generatorEditor;
+    StochasticRaytracingEditor _raytracingEditor;
+    std::unique_ptr<PorousAbsorberSimulationEditor> _absorberSimulationEditor;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(MainComponent)  // NOLINT
 };

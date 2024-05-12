@@ -1,4 +1,4 @@
-#include "first_reflections_tab.hpp"
+#include "room_editor.hpp"
 
 #include <ra/acoustics/room.hpp>
 
@@ -42,7 +42,7 @@ auto reflectionLeftSpeakerFar(RoomLayout const& room) -> double
 }
 }  // namespace
 
-FirstReflectionsView::FirstReflectionsView(juce::ValueTree vt, juce::UndoManager* um)
+RoomEditor::RoomEditor(juce::ValueTree vt, juce::UndoManager* um)
     : _undoManager{um}
     , _roomTree{vt.getOrCreateChildWithName("FirstReflections", um)}
 {
@@ -55,7 +55,7 @@ FirstReflectionsView::FirstReflectionsView(juce::ValueTree vt, juce::UndoManager
     setSize(600, 400);
 }
 
-void FirstReflectionsView::paint(juce::Graphics& g)
+void RoomEditor::paint(juce::Graphics& g)
 {
     auto const room = RoomLayout{
         RoomDimensions{_roomLength, _roomWidth, _roomHeight},
@@ -157,7 +157,7 @@ void FirstReflectionsView::paint(juce::Graphics& g)
     // DBG("Reflection Far (right): " + juce::String {reflectionRightSpeakerFar(room)});
 }
 
-void FirstReflectionsView::resized()
+void RoomEditor::resized()
 {
     auto area = getLocalBounds().reduced(10);
     _drawArea = area.removeFromRight(area.proportionOfWidth(0.5)).reduced(10);
@@ -168,7 +168,7 @@ void FirstReflectionsView::resized()
     _roomProperties.setBounds(area.reduced(5));
 }
 
-auto FirstReflectionsView::connectValuesToTree() -> void
+auto RoomEditor::connectValuesToTree() -> void
 {
     _iconSize.getValueTree().addListener(this);
 
@@ -246,7 +246,7 @@ auto FirstReflectionsView::connectValuesToTree() -> void
     );
 }
 
-auto FirstReflectionsView::valueTreePropertyChanged(juce::ValueTree& /*tree*/, juce::Identifier const& /*property*/)
+auto RoomEditor::valueTreePropertyChanged(juce::ValueTree& /*tree*/, juce::Identifier const& /*property*/)
     -> void
 {
     repaint();

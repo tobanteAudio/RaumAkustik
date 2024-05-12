@@ -5,12 +5,12 @@
 #include "BinaryData.hpp"
 
 namespace ra {
-struct FirstReflectionsView final
+struct RoomEditor final
     : juce::Component
     , juce::ValueTree::Listener
 {
-    FirstReflectionsView(juce::ValueTree vt, juce::UndoManager* um);
-    ~FirstReflectionsView() override = default;
+    RoomEditor(juce::ValueTree vt, juce::UndoManager* um);
+    ~RoomEditor() override = default;
 
     void paint(juce::Graphics& g) override;
     void resized() override;
@@ -55,6 +55,6 @@ private:
 
     juce::Rectangle<int> _drawArea;
 
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(FirstReflectionsView)  // NOLINT
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(RoomEditor)  // NOLINT
 };
 }  // namespace ra

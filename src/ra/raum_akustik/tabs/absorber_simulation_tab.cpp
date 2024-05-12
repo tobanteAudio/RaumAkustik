@@ -12,7 +12,7 @@ auto positionForFrequency(si::frequency<si::hertz> const freq) noexcept -> doubl
 
 }  // namespace
 
-PorousAbsorberSimulationView::PorousAbsorberSimulationView(juce::ValueTree vt, juce::UndoManager* um)
+PorousAbsorberSimulationEditor::PorousAbsorberSimulationEditor(juce::ValueTree vt, juce::UndoManager* um)
     : _undoManager{um}
     , _valueTree{vt.getOrCreateChildWithName("PorousAbsorber", um)}
 {
@@ -83,7 +83,7 @@ PorousAbsorberSimulationView::PorousAbsorberSimulationView(juce::ValueTree vt, j
     updateSimulation();
 }
 
-auto PorousAbsorberSimulationView::paint(juce::Graphics& g) -> void
+auto PorousAbsorberSimulationEditor::paint(juce::Graphics& g) -> void
 {
     juce::Graphics::ScopedSaveState const state{g};
 
@@ -124,7 +124,7 @@ auto PorousAbsorberSimulationView::paint(juce::Graphics& g) -> void
     g.strokePath(withAirGapPath, juce::PathStrokeType{2.0F});
 }
 
-auto PorousAbsorberSimulationView::resized() -> void
+auto PorousAbsorberSimulationEditor::resized() -> void
 {
     auto area = getLocalBounds();
     _absorberSpecs.setBounds(area.removeFromTop(area.proportionOfHeight(0.4)));
@@ -133,15 +133,15 @@ auto PorousAbsorberSimulationView::resized() -> void
     _table.setBounds(area.reduced(10));
 }
 
-auto PorousAbsorberSimulationView::
+auto PorousAbsorberSimulationEditor::
     valueTreePropertyChanged(juce::ValueTree& /*tree*/, juce::Identifier const& /*property*/) -> void
 {
     updateSimulation();
 }
 
-auto PorousAbsorberSimulationView::getNumRows() -> int { return static_cast<int>(_props.size()); }
+auto PorousAbsorberSimulationEditor::getNumRows() -> int { return static_cast<int>(_props.size()); }
 
-auto PorousAbsorberSimulationView::paintRowBackground(
+auto PorousAbsorberSimulationEditor::paintRowBackground(
     juce::Graphics& g,
     int rowNumber,
     int /*width*/,
@@ -159,7 +159,7 @@ auto PorousAbsorberSimulationView::paintRowBackground(
     }
 }
 
-auto PorousAbsorberSimulationView::
+auto PorousAbsorberSimulationEditor::
     paintCell(juce::Graphics& g, int row, int columnId, int width, int height, bool /*rowIsSelected*/) -> void
 {
     g.setColour(getLookAndFeel().findColour(juce::ListBox::textColourId));
@@ -184,7 +184,7 @@ auto PorousAbsorberSimulationView::
     g.fillRect(width - 1, 0, 1, height);
 }
 
-auto PorousAbsorberSimulationView::updateSimulation() -> void
+auto PorousAbsorberSimulationEditor::updateSimulation() -> void
 {
     _props.clear();
 

@@ -2,34 +2,18 @@
 
 #include <ra/raum_akustik/app/application.hpp>
 #include <ra/raum_akustik/app/command_ids.hpp>
+#include <ra/raum_akustik/tool/audio_file.hpp>
 
 namespace ra {
-// static auto writeToWavFile(juce::File const& file, std::vector<float> const& buffer, double fs, int bits = 24) ->
-// bool
-// {
-//     if (file.existsAsFile()) { file.deleteFile(); }
-//     auto stream = file.createOutputStream();
-//     auto wav    = juce::WavAudioFormat{};
-//     auto writer = std::unique_ptr<juce::AudioFormatWriter>{wav.createWriterFor(stream.get(), fs, 1, bits, {}, 0)};
-//     if (writer) { juce::ignoreUnused(stream.release()); }
-//     auto channels = std::array<float const*, 1>{buffer.data()};
-//     return writer->writeFromFloatArrays(channels.data(), 1, static_cast<int>(buffer.size()));
-// }
 
 MainComponent::MainComponent()
-    : _audioInputView{raumAkusticApplication().deviceManager()}
-    // , _generatorTab{raumAkusticApplication().deviceManager()}
+    : _audioInputEditor{raumAkusticApplication().deviceManager()}
+    , _generatorEditor{raumAkusticApplication().deviceManager()}
 {
-
-    // writeToWavFile(juce::File{R"(C:\Developer\sweep.wav)"}, sweep, spec.sampleRate, 24);
-
     addAndMakeVisible(_menuBar);
     addAndMakeVisible(_levelMeter);
     addAndMakeVisible(_waveform);
     addAndMakeVisible(_tabs);
-
-    raumAkusticApplication().deviceManager().addAudioCallback(&_levelMeter);
-    raumAkusticApplication().deviceManager().addAudioCallback(&_waveform);
 
     _commandManager.registerAllCommandsForTarget(this);
     addKeyListener(_commandManager.getKeyMappings());
@@ -38,6 +22,9 @@ MainComponent::MainComponent()
     juce::LookAndFeel::setDefaultLookAndFeel(&_lnf);
     setLookAndFeel(&_lnf);
     setSize(1280, 720);
+
+    raumAkusticApplication().deviceManager().addAudioCallback(&_levelMeter);
+    raumAkusticApplication().deviceManager().addAudioCallback(&_waveform);
 
     reloadUI();
 }
@@ -180,23 +167,19 @@ auto MainComponent::reloadUI() -> void
     auto tabIndex = _tabs.getCurrentTabIndex();
     _tabs.clearTabs();
 
-    _firstReflectionsView   = std::make_unique<FirstReflectionsView>(_valueTree, &_undoManager);
-    _absorberSimulationView = std::make_unique<PorousAbsorberSimulationView>(_valueTree, &_undoManager);
+    _roomEditor               = std::make_unique<RoomEditor>(_valueTree, &_undoManager);
+    _absorberSimulationEditor = std::make_unique<PorousAbsorberSimulationEditor>(_valueTree, &_undoManager);
 
     auto const color = getLookAndFeel().findColour(juce::ResizableWindow::backgroundColourId);
-    _tabs.addTab("Audio Input", color, &_audioInputView, false);
-    // _tabs.addTab("Generator", color, &_generatorTab, false);
-    _tabs.addTab("First Reflections", color, _firstReflectionsView.get(), false);
-    _tabs.addTab("Raytracing", color, std::addressof(_raytracing), false);
-    _tabs.addTab("Porous Absorber", color, _absorberSimulationView.get(), false);
-    if (tabIndex > 0 && tabIndex <= _tabs.getNumTabs()) {
+    _tabs.addTab("Room", color, _roomEditor.get(), false);
+    _tabs.addTab("Audio Input", color, std::addressof(_audioInputEditor), false);
+    _tabs.addTab("Generator", color, std::addressof(_generatorEditor), false);
+    _tabs.addTab("Raytracing", color, std::addressof(_raytracingEditor), false);
+    _tabs.addTab("Porous Absorber", color, _absorberSimulationEditor.get(), false);
+    if (tabIndex > 0 and tabIndex <= _tabs.getNumTabs()) {
         _tabs.setCurrentTabIndex(tabIndex, true);
     }
 }
 
-auto MainComponent::toggleFullscreen() -> void
-{
-    getPeer()->setFullScreen(!getPeer()->isFullScreen());
-    // if (getPeer()->isFullScreen()) { }
-}
+auto MainComponent::toggleFullscreen() -> void { getPeer()->setFullScreen(!getPeer()->isFullScreen()); }
 }  // namespace ra

@@ -7,14 +7,14 @@
 
 namespace ra {
 
-struct GeneratorTab final
+struct GeberatorEditor final
     : juce::Component
     , juce::AsyncUpdater
     , juce::ChangeListener
     , juce::ValueTree::Listener
 {
-    explicit GeneratorTab(juce::AudioDeviceManager& audioDeviceManager);
-    ~GeneratorTab() override = default;
+    explicit GeberatorEditor(juce::AudioDeviceManager& audioDeviceManager);
+    ~GeberatorEditor() override = default;
 
     auto paint(juce::Graphics& g) -> void override;
     auto resized() -> void override;
