@@ -34,7 +34,6 @@ target_sources(${PROJECT_NAME}
         "ra/generator/sweep.cpp"
         "ra/generator/sweep.hpp"
 
-        "ra/unit/density.hpp"
         "ra/unit/frequency.cpp"
         "ra/unit/frequency.hpp"
         "ra/unit/heat_capacity.hpp"

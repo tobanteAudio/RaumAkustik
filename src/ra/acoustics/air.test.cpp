@@ -10,8 +10,14 @@ TEST_CASE("RaumAkustik: densityOfAir", "")
     auto c22 = ra::Kelvin<double>{273.15 + 22.0};
     auto p   = ra::OneAtmosphere<double>;
 
-    REQUIRE(ra::densityOfAir(c20, p).number() == Catch::Approx(ra::KilogramPerCubicMetre<double>{1.20412}.number()));
-    REQUIRE(ra::densityOfAir(c22, p).number() == Catch::Approx(ra::KilogramPerCubicMetre<double>{1.19596}.number()));
+    REQUIRE(
+        ra::densityOfAir(c20, p).number()
+        == Catch::Approx(ra::si::density<ra::si::kilogram_per_metre_cub>{1.20412}.number())
+    );
+    REQUIRE(
+        ra::densityOfAir(c22, p).number()
+        == Catch::Approx(ra::si::density<ra::si::kilogram_per_metre_cub>{1.19596}.number())
+    );
 }
 
 TEST_CASE("RaumAkustik: soundVelocity", "")

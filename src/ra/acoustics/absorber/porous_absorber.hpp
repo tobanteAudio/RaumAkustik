@@ -1,13 +1,17 @@
 #pragma once
 
-#include <ra/unit/density.hpp>
 #include <ra/unit/frequency.hpp>
 #include <ra/unit/pressure.hpp>
 #include <ra/unit/temperature.hpp>
 
+#include <units/isq/si/density.h>
+
 #include <complex>
 
 namespace ra {
+
+using namespace units::isq;
+
 struct AtmosphericEnvironment
 {
     Kelvin<double> temperature{0};
@@ -89,7 +93,8 @@ namespace detail {
 
 [[nodiscard]] auto waveNumber(Kelvin<double> temperature, Hertz<double> frequency) -> double;
 [[nodiscard]] auto
-delanyBazleyTerm(KilogramPerCubicMetre<double> airDensity, Hertz<double> frequency, double flowResistivity) -> double;
+delanyBazleyTerm(si::density<si::kilogram_per_metre_cub> airDensity, Hertz<double> frequency, double flowResistivity)
+    -> double;
 [[nodiscard]] auto yComponentOfWaveNumber(double waveNumber, double angle) -> double;
 [[nodiscard]] auto angleOfPropagation(std::complex<double> k, double ky) -> double;
 

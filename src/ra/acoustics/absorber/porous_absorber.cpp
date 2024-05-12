@@ -64,8 +64,11 @@ auto waveNumber(Kelvin<double> temperature, Hertz<double> frequency) -> double
     return ((2.0 * std::numbers::pi) / soundVelocity(temperature).number()) * frequency.number();
 }
 
-auto delanyBazleyTerm(KilogramPerCubicMetre<double> airDensity, Hertz<double> frequency, double flowResistivity)
-    -> double
+auto delanyBazleyTerm(
+    si::density<si::kilogram_per_metre_cub> airDensity,
+    Hertz<double> frequency,
+    double flowResistivity
+) -> double
 {
     // Eq 5.11
     auto const tmp = (airDensity * frequency) / flowResistivity;
