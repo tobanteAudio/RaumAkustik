@@ -210,6 +210,7 @@ auto MainComponent::reloadUI() -> void
     auto tabIndex = _tabs.getCurrentTabIndex();
     _tabs.clearTabs();
 
+    _materialEditor.reset();
     _absorberSimulationEditor.reset();
     _raytracingEditor.reset();
     _roomEditor.reset();
@@ -217,6 +218,7 @@ auto MainComponent::reloadUI() -> void
     _roomEditor               = std::make_unique<RoomEditor>(_valueTree, &_undoManager);
     _raytracingEditor         = std::make_unique<StochasticRaytracingEditor>(*_roomEditor);
     _absorberSimulationEditor = std::make_unique<PorousAbsorberSimulationEditor>(_valueTree, &_undoManager);
+    _materialEditor           = std::make_unique<MaterialEditor>();
 
     auto const color = getLookAndFeel().findColour(juce::ResizableWindow::backgroundColourId);
     _tabs.addTab("Room", color, _roomEditor.get(), false);
@@ -224,6 +226,7 @@ auto MainComponent::reloadUI() -> void
     _tabs.addTab("Generator", color, std::addressof(_generatorEditor), false);
     _tabs.addTab("Raytracing", color, _raytracingEditor.get(), false);
     _tabs.addTab("Porous Absorber", color, _absorberSimulationEditor.get(), false);
+    _tabs.addTab("Material", color, _materialEditor.get(), false);
     if (tabIndex > 0 and tabIndex <= _tabs.getNumTabs()) {
         _tabs.setCurrentTabIndex(tabIndex, true);
     }

@@ -3,44 +3,27 @@
 #include <ra/acoustics/room.hpp>
 
 namespace ra {
-namespace {
 
-auto reflectionLeftSpeaker(RoomLayout const& room) -> double
-{
-    auto const y   = room.listenPosition.y - room.leftSpeaker.y;
-    auto const x1  = room.leftSpeaker.x;
-    auto const x2  = room.dimensions.width - room.listenPosition.x;
-    auto const tmp = (y * x2) / (x1 + x2);
-    return room.listenPosition.y - tmp;
-}
-
-auto reflectionLeftSpeakerFar(RoomLayout const& room) -> double
-{
-    auto const y   = room.listenPosition.y - room.leftSpeaker.y;
-    auto const x1  = room.dimensions.width - room.leftSpeaker.x;
-    auto const x2  = room.dimensions.width - room.listenPosition.x;
-    auto const tmp = (y * x2) / (x1 + x2);
-    return room.listenPosition.y - tmp;
-}
-
-[[maybe_unused]] auto reflectionRightSpeaker(RoomLayout const& room) -> double
-{
-    auto const y   = room.listenPosition.y - room.rightSpeaker.y;
-    auto const x1  = room.dimensions.width - room.rightSpeaker.x;
-    auto const x2  = room.dimensions.width - room.listenPosition.x;
-    auto const tmp = (y * x2) / (x1 + x2);
-    return room.listenPosition.y - tmp;
-}
-
-[[maybe_unused]] auto reflectionRightSpeakerFar(RoomLayout const& room) -> double
-{
-    auto const y   = room.listenPosition.y - room.rightSpeaker.y;
-    auto const x1  = room.rightSpeaker.x;
-    auto const x2  = room.dimensions.width - room.listenPosition.x;
-    auto const tmp = (y * x2) / (x1 + x2);
-    return room.listenPosition.y - tmp;
-}
-}  // namespace
+static constexpr auto Materials = std::array<std::pair<char const*, std::array<double, 10>>, 18>{
+    std::pair{"Painted concrete",                   std::array{0.01, 0.01, 0.01, 0.05, 0.06, 0.07, 0.09, 0.08, 0.08, 0.08}    },
+    std::pair{"Coarse concrete",                    std::array{0.36, 0.36, 0.36, 0.44, 0.31, 0.29, 0.39, 0.25, 0.25, 0.25}    },
+    std::pair{"Wood floor",                         std::array{0.15, 0.15, 0.15, 0.11, 0.1, 0.07, 0.06, 0.07, 0.07, 0.07}     },
+    std::pair{"Vinyl flooring",                     std::array{0.03, 0.03, 0.03, 0.04, 0.05, 0.04, 0.05, 0.05, 0.05, 0.05}    },
+    std::pair{"Window glass",                       std::array{0.35, 0.35, 0.35, 0.25, 0.18, 0.12, 0.07, 0.04, 0.04, 0.04}    },
+    std::pair{"Plate glass",                        std::array{0.18, 0.18, 0.18, 0.06, 0.04, 0.03, 0.02, 0.02, 0.02, 0.02}    },
+    std::pair{"6mm glass",                          std::array{0.1, 0.1, 0.1, 0.06, 0.04, 0.03, 0.02, 0.02, 0.02, 0.02}       },
+    std::pair{"Brickwork",                          std::array{0.05, 0.05, 0.05, 0.04, 0.02, 0.04, 0.05, 0.05, 0.05, 0.05}    },
+    std::pair{"Drapes 1/2 area. 15oz/sq yd",        std::array{0.07, 0.07, 0.07, 0.37, 0.49, 0.81, 0.65, 0.54, 0.54, 0.54}    },
+    std::pair{"Foam backed carpet on concrete",     std::array{0.05, 0.05, 0.05, 0.16, 0.44, 0.7, 0.6, 0.4, 0.4, 0.4}         },
+    std::pair{"Carpet + foam underlay on concrete", std::array{0.15, 0.15, 0.15, 0.25, 0.5, 0.6, 0.7, 0.8, 0.8, 0.8}          },
+    std::pair{"Plaster on brick",                   std::array{0.013, 0.013, 0.013, 0.015, 0.02, 0.03, 0.04, 0.05, 0.05, 0.05}},
+    std::pair{"9mm Plasterboard over 20mm air gap", std::array{0.3, 0.3, 0.3, 0.2, 0.15, 0.05, 0.05, 0.05, 0.05, 0.05}        },
+    std::pair{"Breeze block",                       std::array{0.25, 0.25, 0.25, 0.4, 0.6, 0.5, 0.75, 0.5, 0.5, 0.5}          },
+    std::pair{"50mm Acoustic Foam",                 std::array{0.08, 0.08, 0.08, 0.25, 0.6, 0.9, 0.95, 0.9, 0.9, 0.9}         },
+    std::pair{"100mm Acoustic Foam",                std::array{0.2, 0.2, 0.2, 0.7, 0.99, 0.99, 0.99, 0.99, 0.99, 0.99}        },
+    std::pair{"50mm Mineral Wool (Med Density)",    std::array{0.2, 0.2, 0.2, 0.45, 0.7, 0.8, 0.8, 0.8, 0.8, 0.8}             },
+    std::pair{"LF panel absorber",                  std::array{0.28, 0.28, 0.28, 0.22, 0.17, 0.09, 0.1, 0.11, 0.11, 0.11}     },
+};
 
 RoomEditor::RoomEditor(juce::ValueTree vt, juce::UndoManager* um)
     : _undoManager{um}
@@ -51,7 +34,8 @@ RoomEditor::RoomEditor(juce::ValueTree vt, juce::UndoManager* um)
     addAndMakeVisible(_roomProperties);
     addAndMakeVisible(_renderProperties);
 
-    connectValuesToTree();
+    _roomTree.addListener(this);
+    buildProperties();
     setSize(600, 400);
 }
 
@@ -89,6 +73,7 @@ void RoomEditor::paint(juce::Graphics& g)
     g.setColour(bgColor);
     g.fillRect(_drawArea);
 
+    ///////////////////////////////////////// TOP
     auto const topViewArea  = totalArea.removeFromTop(totalArea.proportionOfHeight(0.66));
     auto const area         = topViewArea.toDouble();
     auto const scaleFactor  = room.dimensions.length / (area.getHeight() * 0.9);
@@ -116,28 +101,6 @@ void RoomEditor::paint(juce::Graphics& g)
     auto const listenArea = iconRect.withCentre({listenX, listenY});
     _headIcon->drawWithin(g, listenArea.toFloat(), juce::RectanglePlacement::centred, 1.0F);
 
-    if (_renderLeftReflections) {
-        auto const reflectionLeftClose = reflectionLeftSpeaker(room);
-        auto const leftCloseToWall
-            = juce::Line{leftX, leftY, topViewRoom.getX(), topViewRoom.getY() + reflectionLeftClose / scaleFactor};
-        auto const leftCloseToListen
-            = juce::Line{topViewRoom.getX(), topViewRoom.getY() + reflectionLeftClose / scaleFactor, listenX, listenY};
-        g.drawLine(leftCloseToWall.toFloat());
-        g.drawLine(leftCloseToListen.toFloat());
-
-        auto const reflectionLeftFar = reflectionLeftSpeakerFar(room);
-        auto const leftFarToWall
-            = juce::Line{leftX, leftY, topViewRoom.getRight(), topViewRoom.getY() + reflectionLeftFar / scaleFactor};
-        auto const leftFarToListen = juce::Line{
-            topViewRoom.getRight(),
-            topViewRoom.getY() + reflectionLeftFar / scaleFactor,
-            listenX,
-            listenY
-        };
-        g.drawLine(leftFarToWall.toFloat());
-        g.drawLine(leftFarToListen.toFloat());
-    }
-
     ///////////////////////////////////////// FRONT
     auto const frontArea    = totalArea.toDouble();
     auto const roomHeightPx = room.dimensions.height / scaleFactor;
@@ -155,10 +118,6 @@ void RoomEditor::paint(juce::Graphics& g)
     auto const listenZ         = frontView.getBottom() - room.listenPosition.z / scaleFactor;
     auto const frontListenArea = iconRect.withCentre({listenX, listenZ});
     _headIcon->drawWithin(g, frontListenArea.toFloat(), juce::RectanglePlacement::centred, 1.0F);
-
-    // DBG("Reflection (right): " + juce::String {reflectionRightSpeaker(room)});
-    // DBG("Reflection Far (left): " + juce::String {reflectionLeftSpeakerFar(room)});
-    // DBG("Reflection Far (right): " + juce::String {reflectionRightSpeakerFar(room)});
 }
 
 void RoomEditor::resized()
@@ -172,31 +131,33 @@ void RoomEditor::resized()
     _roomProperties.setBounds(area.reduced(5));
 }
 
-auto RoomEditor::connectValuesToTree() -> void
+auto RoomEditor::buildProperties() -> void
 {
-    _iconSize.getValueTree().addListener(this);
+    using juce::ChoicePropertyComponent;
+    using std::make_unique;
 
-    _roomLength.getValueTree().addListener(this);
-    _roomWidth.getValueTree().addListener(this);
-    _roomHeight.getValueTree().addListener(this);
-
-    _listenX.getValueTree().addListener(this);
-    _listenY.getValueTree().addListener(this);
-    _listenZ.getValueTree().addListener(this);
-
-    _leftX.getValueTree().addListener(this);
-    _leftY.getValueTree().addListener(this);
-    _leftZ.getValueTree().addListener(this);
-
-    _rightX.getValueTree().addListener(this);
-    _rightY.getValueTree().addListener(this);
-    _rightZ.getValueTree().addListener(this);
-
-    _renderLeftReflections.getValueTree().addListener(this);
-    _renderRightReflections.getValueTree().addListener(this);
-
-    _roomProperties.clear();
-    _renderProperties.clear();
+    auto const names = [] {
+        auto n = juce::StringArray{};
+        for (auto const& m : Materials) {
+            n.add(m.first);
+        }
+        return n;
+    }();
+    auto const vars = [&] {
+        auto v = juce::Array<juce::var>{};
+        for (auto const& m : names) {
+            v.add(m);
+        }
+        return v;
+    }();
+    auto const surfaces = juce::Array<juce::PropertyComponent*>{
+        make_unique<ChoicePropertyComponent>(_materialLeft.getPropertyAsValue(), "Left", names, vars).release(),
+        make_unique<ChoicePropertyComponent>(_materialRight.getPropertyAsValue(), "Right", names, vars).release(),
+        make_unique<ChoicePropertyComponent>(_materialFront.getPropertyAsValue(), "Front", names, vars).release(),
+        make_unique<ChoicePropertyComponent>(_materialBack.getPropertyAsValue(), "Back", names, vars).release(),
+        make_unique<ChoicePropertyComponent>(_materialCeiling.getPropertyAsValue(), "Ceiling", names, vars).release(),
+        make_unique<ChoicePropertyComponent>(_materialFloor.getPropertyAsValue(), "Floor", names, vars).release(),
+    };
 
     _roomProperties.addSection(
         "General",
@@ -213,6 +174,8 @@ auto RoomEditor::connectValuesToTree() -> void
             new juce::SliderPropertyComponent{_roomHeight.getPropertyAsValue(), "Height", 0.0, 10.0, 0.01},
     }
     );
+
+    _roomProperties.addSection("Surfaces", surfaces);
 
     _roomProperties.addSection(
         "Listen Position",
@@ -254,4 +217,5 @@ auto RoomEditor::valueTreePropertyChanged(juce::ValueTree& /*tree*/, juce::Ident
 {
     repaint();
 }
+
 }  // namespace ra

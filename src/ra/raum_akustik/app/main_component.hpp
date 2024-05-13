@@ -6,6 +6,7 @@
 #include <ra/raum_akustik/tabs/absorber_simulation_tab.hpp>
 #include <ra/raum_akustik/tabs/audio_input_tab.hpp>
 #include <ra/raum_akustik/tabs/generator_tab.hpp>
+#include <ra/raum_akustik/tabs/material_editor.hpp>
 #include <ra/raum_akustik/tabs/room_editor.hpp>
 #include <ra/raum_akustik/tabs/stochastic_raytracing_tab.hpp>
 #include <ra/raum_akustik/widget/level_meter.hpp>
@@ -51,6 +52,7 @@ private:
     GeberatorEditor _generatorEditor;
     std::unique_ptr<StochasticRaytracingEditor> _raytracingEditor;
     std::unique_ptr<PorousAbsorberSimulationEditor> _absorberSimulationEditor;
+    std::unique_ptr<MaterialEditor> _materialEditor;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(MainComponent)  // NOLINT
 };

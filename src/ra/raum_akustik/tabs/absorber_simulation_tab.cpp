@@ -93,12 +93,17 @@ auto PorousAbsorberSimulationEditor::paint(juce::Graphics& g) -> void
     g.fillRect(_plotArea);
 
     g.setColour(juce::Colours::grey.withAlpha(0.5F));
-    for (auto freq : std::vector{20.0, 40.0, 80.0, 160.0, 320.0, 640.0, 1280.0, 2560.0, 5120.0}) {
+    for (auto freq : std::array{31.25, 62.50, 125.0, 250.0, 500.0, 1'000.0, 2'000.0, 4'000.0, 8'000.0}) {
         auto const freqPos = static_cast<float>(positionForFrequency(si::frequency<si::hertz>{freq}));
         auto const x       = static_cast<float>(_plotArea.getX()) + static_cast<float>(_plotArea.getWidth()) * freqPos;
         auto const topY    = static_cast<float>(_plotArea.getY());
         auto const bottomY = static_cast<float>(_plotArea.getBottom());
         g.drawLine(x, topY, x, bottomY, 3.0F);
+    }
+
+    for (auto row : std::array{0.2F, 0.4F, 0.6F, 0.8F}) {
+        auto const y = juce::jmap(row, _plotArea.toFloat().getY(), _plotArea.toFloat().getBottom());
+        g.drawHorizontalLine(juce::roundToInt(y), _plotArea.getX(), _plotArea.getRight());
     }
 
     auto noAirGapPath = juce::Path{};

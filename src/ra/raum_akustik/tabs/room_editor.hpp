@@ -20,8 +20,8 @@ struct RoomEditor final
     void resized() override;
 
 private:
+    auto buildProperties() -> void;
     auto valueTreePropertyChanged(juce::ValueTree& tree, juce::Identifier const& property) -> void override;
-    auto connectValuesToTree() -> void;
 
     juce::UndoManager* _undoManager{nullptr};
     juce::ValueTree _roomTree;
@@ -31,6 +31,13 @@ private:
     juce::CachedValue<double> _roomLength{_roomTree, "length", _undoManager};
     juce::CachedValue<double> _roomWidth{_roomTree, "width", _undoManager};
     juce::CachedValue<double> _roomHeight{_roomTree, "height", _undoManager};
+
+    juce::CachedValue<double> _materialLeft{_roomTree, "material_left", _undoManager};
+    juce::CachedValue<double> _materialRight{_roomTree, "material_right", _undoManager};
+    juce::CachedValue<double> _materialFront{_roomTree, "material_front", _undoManager};
+    juce::CachedValue<double> _materialBack{_roomTree, "material_back", _undoManager};
+    juce::CachedValue<double> _materialCeiling{_roomTree, "material_ceiling", _undoManager};
+    juce::CachedValue<double> _materialFloor{_roomTree, "material_floor", _undoManager};
 
     juce::CachedValue<double> _listenX{_roomTree, "listen_x", _undoManager};
     juce::CachedValue<double> _listenY{_roomTree, "listen_y", _undoManager};
