@@ -4,12 +4,13 @@
 
 #include <algorithm>
 #include <cmath>
+#include <cstdint>
 #include <span>
 #include <vector>
 
 namespace ra {
 
-enum struct RoomSurface
+enum struct RoomSurface : std::uint8_t
 {
     front,
     back,
@@ -109,7 +110,7 @@ struct RoomReflection
     }
 };
 
-[[nodiscard]] inline auto makeReflection(RoomAbsorption const& room) noexcept -> RoomReflection
+[[nodiscard]] inline auto makeReflection(RoomAbsorption const& room) -> RoomReflection
 {
     auto squareRoot = [](auto const& vec) {
         auto result = std::vector<double>(vec.size());

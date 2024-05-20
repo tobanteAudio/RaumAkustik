@@ -32,8 +32,8 @@ private:
     private:
         juce::String _title;
         std::vector<double> _data;
-        std::chrono::duration<double> _duration;
-        double _maxGain;
+        std::chrono::duration<double> _duration{};
+        double _maxGain{};
 
         JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(Plot)  // NOLINT
     };

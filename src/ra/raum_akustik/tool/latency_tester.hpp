@@ -14,7 +14,7 @@ struct LatencyTester final
     void beginTest();
     void timerCallback() override;
 
-    auto getMessageDescribingResult(int latencySamples) -> juce::String const;
+    auto getMessageDescribingResult(int latencySamples) const -> juce::String const;
     void audioDeviceAboutToStart(juce::AudioIODevice* device) override;
     void audioDeviceStopped() override;
     void audioDeviceIOCallbackWithContext(
@@ -46,7 +46,7 @@ private:
     bool _testIsRunning    = false;
     int _deviceInputLatency{}, _deviceOutputLatency{};
 
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(LatencyTester)
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(LatencyTester)  // NOLINT
 };
 
 struct LatencyTesterEditor final : juce::Component
@@ -67,7 +67,7 @@ private:
     juce::TextButton _startTestButton{"Test Latency"};
     juce::TextEditor _resultsBox;
 
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(LatencyTesterEditor)
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(LatencyTesterEditor)  // NOLINT
 };
 
 }  // namespace ra

@@ -36,7 +36,7 @@ private:
     enum
     {
         fftOrder = 11,
-        fftSize  = 1 << fftOrder,
+        fftSize  = int(1U << static_cast<unsigned>(fftOrder)),
         hopSize  = fftSize / 4,
     };
 

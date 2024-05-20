@@ -1,10 +1,11 @@
 #include "stochastic_raytracing.hpp"
 
 #include <array>
+#include <utility>
 
 namespace ra {
 
-StochasticRaytracing::StochasticRaytracing(Room const& room) noexcept : _room{room} {}
+StochasticRaytracing::StochasticRaytracing(Room room) noexcept : _room{std::move(room)} {}
 
 auto StochasticRaytracing::operator()(Simulation const& simulation) const -> Result
 {
@@ -100,7 +101,7 @@ auto StochasticRaytracing::tarceRay(
         auto const energy       = (1 - cosAlpha) * 2 * cosTheta * recvEnergy;
 
         // Update energy histogram
-        auto const timeIdx = static_cast<size_t>(std::max(0, int(timeOfArrival / sim.timeStep + 0.5) - 1));
+        auto const timeIdx = static_cast<size_t>(std::max(0L, std::lround(timeOfArrival / sim.timeStep) - 1));
         histogram[timeIdx] = histogram[timeIdx] + energy;
 
         // Compute a new direction for the ray.
@@ -182,7 +183,7 @@ auto StochasticRaytracing::getImpactSurface(Point pos, Vec3 direction) const -> 
     return {surface, displacement * direction};
 }
 
-auto StochasticRaytracing::randomRaysOnSphere(size_t count, std::mt19937& rng) const -> std::vector<Vec3>
+auto StochasticRaytracing::randomRaysOnSphere(size_t count, std::mt19937& rng) -> std::vector<Vec3>
 {
     auto rays = std::vector<Vec3>(count);
     auto dist = std::uniform_real_distribution<double>{0.0, 1.0};

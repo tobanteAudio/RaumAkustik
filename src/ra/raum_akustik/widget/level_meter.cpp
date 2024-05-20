@@ -2,19 +2,22 @@
 
 namespace ra {
 
-// V = Vmax * 10^(dBFS / 20)
+namespace {  // V = Vmax * 10^(dBFS / 20)
+
 template<typename Float>
-[[nodiscard]] static auto dBFSToVolts(Float dbFS, Float vMax) noexcept -> Float
+[[nodiscard]] auto dBFSToVolts(Float dbFS, Float vMax) noexcept -> Float
 {
     return vMax * std::pow(Float(10), dbFS / Float(20));
 }
 
 // dBV = 20 * log10(V / Vref)
 template<typename Float>
-[[nodiscard]] static auto voltsTodBV(Float volts, Float vRef) noexcept -> Float
+[[nodiscard]] auto voltsTodBV(Float volts, Float vRef) noexcept -> Float
 {
     return Float(20) * std::log10(volts / vRef);
 }
+
+}  // namespace
 
 LevelMeter::LevelMeter()
 {

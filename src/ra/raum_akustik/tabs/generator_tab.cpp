@@ -8,6 +8,7 @@
 
 namespace ra {
 
+namespace {
 struct FrequencyAndAmplitude
 {
     float frequency;
@@ -20,7 +21,7 @@ template<typename T>
     return static_cast<T>(index) * static_cast<T>(sampleRate) / static_cast<T>(windowSize);
 }
 
-static auto frequencyToX(float minFreq, float maxFreq, float freq, float width)
+auto frequencyToX(float minFreq, float maxFreq, float freq, float width)
 {
     auto const logMin  = std::log(minFreq);
     auto const logMax  = std::log(maxFreq);
@@ -29,14 +30,14 @@ static auto frequencyToX(float minFreq, float maxFreq, float freq, float width)
     return width * ratio;
 }
 
-static auto amplitudeToY(float amplitude, juce::Rectangle<float> const bounds) -> float
+auto amplitudeToY(float amplitude, juce::Rectangle<float> const bounds) -> float
 {
     auto const infinity = -96.0F;
     auto const dB       = juce::Decibels::gainToDecibels(amplitude, infinity);
     return juce::jmap(dB, infinity, 0.0F, bounds.getBottom(), bounds.getY());
 }
 
-static auto getFrequencyAndAmplitude(std::span<std::complex<float> const> bins, double sampleRate)
+auto getFrequencyAndAmplitude(std::span<std::complex<float> const> bins, double sampleRate)
     -> std::vector<FrequencyAndAmplitude>
 {
     auto result = std::vector<FrequencyAndAmplitude>{};
@@ -53,8 +54,7 @@ static auto getFrequencyAndAmplitude(std::span<std::complex<float> const> bins, 
     return result;
 }
 
-static auto
-makePathFromAnalysis(std::span<FrequencyAndAmplitude const> analysis, float fs, juce::Rectangle<float> bounds)
+auto makePathFromAnalysis(std::span<FrequencyAndAmplitude const> analysis, float fs, juce::Rectangle<float> bounds)
     -> juce::Path
 {
     auto const size = static_cast<int>(analysis.size());
@@ -83,34 +83,35 @@ makePathFromAnalysis(std::span<FrequencyAndAmplitude const> analysis, float fs, 
     return p;
 }
 
-[[maybe_unused]] static auto toAudioBuffer(std::vector<float> const& in) -> juce::AudioBuffer<float>
+[[maybe_unused]] auto toAudioBuffer(std::vector<float> const& in) -> juce::AudioBuffer<float>
 {
     auto buf = juce::AudioBuffer<float>{1, static_cast<int>(in.size())};
     std::copy(in.begin(), in.end(), buf.getWritePointer(0));
     return buf;
 }
 
-[[maybe_unused]] static auto
+[[maybe_unused]] auto
 getSpectrumPath(juce::AudioBuffer<float> const& in, double fs, juce::Rectangle<int> area) -> juce::Path
 {
     auto const fftSize  = static_cast<size_t>(juce::nextPowerOfTwo(in.getNumSamples()));
     auto const fftOrder = std::bit_width(fftSize) - 1;
 
     auto buf     = std::vector<std::complex<float>>(fftSize);
-    auto* buffer = reinterpret_cast<float*>(buf.data());
+    auto* buffer = reinterpret_cast<float*>(buf.data());  // NOLINT
     std::copy(in.getReadPointer(0), in.getReadPointer(0) + in.getNumSamples(), buffer);
 
     auto fft = juce::dsp::FFT{fftOrder};
     fft.performRealOnlyForwardTransform(buffer, true);
 
     auto const* coefficients = buf.data();
-    auto const numBins       = static_cast<size_t>(fft.getSize() / 2 + 1);
+    auto const numBins       = static_cast<size_t>(fft.getSize()) / 2U + 1U;
     auto const amplitudes    = getFrequencyAndAmplitude({coefficients, numBins}, fs);
     DBG("fftSize: " << fftSize << " fftOrder: " << fftOrder << " fft.getSize(): " << fft.getSize()
                     << " numBins: " << numBins);
 
     return makePathFromAnalysis(amplitudes, float(fs), area.toFloat());
 }
+}  // namespace
 
 GeberatorEditor::GeberatorEditor(juce::AudioDeviceManager& deviceManager) : _recorder{deviceManager}
 {

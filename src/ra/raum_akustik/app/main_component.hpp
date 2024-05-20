@@ -1,6 +1,5 @@
 #pragma once
 
-#include <ra/raum_akustik/app/main_component.hpp>
 #include <ra/raum_akustik/app/menu_bar.hpp>
 #include <ra/raum_akustik/look/look_and_feel.hpp>
 #include <ra/raum_akustik/tabs/absorber_simulation_tab.hpp>

@@ -36,12 +36,12 @@ struct StochasticRaytracing
 
     using Result = std::vector<std::vector<double>>;
 
-    explicit StochasticRaytracing(Room const& room) noexcept;
+    explicit StochasticRaytracing(Room room) noexcept;
 
     [[nodiscard]] auto operator()(Simulation const& simulation) const -> Result;
 
 private:
-    [[nodiscard]] auto randomRaysOnSphere(size_t count, std::mt19937& rng) const -> std::vector<Vec3>;
+    [[nodiscard]] static auto randomRaysOnSphere(size_t count, std::mt19937& rng) -> std::vector<Vec3>;
 
     auto tarceRay(Simulation const& sim, Vec3 ray, std::span<double> histogram, std::size_t freqIdx, std::mt19937& rng)
         const -> void;

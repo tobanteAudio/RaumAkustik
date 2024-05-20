@@ -12,8 +12,8 @@ auto densityOfAir(
 {
     using namespace mp_units::si::unit_symbols;
 
-    static constexpr auto GasConstant = 287.05 * J / (kg * K);
-    return pressure / (GasConstant * temp);
+    static constexpr auto gasConstant = 287.05 * J / (kg * K);
+    return pressure / (gasConstant * temp);
 }
 
 auto soundVelocity(quantity<isq::thermodynamic_temperature[si::kelvin]> temp
@@ -21,9 +21,9 @@ auto soundVelocity(quantity<isq::thermodynamic_temperature[si::kelvin]> temp
 {
     using namespace mp_units::si::unit_symbols;
 
-    static constexpr auto SpecificHeatRatio = 1.402;
-    static constexpr auto DensityAtZeroC    = 1.293 * si::kilogram / cubic(si::metre);
-    return sqrt((SpecificHeatRatio * OneAtmosphere<double>) / DensityAtZeroC) * sqrt(temp / (273.15 * si::kelvin));
+    static constexpr auto specificHeatRatio = 1.402;
+    static constexpr auto densityAtZeroC    = 1.293 * si::kilogram / cubic(si::metre);
+    return sqrt((specificHeatRatio * OneAtmosphere<double>) / densityAtZeroC) * sqrt(temp / (273.15 * si::kelvin));
 }
 
 auto impedanceOfAir(

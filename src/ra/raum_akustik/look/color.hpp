@@ -10,7 +10,10 @@ struct ColourRGB
     float g;
     float b;
 
-    [[nodiscard]] operator juce::Colour() const noexcept { return juce::Colour::fromFloatRGBA(r, g, b, 1.0F); }
+    [[nodiscard]] operator juce::Colour() const noexcept  // NOLINT
+    {
+        return juce::Colour::fromFloatRGBA(r, g, b, 1.0F);
+    }
 };
 
 static constexpr auto CividisColorMap = std::array{
@@ -271,4 +274,5 @@ static constexpr auto CividisColorMap = std::array{
     ColourRGB{1.0000F, 0.9131F, 0.2680F},
     ColourRGB{1.0000F, 0.9169F, 0.2731F},
 };
+
 }  // namespace ra

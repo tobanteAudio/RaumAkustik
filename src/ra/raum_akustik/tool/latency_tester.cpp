@@ -38,7 +38,7 @@ void LatencyTester::timerCallback()
     }
 }
 
-auto LatencyTester::getMessageDescribingResult(int latencySamples) -> juce::String const
+auto LatencyTester::getMessageDescribingResult(int latencySamples) const -> juce::String const
 {
     juce::String message;
 

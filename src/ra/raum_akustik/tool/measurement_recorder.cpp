@@ -24,8 +24,9 @@ void MeasurementRecorder::startRecording(juce::File const& file)
             juce::WavAudioFormat wavFormat;
 
             if (auto* writer = wavFormat.createWriterFor(fileStream.get(), _sampleRate, 1, 16, {}, 0)) {
-                fileStream.release();  // (passes responsibility for deleting the stream to the writer object that
-                                       // is now using it)
+
+                // passes responsibility for deleting the stream to the writer object that is now using it
+                [[maybe_unused]] auto* ptr = fileStream.release();
 
                 // Now we'll create one of these helper objects which will act as a FIFO buffer, and will
                 // write the data to disk on our background thread.
@@ -115,7 +116,7 @@ void MeasurementRecorder::audioDeviceIOCallbackWithContext(
         // Create an AudioBuffer to wrap our incoming data, note that this does no allocations or copies, it simply
         // references our input data
         juce::AudioBuffer<float> const buffer(
-            const_cast<float**>(inputChannelData),
+            const_cast<float**>(inputChannelData),  // NOLINT
             _thumbnail.getNumChannels(),
             numSamples
         );

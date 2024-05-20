@@ -29,8 +29,10 @@ Checks: >
   -misc-include-cleaner,
 
   modernize-*,
+  -modernize-use-std-numbers,
 
   performance-*,
+  -performance-enum-size,
 
   readability-*,
   readability-identifier-naming,

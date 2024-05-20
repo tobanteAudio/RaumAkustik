@@ -103,7 +103,7 @@ auto PorousAbsorberSimulationEditor::paint(juce::Graphics& g) -> void
 
     for (auto row : std::array{0.2F, 0.4F, 0.6F, 0.8F}) {
         auto const y = juce::jmap(row, _plotArea.toFloat().getY(), _plotArea.toFloat().getBottom());
-        g.drawHorizontalLine(juce::roundToInt(y), _plotArea.getX(), _plotArea.getRight());
+        g.drawHorizontalLine(juce::roundToInt(y), _plotArea.toFloat().getX(), _plotArea.toFloat().getRight());
     }
 
     auto noAirGapPath = juce::Path{};

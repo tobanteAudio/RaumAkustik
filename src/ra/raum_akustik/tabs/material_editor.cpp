@@ -4,12 +4,14 @@
 
 namespace ra {
 
-static constexpr auto Bands = std::array<char const*, 22>{
+namespace {
+
+constexpr auto Bands = std::array<char const*, 22>{
     "63",  "80",   "100",  "125",  "160",  "200",  "250",  "315",  "400",  "500",  "630",
     "800", "1000", "1250", "1600", "2000", "2500", "3150", "4000", "5000", "6300", "8000",
 };
 
-[[nodiscard]] static auto loadMaterials(juce::File const& path) -> std::vector<AcousticMaterial>
+[[nodiscard]] auto loadMaterials(juce::File const& path) -> std::vector<AcousticMaterial>
 {
 
     auto input  = juce::FileInputStream{path};
@@ -40,6 +42,7 @@ static constexpr auto Bands = std::array<char const*, 22>{
 
     return result;
 }
+}  // namespace
 
 MaterialEditor::MaterialEditor()
     : _materials{loadMaterials(juce::File("/Users/tobante/Developer/neo-sonar/neo-acoustic/material.json"))}
@@ -161,15 +164,18 @@ auto MaterialEditor::sortOrderChanged(int newSortColumnId, bool isForwards) -> v
     };
 
     if (newSortColumnId == NameColumnIndex) {
-        return sortByText(&AcousticMaterial::name);
+        sortByText(&AcousticMaterial::name);
+        return;
     }
 
     if (newSortColumnId == TypeColumnIndex) {
-        return sortByText(&AcousticMaterial::type);
+        sortByText(&AcousticMaterial::type);
+        return;
     }
 
     if (newSortColumnId == FlowResistanceColumnIndex) {
-        return sortByText(&AcousticMaterial::flowResistance);
+        sortByText(&AcousticMaterial::flowResistance);
+        return;
     }
 
     auto const bandIndex = newSortColumnId - FirstBandColumnIndex;

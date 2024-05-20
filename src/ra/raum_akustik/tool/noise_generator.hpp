@@ -28,7 +28,7 @@ struct NoiseGenerator final
     ) -> void override;
 
 private:
-    std::mt19937 _urng;
+    std::mt19937 _urng{std::random_device{}()};
     std::uniform_real_distribution<float> _dist{-1.0F, 1.0F};
     std::atomic<float> _gain{1.0F};
     std::atomic<bool> _isPlaying{false};
