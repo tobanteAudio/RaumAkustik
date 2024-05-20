@@ -1,5 +1,7 @@
 #include "stochastic_raytracing.hpp"
 
+#include <array>
+
 namespace ra {
 
 StochasticRaytracing::StochasticRaytracing(Room const& room) noexcept : _room{room} {}

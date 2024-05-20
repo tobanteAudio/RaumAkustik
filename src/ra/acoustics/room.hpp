@@ -2,6 +2,7 @@
 
 #include <ra/math/vec3.hpp>
 
+#include <algorithm>
 #include <cmath>
 #include <span>
 #include <vector>
