@@ -5,3 +5,6 @@
 	path = 3rd_party/cmake-conan
 	url = https://github.com/conan-io/cmake-conan.git
 	branch = develop2
+[submodule "3rd_party/dawn"]
+	path = 3rd_party/dawn
+	url = https://dawn.googlesource.com/dawn

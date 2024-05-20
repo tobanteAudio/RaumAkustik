@@ -14,6 +14,9 @@ target_link_libraries(${PROJECT_NAME}
         juce::juce_recommended_warning_flags
     PUBLIC
         mp-units::mp-units
+        webgpu_cpp
+        webgpu_dawn
+
         juce::juce_recommended_config_flags
         juce::juce_recommended_lto_flags
         ra::compiler_options
