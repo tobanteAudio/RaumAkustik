@@ -1,5 +1,6 @@
 project(ra_acoustics)
 
+find_package(glm REQUIRED)
 find_package(mp-units REQUIRED)
 
 add_library(ra_acoustics STATIC)
@@ -13,7 +14,9 @@ target_link_libraries(${PROJECT_NAME}
     PRIVATE
         juce::juce_recommended_warning_flags
     PUBLIC
+        glm::glm
         mp-units::mp-units
+
         webgpu_cpp
         webgpu_dawn
 
