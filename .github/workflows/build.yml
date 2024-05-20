@@ -59,7 +59,7 @@ jobs:
         run: |
           sudo apt update -y
           sudo apt install -y libasound2-dev mesa-common-dev libx11-xcb-dev xorg-dev libx11-dev libxinerama-dev libxext-dev libfreetype6-dev libglu1-mesa-dev xvfb ninja-build ccache
-          pip3 install --upgrade conan
+          pip3 install --user --upgrade conan
 
       - name: Install dependencies (macOS)
         if: runner.os == 'macOS'
