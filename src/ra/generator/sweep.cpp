@@ -35,8 +35,8 @@ auto generate(SineSweep const& spec) -> std::vector<float>
     };
 
     auto const fs         = spec.sampleRate;
-    auto const f1         = spec.from.number();
-    auto const f2         = spec.to.number();
+    auto const f1         = spec.from.numerical_value_in(si::hertz);
+    auto const f2         = spec.to.numerical_value_in(si::hertz);
     auto const numSamples = static_cast<size_t>(std::chrono::duration_cast<Seconds>(spec.duration).count() * fs);
 
     auto buffer = std::vector<float>(numSamples, 0.0F);

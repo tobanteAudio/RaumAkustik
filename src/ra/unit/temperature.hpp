@@ -1,13 +1,15 @@
 #pragma once
 
-#include <units/isq/si/thermodynamic_temperature.h>
+#include <mp-units/systems/isq.h>
+#include <mp-units/systems/si.h>
 
 namespace ra {
-using namespace units::isq;
+using namespace mp_units;
 
-[[nodiscard]] constexpr auto celciusToKelvin(double celcius) noexcept -> si::thermodynamic_temperature<si::kelvin>
+[[nodiscard]] constexpr auto celciusToKelvin(double celcius
+) noexcept -> quantity<isq::thermodynamic_temperature[si::kelvin]>
 {
-    return si::thermodynamic_temperature<si::kelvin>{celcius + 273.15};
+    return (celcius + 273.15) * si::kelvin;
 }
 
 }  // namespace ra

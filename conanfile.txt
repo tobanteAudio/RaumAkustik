@@ -1,6 +1,6 @@
 [requires]
 catch2/3.6.0
-mp-units/0.8.0
+mp-units/2.2.0@mpusz/testing
 
 [options]
 

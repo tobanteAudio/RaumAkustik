@@ -1,30 +1,37 @@
 #include "air.hpp"
 
-#include <units/isq/si/heat_capacity.h>
-
-#include <units/math.h>
+#include <mp-units/math.h>
 
 namespace ra {
-auto densityOfAir(si::thermodynamic_temperature<si::kelvin> temp, si::pressure<si::pascal> pressure) noexcept
-    -> si::density<si::kilogram_per_metre_cub>
+auto densityOfAir(
+    quantity<isq::thermodynamic_temperature[si::kelvin]> temp,
+    quantity<isq::pressure[si::pascal]> pressure
+) noexcept -> quantity<isq::density[si::kilogram / cubic(si::metre)]>
 {
-    static constexpr auto GasConstant = si::specific_heat_capacity<si::joule_per_kilogram_kelvin>{287.05};
+    using namespace mp_units::si::unit_symbols;
+
+    static constexpr auto GasConstant = 287.05 * J / (kg * K);
     return pressure / (GasConstant * temp);
 }
 
-auto soundVelocity(si::thermodynamic_temperature<si::kelvin> temp) noexcept -> si::speed<si::metre_per_second>
+auto soundVelocity(quantity<isq::thermodynamic_temperature[si::kelvin]> temp
+) noexcept -> quantity<isq::speed[si::metre / si::second]>
 {
+    using namespace mp_units::si::unit_symbols;
+
     static constexpr auto SpecificHeatRatio = 1.402;
-    static constexpr auto DensityAtZeroC    = si::density<si::kilogram_per_metre_cub>{1.293};
-    return sqrt((SpecificHeatRatio * OneAtmosphere<double>) / DensityAtZeroC)
-         * sqrt(temp / si::thermodynamic_temperature<si::kelvin>{273.15});
+    static constexpr auto DensityAtZeroC    = 1.293 * si::kilogram / cubic(si::metre);
+    return sqrt((SpecificHeatRatio * OneAtmosphere<double>) / DensityAtZeroC) * sqrt(temp / (273.15 * si::kelvin));
 }
 
-auto impedanceOfAir(si::thermodynamic_temperature<si::kelvin> temp, si::pressure<si::pascal> pressure) noexcept
-    -> double
+auto impedanceOfAir(
+    quantity<isq::thermodynamic_temperature[si::kelvin]> temp,
+    quantity<isq::pressure[si::pascal]> pressure
+) noexcept -> double
 {
+    using namespace mp_units::si::unit_symbols;
     auto const i = soundVelocity(temp) * densityOfAir(temp, pressure);
-    return i.number();
+    return i.numerical_value_in((m / s) * (kg / m3));
 }
 
 }  // namespace ra

@@ -1,13 +1,15 @@
 #pragma once
 
-#include <units/isq/si/angular_velocity.h>
-#include <units/isq/si/frequency.h>
+#include <mp-units/systems/isq.h>
+#include <mp-units/systems/si.h>
 
 namespace ra {
-using namespace units::isq;
 
-[[nodiscard]] auto
-oactaveSubdivision(si::frequency<si::hertz> start, double numSubdivisions, double index) -> si::frequency<si::hertz>;
-[[nodiscard]] auto toAngularVelocity(si::frequency<si::hertz> hertz) -> si::angular_velocity<si::radian_per_second>;
+using namespace mp_units;
+
+[[nodiscard]] auto oactaveSubdivision(quantity<isq::frequency[si::hertz]> start, double numSubdivisions, double index)
+    -> quantity<isq::frequency[si::hertz]>;
+[[nodiscard]] auto toAngularVelocity(quantity<isq::frequency[si::hertz]> hertz
+) -> quantity<isq::angular_frequency[si::radian / si::second]>;
 
 }  // namespace ra

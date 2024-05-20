@@ -203,8 +203,8 @@ auto GeberatorEditor::resized() -> void
 auto GeberatorEditor::handleAsyncUpdate() -> void
 {
     // auto const spec = SineSweep{
-    //     .from       = si::frequency<si::hertz>{static_cast<double>(_from)},
-    //     .to         = si::frequency<si::hertz>{static_cast<double>(_to)},
+    //     .from       = static_cast<double>(_from)*si::hertz,
+    //     .to         = static_cast<double>(_to)*si::hertz,
     //     .curve      = static_cast<bool>(_curve) ? SineSweepCurve::Logarithmic : SineSweepCurve::Linear,
     //     .duration   = std::chrono::milliseconds{juce::roundToInt(static_cast<double>(_duration))},
     //     .sampleRate = static_cast<double>(_sampleRate),

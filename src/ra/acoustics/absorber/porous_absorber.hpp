@@ -4,18 +4,19 @@
 #include <ra/unit/pressure.hpp>
 #include <ra/unit/temperature.hpp>
 
-#include <units/isq/si/density.h>
+#include <mp-units/systems/isq.h>
+#include <mp-units/systems/si.h>
 
 #include <complex>
 
 namespace ra {
 
-using namespace units::isq;
+using namespace mp_units;
 
 struct AtmosphericEnvironment
 {
-    si::thermodynamic_temperature<si::kelvin> temperature{0};
-    si::pressure<si::pascal> pressure{0};
+    quantity<isq::thermodynamic_temperature[si::kelvin]> temperature{};
+    quantity<isq::pressure[si::pascal]> pressure{};
 };
 
 struct PorousAbsorberSpecs
@@ -88,17 +89,19 @@ struct PorousAbsorberProperties
 [[nodiscard]] auto propertiesOfAbsorber(
     PorousAbsorberSpecs specs,
     AtmosphericEnvironment env,
-    si::frequency<si::hertz> frequency,
+    quantity<isq::frequency[si::hertz]> frequency,
     double angle
 ) -> PorousAbsorberProperties;
 
 namespace detail {
 
-[[nodiscard]] auto
-waveNumber(si::thermodynamic_temperature<si::kelvin> temperature, si::frequency<si::hertz> frequency) -> double;
+[[nodiscard]] auto waveNumber(
+    quantity<isq::thermodynamic_temperature[si::kelvin]> temperature,
+    quantity<isq::frequency[si::hertz]> frequency
+) -> double;
 [[nodiscard]] auto delanyBazleyTerm(
-    si::density<si::kilogram_per_metre_cub> airDensity,
-    si::frequency<si::hertz> frequency,
+    quantity<isq::density[si::kilogram / cubic(si::metre)]> airDensity,
+    quantity<isq::frequency[si::hertz]> frequency,
     double flowResistivity
 ) -> double;
 [[nodiscard]] auto yComponentOfWaveNumber(double waveNumber, double angle) -> double;

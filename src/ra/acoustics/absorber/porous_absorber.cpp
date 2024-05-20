@@ -8,13 +8,15 @@ namespace ra {
 auto propertiesOfAbsorber(
     PorousAbsorberSpecs specs,
     AtmosphericEnvironment env,
-    si::frequency<si::hertz> frequency,
+    quantity<isq::frequency[si::hertz]> frequency,
     double angle
 ) -> PorousAbsorberProperties
 {
+    using namespace mp_units::si::unit_symbols;
+
     auto const airDensity = densityOfAir(env.temperature, env.pressure);
     auto const airIm      = impedanceOfAir(env.temperature, env.pressure);
-    auto const twoPiC     = (2.0 * std::numbers::pi) / soundVelocity(env.temperature).number();
+    auto const twoPiC     = (2.0 * std::numbers::pi) / soundVelocity(env.temperature).numerical_value_in(m / s);
     auto const wn         = detail::waveNumber(env.temperature, frequency);
     auto const nj         = std::complex{0.0, -1.0};
 
@@ -22,7 +24,7 @@ auto propertiesOfAbsorber(
     {
         p.X   = detail::delanyBazleyTerm(airDensity, frequency, specs.flowResisitivity);
         p.zca = airIm * std::complex{1 + 0.0571 * (std::pow(p.X, -0.754)), -0.087 * (std::pow(p.X, -0.732))};
-        p.k   = twoPiC * frequency.number()
+        p.k   = twoPiC * frequency.numerical_value_in(Hz)
             * std::complex{1 + 0.0978 * std::pow(p.X, -0.7), -0.189 * std::pow(p.X, -0.595)};
         p.ky                  = detail::yComponentOfWaveNumber(wn, angle);
         p.kx                  = std::sqrt((p.k * p.k) - std::pow(p.ky, 2));
@@ -62,21 +64,27 @@ auto propertiesOfAbsorber(
 
 namespace detail {
 
-auto waveNumber(si::thermodynamic_temperature<si::kelvin> temperature, si::frequency<si::hertz> frequency) -> double
+auto waveNumber(
+    quantity<isq::thermodynamic_temperature[si::kelvin]> temperature,
+    quantity<isq::frequency[si::hertz]> frequency
+) -> double
 {
     // 2p/l
-    return ((2.0 * std::numbers::pi) / soundVelocity(temperature).number()) * frequency.number();
+    using namespace mp_units::si::unit_symbols;
+    return ((2.0 * std::numbers::pi) / soundVelocity(temperature).numerical_value_in(m / s))
+         * frequency.numerical_value_in(Hz);
 }
 
 auto delanyBazleyTerm(
-    si::density<si::kilogram_per_metre_cub> airDensity,
-    si::frequency<si::hertz> frequency,
+    quantity<isq::density[si::kilogram / cubic(si::metre)]> airDensity,
+    quantity<isq::frequency[si::hertz]> frequency,
     double flowResistivity
 ) -> double
 {
     // Eq 5.11
+    using namespace mp_units::si::unit_symbols;
     auto const tmp = (airDensity * frequency) / flowResistivity;
-    return tmp.number();
+    return tmp.numerical_value_in((kg / m3) * Hz / one);
 }
 
 auto yComponentOfWaveNumber(double waveNumber, double angle) -> double

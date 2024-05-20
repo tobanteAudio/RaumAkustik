@@ -5,9 +5,9 @@
 namespace ra {
 
 namespace {
-auto positionForFrequency(si::frequency<si::hertz> const freq) noexcept -> double
+auto positionForFrequency(quantity<isq::frequency[si::hertz]> const freq) noexcept -> double
 {
-    return (std::log(freq.number() / 20.0) / std::numbers::ln2) / 10.0;
+    return (std::log(freq.numerical_value_in(si::hertz) / 20.0) / std::numbers::ln2) / 10.0;
 }
 
 }  // namespace
@@ -94,7 +94,7 @@ auto PorousAbsorberSimulationEditor::paint(juce::Graphics& g) -> void
 
     g.setColour(juce::Colours::grey.withAlpha(0.5F));
     for (auto freq : std::array{31.25, 62.50, 125.0, 250.0, 500.0, 1'000.0, 2'000.0, 4'000.0, 8'000.0}) {
-        auto const freqPos = static_cast<float>(positionForFrequency(si::frequency<si::hertz>{freq}));
+        auto const freqPos = static_cast<float>(positionForFrequency(freq * si::hertz));
         auto const x       = static_cast<float>(_plotArea.getX()) + static_cast<float>(_plotArea.getWidth()) * freqPos;
         auto const topY    = static_cast<float>(_plotArea.getY());
         auto const bottomY = static_cast<float>(_plotArea.getBottom());
@@ -171,7 +171,7 @@ auto PorousAbsorberSimulationEditor::
     g.setFont(16.0F);
 
     if (columnId == 1) {
-        auto const frequency = juce::String{_props[static_cast<size_t>(row)].first.number()};
+        auto const frequency = juce::String{_props[static_cast<size_t>(row)].first.numerical_value_in(si::hertz)};
         g.drawText(frequency, 2, 0, width - 4, height, juce::Justification::centredLeft, true);
     }
 
@@ -206,7 +206,7 @@ auto PorousAbsorberSimulationEditor::updateSimulation() -> void
         static_cast<double>(_pressure) * OneAtmosphere<double>,
     };
 
-    auto const startFrequency = si::frequency<si::hertz>{static_cast<double>(_plotStartFrequency)};
+    auto const startFrequency = static_cast<double>(_plotStartFrequency) * si::hertz;
     auto const subDivisions   = static_cast<double>(_plotOctaveSubdivision);
 
     for (auto i{0}; i < static_cast<int>(_plotNumPoints); ++i) {
