@@ -20,11 +20,6 @@ project(room-acoustics-dev VERSION 0.1.0)
 enable_testing()
 include(CTest)
 
-list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
-include(CompilerOptions)
-include(CompilerWarnings)
-include(CodeCoverage)
-
 find_package(Catch2 REQUIRED)
 include(Catch)
 

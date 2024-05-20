@@ -19,8 +19,6 @@ target_link_libraries(${PROJECT_NAME}
 
         juce::juce_recommended_config_flags
         juce::juce_recommended_lto_flags
-        ra::compiler_options
-        ra::coverage
 )
 
 target_sources(${PROJECT_NAME}
