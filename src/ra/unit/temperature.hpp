@@ -1,5 +1,7 @@
 #pragma once
 
+#include <algorithm>
+
 #include <mp-units/systems/isq.h>
 #include <mp-units/systems/si.h>
 

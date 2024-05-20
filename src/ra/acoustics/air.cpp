@@ -1,5 +1,7 @@
 #include "air.hpp"
 
+#include <algorithm>
+
 #include <mp-units/math.h>
 
 namespace ra {

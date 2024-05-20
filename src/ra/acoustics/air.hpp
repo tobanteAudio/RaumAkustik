@@ -1,5 +1,7 @@
 #pragma once
 
+#include <algorithm>
+
 #include <ra/unit/frequency.hpp>
 #include <ra/unit/pressure.hpp>
 #include <ra/unit/temperature.hpp>
