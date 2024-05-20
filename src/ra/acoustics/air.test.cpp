@@ -1,6 +1,9 @@
 
 #include "air.hpp"
 
+#include <ra/unit/pressure.hpp>
+#include <ra/unit/temperature.hpp>
+
 #include <catch2/catch_approx.hpp>
 #include <catch2/catch_test_macros.hpp>
 

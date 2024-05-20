@@ -1,6 +1,8 @@
 #include "porous_absorber.hpp"
 
 #include <ra/acoustics/air.hpp>
+#include <ra/unit/pressure.hpp>
+#include <ra/unit/temperature.hpp>
 
 #include <numbers>
 

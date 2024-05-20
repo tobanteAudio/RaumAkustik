@@ -1,11 +1,16 @@
 #pragma once
 
-#include <ra/unit/frequency.hpp>
+#include <algorithm>
+
+#include <mp-units/systems/isq.h>
+#include <mp-units/systems/si.h>
 
 #include <chrono>
 #include <vector>
 
 namespace ra {
+
+using namespace mp_units;
 
 enum struct SineSweepCurve
 {
