@@ -29,10 +29,12 @@ find_package(Catch2 REQUIRED)
 include(Catch)
 
 option(DAWN_FETCH_DEPENDENCIES "Use fetch_dawn_dependencies.py as an alternative to using depot_tools" ON)
-option(DAWN_USE_GLFW "Enables building glfw samples" OFF)
+
 option(DAWN_BUILD_SAMPLES "Enables building Dawn's samples" OFF)
 option(DAWN_ENABLE_DESKTOP_GL "Enable OpenGL" OFF)
 option(DAWN_ENABLE_OPENGLES "Enable OpenGLES" OFF)
+option(DAWN_USE_GLFW "Enables building glfw samples" OFF)
+
 option(TINT_BUILD_CMD_TOOLS "Build the Tint command line tools" OFF)
 option(TINT_BUILD_DOCS "Build documentation" OFF)
 option(TINT_BUILD_TESTS "Build tests" OFF)
@@ -42,11 +44,11 @@ if (NOT APPLE)
 endif()
 
 if(WIN32)
-    option(TINT_BUILD_SPV_READER "Build the SPIR-V input reader" OFF)
-    option(TINT_BUILD_WGSL_READER "Build the WGSL input reader" ON)
     option(TINT_BUILD_GLSL_WRITER "Build the GLSL output writer" OFF)
     option(TINT_BUILD_GLSL_VALIDATOR "Build the GLSL output validator" OFF)
+    option(TINT_BUILD_SPV_READER "Build the SPIR-V input reader" OFF)
     option(TINT_BUILD_SPV_WRITER "Build the SPIR-V output writer" OFF)
+    option(TINT_BUILD_WGSL_READER "Build the WGSL input reader" ON)
     option(TINT_BUILD_WGSL_WRITER "Build the WGSL output writer" ON)
 endif()
 

@@ -22,14 +22,13 @@ jobs:
     name: ${{ matrix.name }}
     runs-on: ${{ matrix.os }}
     env:
-      CMAKE_PREFIX_PATH: ${{ matrix.cmake_prefix_path }}
       MACOSX_DEPLOYMENT_TARGET: ${{ matrix.osx_target }}
     strategy:
       fail-fast: false
       matrix:
         include:
           - name: Linux
-            os: ubuntu-22.04
+            os: ubuntu-24.04
             osx_target: ""
             cxx_flags: "-march=x86-64-v2"
 
@@ -37,13 +36,11 @@ jobs:
             os: macos-13
             osx_target: "10.15"
             cxx_flags: "-march=x86-64-v2"
-            cmake_prefix_path: ""
 
           - name: macOS-ARM64
             os: macos-14
             osx_target: "11.0"
             cxx_flags: ""
-            cmake_prefix_path: ""
 
           - name: Windows
             os: windows-latest
@@ -76,8 +73,14 @@ jobs:
           pip3 install --upgrade conan
 
       - name: Install clang
-        if: runner.os != 'macOS'
+        if: runner.os == 'Linux'
         uses: egor-tensin/setup-clang@v1
+
+      - name: Set up Visual Studio shell
+        if: runner.os == 'Windows'
+        uses: egor-tensin/vs-shell@v2
+        with:
+          arch: x64
 
       - name: Setup conan
         run: conan profile detect -f
