@@ -45,7 +45,7 @@ jobs:
           - name: Windows
             os: windows-latest
             osx_target: ""
-            cxx_flags: ""
+            cxx_flags: "/EHsc /arch:AVX"
 
     steps:
       - name: Checkout code
