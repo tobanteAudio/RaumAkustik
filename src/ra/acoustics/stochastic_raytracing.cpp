@@ -214,12 +214,12 @@ auto StochasticRaytracing::randomRaysOnSphere(size_t count, std::mt19937& rng) -
 auto StochasticRaytracing::getWallNormal(std::ptrdiff_t index) -> glm::dvec3
 {
     static constexpr auto surfaces = std::array{
-        glm::dvec3{1.0,  0.0,  0.0 },
-        glm::dvec3{-1.0, 0.0,  0.0 },
-        glm::dvec3{0.0,  1.0,  0.0 },
-        glm::dvec3{0.0,  -1.0, 0.0 },
-        glm::dvec3{0.0,  0.0,  1.0 },
-        glm::dvec3{0.0,  0.0,  -1.0},
+        glm::dvec3{ 1.0,  0.0,  0.0},
+        glm::dvec3{-1.0,  0.0,  0.0},
+        glm::dvec3{ 0.0,  1.0,  0.0},
+        glm::dvec3{ 0.0, -1.0,  0.0},
+        glm::dvec3{ 0.0,  0.0,  1.0},
+        glm::dvec3{ 0.0,  0.0, -1.0},
     };
 
     assert(index >= 0);

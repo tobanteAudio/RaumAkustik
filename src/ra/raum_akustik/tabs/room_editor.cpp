@@ -5,24 +5,24 @@
 namespace ra {
 
 static constexpr auto Materials = std::array<std::pair<char const*, std::array<double, 10>>, 18>{
-    std::pair{"Painted concrete",                   std::array{0.01, 0.01, 0.01, 0.05, 0.06, 0.07, 0.09, 0.08, 0.08, 0.08}    },
-    std::pair{"Coarse concrete",                    std::array{0.36, 0.36, 0.36, 0.44, 0.31, 0.29, 0.39, 0.25, 0.25, 0.25}    },
-    std::pair{"Wood floor",                         std::array{0.15, 0.15, 0.15, 0.11, 0.1, 0.07, 0.06, 0.07, 0.07, 0.07}     },
-    std::pair{"Vinyl flooring",                     std::array{0.03, 0.03, 0.03, 0.04, 0.05, 0.04, 0.05, 0.05, 0.05, 0.05}    },
-    std::pair{"Window glass",                       std::array{0.35, 0.35, 0.35, 0.25, 0.18, 0.12, 0.07, 0.04, 0.04, 0.04}    },
-    std::pair{"Plate glass",                        std::array{0.18, 0.18, 0.18, 0.06, 0.04, 0.03, 0.02, 0.02, 0.02, 0.02}    },
-    std::pair{"6mm glass",                          std::array{0.1, 0.1, 0.1, 0.06, 0.04, 0.03, 0.02, 0.02, 0.02, 0.02}       },
-    std::pair{"Brickwork",                          std::array{0.05, 0.05, 0.05, 0.04, 0.02, 0.04, 0.05, 0.05, 0.05, 0.05}    },
-    std::pair{"Drapes 1/2 area. 15oz/sq yd",        std::array{0.07, 0.07, 0.07, 0.37, 0.49, 0.81, 0.65, 0.54, 0.54, 0.54}    },
-    std::pair{"Foam backed carpet on concrete",     std::array{0.05, 0.05, 0.05, 0.16, 0.44, 0.7, 0.6, 0.4, 0.4, 0.4}         },
-    std::pair{"Carpet + foam underlay on concrete", std::array{0.15, 0.15, 0.15, 0.25, 0.5, 0.6, 0.7, 0.8, 0.8, 0.8}          },
-    std::pair{"Plaster on brick",                   std::array{0.013, 0.013, 0.013, 0.015, 0.02, 0.03, 0.04, 0.05, 0.05, 0.05}},
-    std::pair{"9mm Plasterboard over 20mm air gap", std::array{0.3, 0.3, 0.3, 0.2, 0.15, 0.05, 0.05, 0.05, 0.05, 0.05}        },
-    std::pair{"Breeze block",                       std::array{0.25, 0.25, 0.25, 0.4, 0.6, 0.5, 0.75, 0.5, 0.5, 0.5}          },
-    std::pair{"50mm Acoustic Foam",                 std::array{0.08, 0.08, 0.08, 0.25, 0.6, 0.9, 0.95, 0.9, 0.9, 0.9}         },
-    std::pair{"100mm Acoustic Foam",                std::array{0.2, 0.2, 0.2, 0.7, 0.99, 0.99, 0.99, 0.99, 0.99, 0.99}        },
-    std::pair{"50mm Mineral Wool (Med Density)",    std::array{0.2, 0.2, 0.2, 0.45, 0.7, 0.8, 0.8, 0.8, 0.8, 0.8}             },
-    std::pair{"LF panel absorber",                  std::array{0.28, 0.28, 0.28, 0.22, 0.17, 0.09, 0.1, 0.11, 0.11, 0.11}     },
+    std::pair{                  "Painted concrete",     std::array{0.01, 0.01, 0.01, 0.05, 0.06, 0.07, 0.09, 0.08, 0.08, 0.08}},
+    std::pair{                   "Coarse concrete",     std::array{0.36, 0.36, 0.36, 0.44, 0.31, 0.29, 0.39, 0.25, 0.25, 0.25}},
+    std::pair{                        "Wood floor",      std::array{0.15, 0.15, 0.15, 0.11, 0.1, 0.07, 0.06, 0.07, 0.07, 0.07}},
+    std::pair{                    "Vinyl flooring",     std::array{0.03, 0.03, 0.03, 0.04, 0.05, 0.04, 0.05, 0.05, 0.05, 0.05}},
+    std::pair{                      "Window glass",     std::array{0.35, 0.35, 0.35, 0.25, 0.18, 0.12, 0.07, 0.04, 0.04, 0.04}},
+    std::pair{                       "Plate glass",     std::array{0.18, 0.18, 0.18, 0.06, 0.04, 0.03, 0.02, 0.02, 0.02, 0.02}},
+    std::pair{                         "6mm glass",        std::array{0.1, 0.1, 0.1, 0.06, 0.04, 0.03, 0.02, 0.02, 0.02, 0.02}},
+    std::pair{                         "Brickwork",     std::array{0.05, 0.05, 0.05, 0.04, 0.02, 0.04, 0.05, 0.05, 0.05, 0.05}},
+    std::pair{       "Drapes 1/2 area. 15oz/sq yd",     std::array{0.07, 0.07, 0.07, 0.37, 0.49, 0.81, 0.65, 0.54, 0.54, 0.54}},
+    std::pair{    "Foam backed carpet on concrete",          std::array{0.05, 0.05, 0.05, 0.16, 0.44, 0.7, 0.6, 0.4, 0.4, 0.4}},
+    std::pair{"Carpet + foam underlay on concrete",           std::array{0.15, 0.15, 0.15, 0.25, 0.5, 0.6, 0.7, 0.8, 0.8, 0.8}},
+    std::pair{                  "Plaster on brick", std::array{0.013, 0.013, 0.013, 0.015, 0.02, 0.03, 0.04, 0.05, 0.05, 0.05}},
+    std::pair{"9mm Plasterboard over 20mm air gap",         std::array{0.3, 0.3, 0.3, 0.2, 0.15, 0.05, 0.05, 0.05, 0.05, 0.05}},
+    std::pair{                      "Breeze block",           std::array{0.25, 0.25, 0.25, 0.4, 0.6, 0.5, 0.75, 0.5, 0.5, 0.5}},
+    std::pair{                "50mm Acoustic Foam",          std::array{0.08, 0.08, 0.08, 0.25, 0.6, 0.9, 0.95, 0.9, 0.9, 0.9}},
+    std::pair{               "100mm Acoustic Foam",         std::array{0.2, 0.2, 0.2, 0.7, 0.99, 0.99, 0.99, 0.99, 0.99, 0.99}},
+    std::pair{   "50mm Mineral Wool (Med Density)",              std::array{0.2, 0.2, 0.2, 0.45, 0.7, 0.8, 0.8, 0.8, 0.8, 0.8}},
+    std::pair{                 "LF panel absorber",      std::array{0.28, 0.28, 0.28, 0.22, 0.17, 0.09, 0.1, 0.11, 0.11, 0.11}},
 };
 
 RoomEditor::RoomEditor(juce::ValueTree vt, juce::UndoManager* um)
@@ -43,9 +43,18 @@ auto RoomEditor::getRoomLayout() const -> RoomLayout
 {
     return {
         RoomDimensions{_roomLength, _roomWidth, _roomHeight},
-        glm::dvec3(double{_leftX},      double{_leftY},     double{_leftZ}     ),
-        glm::dvec3(double{_rightX},     double{_rightY},    double{_rightZ}    ),
-        glm::dvec3(double{_listenX},    double{_listenY},   double{_listenZ}   ),
+        glm::dvec3(double{_leftX},
+        double{_leftY},
+        double{_leftZ}
+        ),
+        glm::dvec3(double{_rightX},
+        double{_rightY},
+        double{_rightZ}
+        ),
+        glm::dvec3(double{_listenX},
+        double{_listenY},
+        double{_listenZ}
+        ),
     };
 }
 
@@ -170,7 +179,7 @@ auto RoomEditor::buildProperties() -> void
         "Room Dimensions",
         juce::Array<juce::PropertyComponent*>{
             new juce::SliderPropertyComponent{_roomLength.getPropertyAsValue(), "Length", 0.0, 10.0, 0.01},
-            new juce::SliderPropertyComponent{_roomWidth.getPropertyAsValue(),  "Width",  0.0, 10.0, 0.01},
+            new juce::SliderPropertyComponent{ _roomWidth.getPropertyAsValue(),  "Width", 0.0, 10.0, 0.01},
             new juce::SliderPropertyComponent{_roomHeight.getPropertyAsValue(), "Height", 0.0, 10.0, 0.01},
     }
     );
@@ -207,7 +216,7 @@ auto RoomEditor::buildProperties() -> void
     _renderProperties.addSection(
         "First Reflections",
         juce::Array<juce::PropertyComponent*>{
-            new juce::BooleanPropertyComponent{_renderLeftReflections.getPropertyAsValue(),  "Left",  "Draw"},
+            new juce::BooleanPropertyComponent{ _renderLeftReflections.getPropertyAsValue(),  "Left", "Draw"},
             new juce::BooleanPropertyComponent{_renderRightReflections.getPropertyAsValue(), "Right", "Draw"},
     }
     );

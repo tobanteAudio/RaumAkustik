@@ -28,8 +28,8 @@ PorousAbsorberSimulationEditor::PorousAbsorberSimulationEditor(juce::ValueTree v
     _absorberSpecs.addSection(
         "Atmospheric Environment",
         juce::Array<juce::PropertyComponent*>{
-            new juce::SliderPropertyComponent{_temperature.getPropertyAsValue(), "Temperature (C)", 0.0, 100.0, 1.0 },
-            new juce::SliderPropertyComponent{_pressure.getPropertyAsValue(),    "Pressure (Bar)",  0.0, 2.0,   0.01},
+            new juce::SliderPropertyComponent{_temperature.getPropertyAsValue(), "Temperature (C)", 0.0, 100.0,  1.0},
+            new juce::SliderPropertyComponent{   _pressure.getPropertyAsValue(),  "Pressure (Bar)", 0.0,   2.0, 0.01},
     }
     );
 
@@ -38,37 +38,32 @@ PorousAbsorberSimulationEditor::PorousAbsorberSimulationEditor(juce::ValueTree v
         juce::Array<juce::PropertyComponent*>{
             new juce::SliderPropertyComponent{
                                               _absorberThickness.getPropertyAsValue(),
-                                              "Thickness (mm)",                                               0.0,
-                                              1000.0,                                                                      1.0
-            },
+                                              "Thickness (mm)", 0.0,
+                                              1000.0, 1.0                                                                     },
             new juce::SliderPropertyComponent{
                                               _absorberFlowResisitivity.getPropertyAsValue(),
-                                              "Flow Resisitivity",                                            0.0,
-                                              40'000.0,                                                                    1.0
-            },
+                                              "Flow Resisitivity", 0.0,
+                                              40'000.0, 1.0                                                                   },
             new juce::SliderPropertyComponent{
                                               _absorberAngleOfIncidence.getPropertyAsValue(),
-                                              "Angle Of Incidence",                                           0.0,
-                                              90.0,                                                                        1.0
-            },
-            new juce::SliderPropertyComponent{_absorberAirGap.getPropertyAsValue(),           "Air Gap (mm)", 0.0, 1000.0, 1.0},
+                                              "Angle Of Incidence", 0.0,
+                                              90.0, 1.0                                                                       },
+            new juce::SliderPropertyComponent{          _absorberAirGap.getPropertyAsValue(), "Air Gap (mm)", 0.0, 1000.0, 1.0},
     }
     );
 
     _absorberSpecs.addSection(
         "Plot",
         juce::Array<juce::PropertyComponent*>{
-            new juce::SliderPropertyComponent{_plotNumPoints.getPropertyAsValue(),         "Num Points", 0.0, 256.0, 1.0},
+            new juce::SliderPropertyComponent{_plotNumPoints.getPropertyAsValue(),"Num Points", 0.0,256.0, 1.0                             },
             new juce::SliderPropertyComponent{
                                               _plotStartFrequency.getPropertyAsValue(),
-                                              "Start Frequency",                                         0.0,
-                                              60.0,                                                                  1.0
-            },
+                                              "Start Frequency", 0.0,
+                                              60.0, 1.0},
             new juce::SliderPropertyComponent{
                                               _plotOctaveSubdivision.getPropertyAsValue(),
-                                              "Octave Subdivisions",                                     0.0,
-                                              12.0,                                                                  1.0
-            },
+                                              "Octave Subdivisions", 0.0,
+                                              12.0, 1.0},
     }
     );
 
