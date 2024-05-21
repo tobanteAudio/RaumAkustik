@@ -43,9 +43,9 @@ auto RoomEditor::getRoomLayout() const -> RoomLayout
 {
     return {
         RoomDimensions{_roomLength, _roomWidth, _roomHeight},
-        Point{_leftX,      _leftY,     _leftZ     },
-        Point{_rightX,     _rightY,    _rightZ    },
-        Point{_listenX,    _listenY,   _listenZ   },
+        glm::dvec3(double{_leftX},      double{_leftY},     double{_leftZ}     ),
+        glm::dvec3(double{_rightX},     double{_rightY},    double{_rightZ}    ),
+        glm::dvec3(double{_listenX},    double{_listenY},   double{_listenZ}   ),
     };
 }
 

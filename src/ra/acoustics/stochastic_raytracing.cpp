@@ -26,7 +26,7 @@ auto StochasticRaytracing::operator()(Simulation const& simulation) const -> Res
 
 auto StochasticRaytracing::tarceRay(
     Simulation const& sim,
-    Vec3 ray,
+    glm::dvec3 ray,
     std::span<double> histogram,
     std::size_t freqIdx,
     std::mt19937& rng
@@ -37,7 +37,7 @@ auto StochasticRaytracing::tarceRay(
     auto dist = std::uniform_real_distribution<double>{0.0, 1.0};
 
     // All rays start at the source/transmitter
-    auto rayPos = _room.source;
+    auto rayPos = glm::dvec3{_room.source.x, _room.source.y, _room.source.z};
 
     // Set initial ray direction. This direction changes as the ray is
     // reflected off surfaces.
@@ -107,7 +107,7 @@ auto StochasticRaytracing::tarceRay(
         // Compute a new direction for the ray.
         // Pick a random direction that is in the hemisphere of the
         // normal to the impact surface.
-        auto newDir = normalize(Vec3{dist(rng), dist(rng), dist(rng)});
+        auto newDir = normalize(glm::dvec3{dist(rng), dist(rng), dist(rng)});
         if (sum(newDir * impactNormal) < 0) {
             newDir = -newDir;
         }
@@ -125,7 +125,8 @@ auto StochasticRaytracing::tarceRay(
     }
 }
 
-auto StochasticRaytracing::getImpactSurface(Point pos, Vec3 direction) const -> std::pair<std::ptrdiff_t, Vec3>
+auto StochasticRaytracing::getImpactSurface(glm::dvec3 pos, glm::dvec3 direction) const
+    -> std::pair<std::ptrdiff_t, glm::dvec3>
 {
     auto const length = _room.dimensions.length;
     auto const width  = _room.dimensions.width;
@@ -183,9 +184,9 @@ auto StochasticRaytracing::getImpactSurface(Point pos, Vec3 direction) const -> 
     return {surface, displacement * direction};
 }
 
-auto StochasticRaytracing::randomRaysOnSphere(size_t count, std::mt19937& rng) -> std::vector<Vec3>
+auto StochasticRaytracing::randomRaysOnSphere(size_t count, std::mt19937& rng) -> std::vector<glm::dvec3>
 {
-    auto rays = std::vector<Vec3>(count);
+    auto rays = std::vector<glm::dvec3>(count);
     auto dist = std::uniform_real_distribution<double>{0.0, 1.0};
 
     for (auto i{0U}; i < count; ++i) {
@@ -204,21 +205,21 @@ auto StochasticRaytracing::randomRaysOnSphere(size_t count, std::mt19937& rng) -
         auto const x = std::cos(lon) * s;
         auto const y = std::sin(lon) * s;
 
-        rays[i] = Vec3{x, y, z};
+        rays[i] = glm::dvec3{x, y, z};
     }
 
     return rays;
 }
 
-auto StochasticRaytracing::getWallNormal(std::ptrdiff_t index) -> Vec3
+auto StochasticRaytracing::getWallNormal(std::ptrdiff_t index) -> glm::dvec3
 {
     static constexpr auto surfaces = std::array{
-        Vec3{1.0,  0.0,  0.0 },
-        Vec3{-1.0, 0.0,  0.0 },
-        Vec3{0.0,  1.0,  0.0 },
-        Vec3{0.0,  -1.0, 0.0 },
-        Vec3{0.0,  0.0,  1.0 },
-        Vec3{0.0,  0.0,  -1.0},
+        glm::dvec3{1.0,  0.0,  0.0 },
+        glm::dvec3{-1.0, 0.0,  0.0 },
+        glm::dvec3{0.0,  1.0,  0.0 },
+        glm::dvec3{0.0,  -1.0, 0.0 },
+        glm::dvec3{0.0,  0.0,  1.0 },
+        glm::dvec3{0.0,  0.0,  -1.0},
     };
 
     assert(index >= 0);

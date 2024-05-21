@@ -1,20 +1,12 @@
 #pragma once
 
-#include <array>
+#include <ra/math/vec3.hpp>
 
 #define _USE_MATH_DEFINES  // NOLINT
+#include <array>
 #include <cmath>
 
 namespace ra {
-
-struct Point
-{
-    double x{0};
-    double y{0};
-    double z{0};
-};
-
-using Speaker = Point;
 
 struct RoomDimensions
 {
@@ -26,8 +18,8 @@ struct RoomDimensions
 struct RoomLayout
 {
     RoomDimensions dimensions{};
-    std::array<Speaker, 2> speakers{};
-    Point listenPosition{};
+    std::array<glm::dvec3, 2> speakers{};
+    glm::dvec3 listenPosition{};
 };
 
 struct FirstReflection
@@ -39,14 +31,15 @@ struct FirstReflection
 
 namespace detail {
 inline auto
-firstReflectionSideWall(RoomDimensions dimensions, Point listenPosition, Speaker speaker, double x1) -> double
+firstReflectionSideWall(RoomDimensions dimensions, glm::dvec3 listenPosition, glm::dvec3 speaker, double x1) -> double
 {
     auto const y  = listenPosition.y - speaker.y;
     auto const x2 = dimensions.width - listenPosition.x;
     return listenPosition.y - (y * x2) / (x1 + x2);
 }
 
-inline auto firstReflectionFrontWall(RoomDimensions /*dimensions*/, Point listenPosition, Speaker speaker) -> double
+inline auto
+firstReflectionFrontWall(RoomDimensions /*dimensions*/, glm::dvec3 listenPosition, glm::dvec3 speaker) -> double
 {
     auto const y  = std::abs(speaker.x - listenPosition.x);
     auto const x1 = speaker.y;
@@ -57,7 +50,7 @@ inline auto firstReflectionFrontWall(RoomDimensions /*dimensions*/, Point listen
 }  // namespace detail
 
 template<typename InIt, typename OutIt>
-auto firstReflections(InIt f, InIt l, OutIt o, RoomDimensions dimensions, Point listenPosition) -> void
+auto firstReflections(InIt f, InIt l, OutIt o, RoomDimensions dimensions, glm::dvec3 listenPosition) -> void
 {
     while (f != l) {
         *o = FirstReflection{

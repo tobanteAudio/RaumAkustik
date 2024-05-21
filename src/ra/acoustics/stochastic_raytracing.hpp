@@ -21,8 +21,8 @@ struct StochasticRaytracing
         RoomAbsorption absorption;
         RoomReflection reflection;
         RoomScattering scattering;
-        Point source;
-        Point receiver;
+        glm::dvec3 source;
+        glm::dvec3 receiver;
     };
 
     struct Simulation
@@ -41,12 +41,13 @@ struct StochasticRaytracing
     [[nodiscard]] auto operator()(Simulation const& simulation) const -> Result;
 
 private:
-    [[nodiscard]] static auto randomRaysOnSphere(size_t count, std::mt19937& rng) -> std::vector<Vec3>;
+    [[nodiscard]] static auto randomRaysOnSphere(size_t count, std::mt19937& rng) -> std::vector<glm::dvec3>;
 
-    auto tarceRay(Simulation const& sim, Vec3 ray, std::span<double> histogram, std::size_t freqIdx, std::mt19937& rng)
+    auto
+    tarceRay(Simulation const& sim, glm::dvec3 ray, std::span<double> histogram, std::size_t freqIdx, std::mt19937& rng)
         const -> void;
-    [[nodiscard]] auto getImpactSurface(Point pos, Vec3 direction) const -> std::pair<std::ptrdiff_t, Vec3>;
-    [[nodiscard]] static auto getWallNormal(std::ptrdiff_t index) -> Vec3;
+    [[nodiscard]] auto getImpactSurface(glm::dvec3 pos, glm::dvec3 dir) const -> std::pair<std::ptrdiff_t, glm::dvec3>;
+    [[nodiscard]] static auto getWallNormal(std::ptrdiff_t index) -> glm::dvec3;
 
     Room _room;
 };

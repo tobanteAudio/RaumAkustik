@@ -30,9 +30,9 @@ struct RoomDimensions
 struct RoomLayout
 {
     RoomDimensions dimensions{};
-    Point leftSpeaker{};
-    Point rightSpeaker{};
-    Point listenPosition{};
+    glm::dvec3 leftSpeaker{};
+    glm::dvec3 rightSpeaker{};
+    glm::dvec3 listenPosition{};
 };
 
 struct RoomAbsorption

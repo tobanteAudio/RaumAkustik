@@ -2,28 +2,14 @@
 
 #include <catch2/catch_test_macros.hpp>
 
-static constexpr auto Room = ra::RoomLayout{
-    ra::RoomDimensions{
-                       600, 365,
-                       312, },
-    {
-                       ra::Speaker{
-            121,
-            160,
-            125,
-        }, ra::Speaker{
-            121 + 123,
-            160,
-            125,
-        }, },
-    ra::Point{
-                       121 + 123 / 2.0,
-                       160 + 123,
-                       120, },
-};
-
 TEST_CASE("RaumAkustik: firstReflections", "")
 {
+    static constexpr auto Room = ra::RoomLayout{
+        .dimensions = ra::RoomDimensions{600, 365, 312},
+        {glm::dvec3{121, 160, 125}, glm::dvec3{121 + 123, 160, 125}},
+        glm::dvec3{121 + 123 / 2.0, 160 + 123, 120},
+    };
+
     auto reflections = std::array<ra::FirstReflection, 2>{};
     ra::firstReflections(
         begin(Room.speakers),
