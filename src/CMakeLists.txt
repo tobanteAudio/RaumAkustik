@@ -16,6 +16,7 @@ target_link_libraries(${PROJECT_NAME}
     PUBLIC
         glm::glm
         mp-units::mp-units
+        neosonar::neo
 
         webgpu_cpp
         webgpu_dawn

@@ -2,6 +2,7 @@
 catch2/3.6.0
 glm/1.0.1
 mp-units/2.2.0@mpusz/testing
+xsimd/13.0.0
 
 [options]
 

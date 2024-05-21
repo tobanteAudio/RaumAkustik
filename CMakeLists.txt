@@ -20,6 +20,7 @@ project(room-acoustics-dev VERSION 0.1.0)
 enable_testing()
 include(CTest)
 
+find_package(xsimd REQUIRED CONFIG)
 find_package(Catch2 REQUIRED)
 include(Catch)
 
@@ -49,6 +50,14 @@ endif()
 
 add_subdirectory(3rd_party/dawn EXCLUDE_FROM_ALL)
 add_subdirectory(3rd_party/JUCE EXCLUDE_FROM_ALL)
+
+include(FetchContent)
+FetchContent_Declare(mdspan GIT_REPOSITORY "https://github.com/kokkos/mdspan" GIT_TAG "stable" GIT_SHALLOW TRUE)
+FetchContent_MakeAvailable(mdspan)
+
+set(NEO_ENABLE_APPLE_ACCELERATE ON)
+set(NEO_ENABLE_XSIMD ON)
+add_subdirectory(3rd_party/neo/src EXCLUDE_FROM_ALL)
 
 add_subdirectory(src)
 add_subdirectory(tool/RaumAkustik)
