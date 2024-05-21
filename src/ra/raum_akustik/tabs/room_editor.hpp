@@ -1,6 +1,6 @@
 #pragma once
 
-#include <ra/acoustics/room.hpp>
+#include <ra/acoustic/Room.hpp>
 
 #include "BinaryData.hpp"
 

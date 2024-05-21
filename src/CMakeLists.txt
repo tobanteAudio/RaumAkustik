@@ -26,16 +26,15 @@ target_link_libraries(${PROJECT_NAME}
 
 target_sources(${PROJECT_NAME}
     PRIVATE
-        "ra/acoustics/air.cpp"
-        "ra/acoustics/air.hpp"
-        "ra/acoustics/room.hpp"
-        "ra/acoustics/stochastic_raytracing.cpp"
-        "ra/acoustics/stochastic_raytracing.hpp"
+        "ra/acoustic/Air.cpp"
+        "ra/acoustic/Air.hpp"
+        "ra/acoustic/FirstReflection.hpp"
+        "ra/acoustic/Room.hpp"
+        "ra/acoustic/StochasticRaytracing.cpp"
+        "ra/acoustic/StochasticRaytracing.hpp"
 
-        "ra/acoustics/absorber/porous_absorber.cpp"
-        "ra/acoustics/absorber/porous_absorber.hpp"
-
-        "ra/acoustics/reflection/first_reflection.hpp"
+        "ra/acoustic/absorber/PorousAbsorber.cpp"
+        "ra/acoustic/absorber/PorousAbsorber.hpp"
 
         "ra/generator/oscillator.hpp"
         "ra/generator/sweep.cpp"
@@ -56,8 +55,8 @@ catch_discover_tests("${PROJECT_NAME}_Tests")
 target_link_libraries("${PROJECT_NAME}_Tests" PRIVATE ra::acoustics Catch2::Catch2WithMain)
 target_sources("${PROJECT_NAME}_Tests"
     PRIVATE
-        "ra/acoustics/air.test.cpp"
-        "ra/acoustics/absorber/porous_absorber.test.cpp"
-        "ra/acoustics/reflection/first_reflection.test.cpp"
+        "ra/acoustic/Air.test.cpp"
+        "ra/acoustic/FirstReflection.test.cpp"
+        "ra/acoustic/absorber/PorousAbsorber.test.cpp"
         "ra/unit/frequency.test.cpp"
 )

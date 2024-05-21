@@ -1,6 +1,6 @@
 #pragma once
 
-#include <ra/acoustics/stochastic_raytracing.hpp>
+#include <ra/acoustic/StochasticRaytracing.hpp>
 #include <ra/raum_akustik/tabs/room_editor.hpp>
 
 #include <juce_gui_extra/juce_gui_extra.h>

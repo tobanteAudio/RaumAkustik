@@ -1,6 +1,6 @@
 #include "room_editor.hpp"
 
-#include <ra/acoustics/room.hpp>
+#include <ra/acoustic/Room.hpp>
 
 namespace ra {
 

@@ -1,4 +1,4 @@
-#include "stochastic_raytracing.hpp"
+#include "StochasticRaytracing.hpp"
 
 #include <array>
 #include <utility>

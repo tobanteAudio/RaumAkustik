@@ -1,6 +1,6 @@
 #pragma once
 
-#include <ra/acoustics/room.hpp>
+#include <ra/acoustic/Room.hpp>
 #include <ra/math/vec3.hpp>
 
 #include <algorithm>
