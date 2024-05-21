@@ -6,9 +6,9 @@
 namespace ra {
 
 template<typename Float>
-struct SinOscillator
+struct SineOscillator
 {
-    explicit SinOscillator(Float fs) noexcept : _fs{fs} {}
+    explicit SineOscillator(Float fs) noexcept : _fs{fs} {}
 
     [[nodiscard]] auto operator()(Float frequency) noexcept -> Float
     {

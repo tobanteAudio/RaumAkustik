@@ -36,9 +36,9 @@ target_sources(${PROJECT_NAME}
         "ra/acoustic/absorber/PorousAbsorber.cpp"
         "ra/acoustic/absorber/PorousAbsorber.hpp"
 
-        "ra/generator/oscillator.hpp"
-        "ra/generator/sweep.cpp"
-        "ra/generator/sweep.hpp"
+        "ra/generator/SineOscillator.hpp"
+        "ra/generator/SineSweep.cpp"
+        "ra/generator/SineSweep.hpp"
 
         "ra/math/vec3.hpp"
 

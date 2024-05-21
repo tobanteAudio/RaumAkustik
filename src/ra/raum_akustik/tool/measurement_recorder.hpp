@@ -1,6 +1,7 @@
 #pragma once
 
-#include <ra/generator/sweep.hpp>
+#include <ra/generator/SineSweep.hpp>
+
 #include <ra/raum_akustik/widget/scrolling_waveform.hpp>
 
 #include <juce_audio_utils/juce_audio_utils.h>

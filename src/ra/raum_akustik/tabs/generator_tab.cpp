@@ -1,6 +1,6 @@
 #include "generator_tab.hpp"
 
-#include <ra/generator/sweep.hpp>
+#include <ra/generator/SineSweep.hpp>
 
 #include <juce_dsp/juce_dsp.h>
 

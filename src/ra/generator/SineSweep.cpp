@@ -1,6 +1,6 @@
-#include "sweep.hpp"
+#include "SineSweep.hpp"
 
-#include <ra/generator/oscillator.hpp>
+#include <ra/generator/SineOscillator.hpp>
 
 namespace ra {
 
@@ -40,7 +40,7 @@ auto generate(SineSweep const& spec) -> std::vector<float>
     auto const numSamples = static_cast<size_t>(std::chrono::duration_cast<Seconds>(spec.duration).count() * fs);
 
     auto buffer = std::vector<float>(numSamples, 0.0F);
-    auto osc    = SinOscillator<double>{fs};
+    auto osc    = SineOscillator<double>{fs};
 
     for (auto i{0UL}; i < numSamples; ++i) {
         auto const t         = static_cast<double>(i) / static_cast<double>(numSamples - 1);
