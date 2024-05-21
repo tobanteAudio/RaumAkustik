@@ -51,4 +51,4 @@ add_subdirectory(3rd_party/dawn EXCLUDE_FROM_ALL)
 add_subdirectory(3rd_party/JUCE EXCLUDE_FROM_ALL)
 
 add_subdirectory(src)
-add_subdirectory(src/ra/raum_akustik)
+add_subdirectory(tool/RaumAkustik)

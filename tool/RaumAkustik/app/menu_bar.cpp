@@ -1,6 +1,6 @@
 #include "menu_bar.hpp"
 
-#include <ra/raum_akustik/app/command_ids.hpp>
+#include "app/command_ids.hpp"
 
 #include "BinaryData.hpp"
 

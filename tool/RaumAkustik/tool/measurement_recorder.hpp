@@ -2,7 +2,7 @@
 
 #include <ra/generator/SineSweep.hpp>
 
-#include <ra/raum_akustik/widget/scrolling_waveform.hpp>
+#include "widget/scrolling_waveform.hpp"
 
 #include <juce_audio_utils/juce_audio_utils.h>
 #include <juce_gui_basics/juce_gui_basics.h>

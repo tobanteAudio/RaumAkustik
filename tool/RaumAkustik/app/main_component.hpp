@@ -1,15 +1,15 @@
 #pragma once
 
-#include <ra/raum_akustik/app/menu_bar.hpp>
-#include <ra/raum_akustik/look/look_and_feel.hpp>
-#include <ra/raum_akustik/tabs/absorber_simulation_tab.hpp>
-#include <ra/raum_akustik/tabs/audio_input_tab.hpp>
-#include <ra/raum_akustik/tabs/generator_tab.hpp>
-#include <ra/raum_akustik/tabs/material_editor.hpp>
-#include <ra/raum_akustik/tabs/room_editor.hpp>
-#include <ra/raum_akustik/tabs/stochastic_raytracing_tab.hpp>
-#include <ra/raum_akustik/widget/level_meter.hpp>
-#include <ra/raum_akustik/widget/scrolling_waveform.hpp>
+#include "app/menu_bar.hpp"
+#include "look/look_and_feel.hpp"
+#include "tabs/absorber_simulation_tab.hpp"
+#include "tabs/audio_input_tab.hpp"
+#include "tabs/generator_tab.hpp"
+#include "tabs/material_editor.hpp"
+#include "tabs/room_editor.hpp"
+#include "tabs/stochastic_raytracing_tab.hpp"
+#include "widget/level_meter.hpp"
+#include "widget/scrolling_waveform.hpp"
 
 #include <juce_gui_extra/juce_gui_extra.h>
 

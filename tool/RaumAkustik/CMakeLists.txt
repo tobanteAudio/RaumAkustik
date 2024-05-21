@@ -99,6 +99,8 @@ target_link_libraries(RaumAkustik
         juce::juce_recommended_warning_flags
 )
 
+target_include_directories(RaumAkustik PUBLIC ${PROJECT_SOURCE_DIR})
+
 if(${CMAKE_SYSTEM_NAME} MATCHES "Windows" AND ${RA_BUILD_ASIO})
     target_compile_definitions(RaumAkustik PRIVATE JUCE_ASIO=1)
     target_include_directories(RaumAkustik PRIVATE ${CMAKE_SOURCE_DIR}/3rd_party/asiosdk_2.3.3_2019-06-14/common)

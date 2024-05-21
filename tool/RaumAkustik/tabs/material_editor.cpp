@@ -1,6 +1,6 @@
 #include "material_editor.hpp"
 
-#include <ra/raum_akustik/look/color.hpp>
+#include "look/color.hpp"
 
 namespace ra {
 

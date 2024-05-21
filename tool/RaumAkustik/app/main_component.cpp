@@ -1,8 +1,8 @@
 #include "main_component.hpp"
 
-#include <ra/raum_akustik/app/application.hpp>
-#include <ra/raum_akustik/app/command_ids.hpp>
-#include <ra/raum_akustik/tool/audio_file.hpp>
+#include "app/application.hpp"
+#include "app/command_ids.hpp"
+#include "tool/audio_file.hpp"
 
 namespace ra {
 
