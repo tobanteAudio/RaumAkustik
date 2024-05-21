@@ -5,9 +5,9 @@
 TEST_CASE("RaumAkustik: firstReflections", "")
 {
     static constexpr auto Room = ra::RoomLayout{
-        .dimensions = ra::RoomDimensions{600, 365, 312},
-        {glm::dvec3{121, 160, 125}, glm::dvec3{121 + 123, 160, 125}},
-        glm::dvec3{121 + 123 / 2.0, 160 + 123, 120},
+        .dimensions     = ra::RoomDimensions{600, 365, 312},
+        .speakers       = {glm::dvec3{121, 160, 125}, glm::dvec3{121 + 123, 160, 125}},
+        .listenPosition = glm::dvec3{121 + 123 / 2.0, 160 + 123, 120},
     };
 
     auto reflections = std::array<ra::FirstReflection, 2>{};
