@@ -1,5 +1,6 @@
 #pragma once
 
+#include <ra/acoustic/Room.hpp>
 #include <ra/math/vec3.hpp>
 
 #define _USE_MATH_DEFINES  // NOLINT
@@ -7,20 +8,6 @@
 #include <cmath>
 
 namespace ra {
-
-struct RoomDimensions
-{
-    double length{0};
-    double width{0};
-    double height{0};
-};
-
-struct RoomLayout
-{
-    RoomDimensions dimensions{};
-    std::array<glm::dvec3, 2> speakers{};
-    glm::dvec3 listenPosition{};
-};
 
 struct FirstReflection
 {

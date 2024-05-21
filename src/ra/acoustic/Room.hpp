@@ -30,8 +30,7 @@ struct RoomDimensions
 struct RoomLayout
 {
     RoomDimensions dimensions{};
-    glm::dvec3 leftSpeaker{};
-    glm::dvec3 rightSpeaker{};
+    std::array<glm::dvec3, 2> speakers{};
     glm::dvec3 listenPosition{};
 };
 

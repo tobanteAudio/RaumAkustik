@@ -41,20 +41,16 @@ RoomEditor::RoomEditor(juce::ValueTree vt, juce::UndoManager* um)
 
 auto RoomEditor::getRoomLayout() const -> RoomLayout
 {
+    auto const dim      = RoomDimensions{_roomLength, _roomWidth, _roomHeight};
+    auto const listener = glm::dvec3(double{_listenX}, double{_listenY}, double{_listenZ});
+    auto const speakers = std::array{
+        glm::dvec3(double{_leftX}, double{_leftY}, double{_leftZ}),
+        glm::dvec3(double{_rightX}, double{_rightY}, double{_rightZ}),
+    };
     return {
-        RoomDimensions{_roomLength, _roomWidth, _roomHeight},
-        glm::dvec3(double{_leftX},
-        double{_leftY},
-        double{_leftZ}
-        ),
-        glm::dvec3(double{_rightX},
-        double{_rightY},
-        double{_rightZ}
-        ),
-        glm::dvec3(double{_listenX},
-        double{_listenY},
-        double{_listenZ}
-        ),
+        .dimensions     = dim,
+        .speakers       = speakers,
+        .listenPosition = listener,
     };
 }
 
@@ -95,13 +91,13 @@ void RoomEditor::paint(juce::Graphics& g)
     g.setColour(juce::Colours::black);
     g.drawRect(topViewRoom.toFloat(), 8.0F);
 
-    auto const leftX    = topViewRoom.getX() + room.leftSpeaker.x / scaleFactor;
-    auto const leftY    = topViewRoom.getY() + room.leftSpeaker.y / scaleFactor;
+    auto const leftX    = topViewRoom.getX() + room.speakers[0].x / scaleFactor;
+    auto const leftY    = topViewRoom.getY() + room.speakers[0].y / scaleFactor;
     auto const leftArea = iconRect.withCentre({leftX, leftY});
     _speakerIcon->drawWithin(g, leftArea.toFloat(), juce::RectanglePlacement::centred, 1.0F);
 
-    auto const rightX    = topViewRoom.getX() + room.rightSpeaker.x / scaleFactor;
-    auto const rightY    = topViewRoom.getY() + room.rightSpeaker.y / scaleFactor;
+    auto const rightX    = topViewRoom.getX() + room.speakers[1].x / scaleFactor;
+    auto const rightY    = topViewRoom.getY() + room.speakers[1].y / scaleFactor;
     auto const rightArea = iconRect.withCentre({rightX, rightY});
     _speakerIcon->drawWithin(g, rightArea.toFloat(), juce::RectanglePlacement::centred, 1.0F);
 
@@ -116,11 +112,11 @@ void RoomEditor::paint(juce::Graphics& g)
     auto const frontView    = juce::Rectangle{0.0, 0.0, roomWidthPx, roomHeightPx}.withCentre(frontArea.getCentre());
     g.drawRect(frontView.toFloat(), 8.0F);
 
-    auto const leftZ         = frontView.getBottom() - room.leftSpeaker.z / scaleFactor;
+    auto const leftZ         = frontView.getBottom() - room.speakers[0].z / scaleFactor;
     auto const frontLeftArea = iconRect.withCentre({leftX, leftZ});
     _speakerIcon->drawWithin(g, frontLeftArea.toFloat(), juce::RectanglePlacement::centred, 1.0F);
 
-    auto const rightZ         = frontView.getBottom() - room.rightSpeaker.z / scaleFactor;
+    auto const rightZ         = frontView.getBottom() - room.speakers[1].z / scaleFactor;
     auto const frontRightArea = iconRect.withCentre({rightX, rightZ});
     _speakerIcon->drawWithin(g, frontRightArea.toFloat(), juce::RectanglePlacement::centred, 1.0F);
 

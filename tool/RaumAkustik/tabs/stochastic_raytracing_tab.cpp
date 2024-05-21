@@ -95,7 +95,7 @@ auto StochasticRaytracingEditor::run() -> void
         .absorption = absorption,
         .reflection = makeReflection(absorption),
         .scattering = scattering,
-        .source     = roomLayout.leftSpeaker,
+        .source     = roomLayout.speakers[0],
         .receiver   = roomLayout.listenPosition,
     };
 
