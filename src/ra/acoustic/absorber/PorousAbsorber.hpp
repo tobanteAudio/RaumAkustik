@@ -20,13 +20,13 @@ struct AtmosphericEnvironment
 struct PorousAbsorberSpecs
 {
     /// Absorber thickness (ta)
-    double thickness{0};
+    quantity<isq::thickness[si::metre]> thickness{};
 
     /// Absorber flow resisitivity
     double flowResisitivity{0};
 
-    /// Gap between absorber and rigid surface (mm)
-    double airGap{0};
+    /// Gap between absorber and rigid surface
+    quantity<isq::distance[si::metre]> airGap{};
 };
 
 struct PorousAbsorberImpedance

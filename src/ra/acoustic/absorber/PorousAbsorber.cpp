@@ -34,7 +34,7 @@ auto propertiesOfAbsorber(
         p.ratiooOfWaveNumbers = p.k / p.kx;
 
         // Impedance
-        auto const tmp               = p.k * specs.thickness / 1'000.0;
+        auto const tmp               = p.k * specs.thickness.numerical_value_in(si::metre);
         p.impedance.intermediateTerm = std::cos(tmp) / std::sin(tmp);
         p.impedance.atSurface        = nj * p.zca * p.ratiooOfWaveNumbers * p.impedance.intermediateTerm;
 
@@ -46,13 +46,14 @@ auto propertiesOfAbsorber(
 
     {
         // with air gap
+        auto const airGap = specs.airGap.numerical_value_in(si::metre);
+
         p.kAirY     = p.k * std::sin(p.betaPorous * std::numbers::pi / 180.0);
         p.kAirX     = std::sqrt(std::pow(wn, 2.0) - (p.kAirY * p.kAirY));
         p.betaAir   = std::asin(std::abs(p.kAirY / airIm)) * 180.0 / std::numbers::pi;
         p.kAirRatio = wn / p.kAirX;
-        p.zAir      = nj * airIm * p.kAirRatio
-               * (std::cos(wn * (specs.airGap / 1'000.0)) / std::sin(wn * (specs.airGap / 1'000.0)));
-        p.ki = nj * p.zca * p.impedance.intermediateTerm;
+        p.zAir      = nj * airIm * p.kAirRatio * (std::cos(wn * (airGap)) / std::sin(wn * (airGap)));
+        p.ki        = nj * p.zca * p.impedance.intermediateTerm;
 
         p.zaAir = ((p.ki * p.zAir) + (p.zca * p.zca)) / (p.zAir + p.ki);
 
