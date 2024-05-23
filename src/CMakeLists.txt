@@ -43,7 +43,7 @@ target_sources(${PROJECT_NAME}
         "ra/generator/SineSweep.cpp"
         "ra/generator/SineSweep.hpp"
 
-        "ra/math/vec3.hpp"
+        "ra/geometry/Vec3.hpp"
 
         "ra/unit/frequency.cpp"
         "ra/unit/frequency.hpp"

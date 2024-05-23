@@ -1,7 +1,7 @@
 #pragma once
 
 #include <ra/acoustic/Room.hpp>
-#include <ra/math/vec3.hpp>
+#include <ra/geometry/Vec3.hpp>
 
 #define _USE_MATH_DEFINES  // NOLINT
 #include <array>

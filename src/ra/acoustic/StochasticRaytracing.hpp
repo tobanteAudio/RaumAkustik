@@ -1,7 +1,7 @@
 #pragma once
 
 #include <ra/acoustic/Room.hpp>
-#include <ra/math/vec3.hpp>
+#include <ra/geometry/Vec3.hpp>
 #include <ra/unit/unit.hpp>
 
 #include <algorithm>
