@@ -28,11 +28,11 @@ struct StochasticRaytracing
 
     struct Simulation
     {
-        std::vector<double> frequencies;
+        std::vector<quantity<isq::frequency[si::hertz]>> frequencies;
+        quantity<isq::duration[si::second]> duration;
+        quantity<isq::duration[si::second]> timeStep;
+        quantity<isq::radius[si::metre]> radius;
         std::size_t rays;
-        std::chrono::duration<double> duration;
-        std::chrono::duration<double> timeStep;
-        double radius;
     };
 
     using Result = std::vector<std::vector<double>>;

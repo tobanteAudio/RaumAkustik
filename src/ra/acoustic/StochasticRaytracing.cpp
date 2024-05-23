@@ -7,17 +7,17 @@ namespace ra {
 
 StochasticRaytracing::StochasticRaytracing(Room room) noexcept : _room{std::move(room)} {}
 
-auto StochasticRaytracing::operator()(Simulation const& simulation) const -> Result
+auto StochasticRaytracing::operator()(Simulation const& sim) const -> Result
 {
     auto rng = std::mt19937{std::random_device{}()};
 
-    auto const rays         = randomRaysOnSphere(simulation.rays, rng);
-    auto const numTimeSteps = static_cast<std::size_t>(simulation.duration / simulation.timeStep);
+    auto const rays         = randomRaysOnSphere(sim.rays, rng);
+    auto const numTimeSteps = static_cast<std::size_t>((sim.duration / sim.timeStep).numerical_value_in(one));
 
-    auto histogram = std::vector(simulation.frequencies.size(), std::vector<double>(numTimeSteps));
+    auto histogram = std::vector(sim.frequencies.size(), std::vector<double>(numTimeSteps));
     for (auto frequency{0UL}; frequency < histogram.size(); ++frequency) {
         for (auto const& ray : rays) {
-            tarceRay(simulation, ray, histogram[frequency], frequency, rng);
+            tarceRay(sim, ray, histogram[frequency], frequency, rng);
         }
     }
 
@@ -45,7 +45,7 @@ auto StochasticRaytracing::tarceRay(
 
     // Initialize ray travel time. Ray tracing is terminated when the
     // travel time exceeds the impulse response length.
-    auto rayTime = std::chrono::duration<double>{0.0};
+    auto rayTime = 0.0 * si::second;
 
     // Initialize the ray energy to a normalized value of 1. Energy
     // decreases when the ray hits a surface.
@@ -67,7 +67,7 @@ auto StochasticRaytracing::tarceRay(
         rayPos = impactPosition;
 
         // Update cumulative ray travel time
-        rayTime = rayTime + std::chrono::duration<double>{distance / speedOfSound};
+        rayTime = rayTime + (distance / speedOfSound) * si::second;
 
         // Apply surface reflection to ray's energy
         // This is the amount of energy that is not lost through
@@ -84,7 +84,7 @@ auto StochasticRaytracing::tarceRay(
 
         // Determine the ray's time of arrival at receiver.
         auto const recvDistance  = std::sqrt(sum(recvDir * recvDir));
-        auto const timeOfArrival = rayTime + std::chrono::duration<double>{recvDistance / speedOfSound};
+        auto const timeOfArrival = rayTime + (recvDistance / speedOfSound) * si::second;
 
         if (timeOfArrival > sim.duration) {
             return;
@@ -93,7 +93,7 @@ auto StochasticRaytracing::tarceRay(
         // Determine amount of diffuse energy that reaches the receiver. See (5.20) in [2].
 
         // Compute received energy
-        auto const radius       = sim.radius;
+        auto const radius       = sim.radius.numerical_value_in(si::metre);
         auto const recvDir2     = pow(recvDir, 2.0);
         auto const impactNormal = getWallNormal(surfaceIdx);
         auto const cosTheta     = sum(recvDir * impactNormal) / (sqrt(sum(recvDir2)));
@@ -101,7 +101,8 @@ auto StochasticRaytracing::tarceRay(
         auto const energy       = (1 - cosAlpha) * 2 * cosTheta * recvEnergy;
 
         // Update energy histogram
-        auto const timeIdx = static_cast<size_t>(std::max(0L, std::lround(timeOfArrival / sim.timeStep) - 1));
+        auto const idx     = std::lround((timeOfArrival / sim.timeStep).numerical_value_in(one));
+        auto const timeIdx = static_cast<size_t>(std::max(0L, idx - 1));
         histogram[timeIdx] = histogram[timeIdx] + energy;
 
         // Compute a new direction for the ray.

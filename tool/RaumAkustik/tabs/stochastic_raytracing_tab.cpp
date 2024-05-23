@@ -62,12 +62,27 @@ auto StochasticRaytracingEditor::resized() -> void
 
 auto StochasticRaytracingEditor::run() -> void
 {
+    using si::unit_symbols::Hz;
+
+    auto const frequencies = std::vector<quantity<isq::frequency[si::hertz]>>{
+        31.25 * Hz,
+        62.5 * Hz,
+        125.0 * Hz,
+        250.0 * Hz,
+        500.0 * Hz,
+        1000.0 * Hz,
+        2000.0 * Hz,
+        4000.0 * Hz,
+        8000.0 * Hz,
+        16'000.0 * Hz,
+    };
+
     auto const simulation = StochasticRaytracing::Simulation{
-        .frequencies = std::vector{31.25, 62.5, 125.0, 250.0, 500.0, 1000.0, 2000.0, 4000.0, 8000.0, 16'000.0},
+        .frequencies = frequencies,
+        .duration    = static_cast<double>(_duration.getValue()) * si::second,
+        .timeStep    = 0.001 * si::second,
+        .radius      = 0.0875 * si::metre,
         .rays        = static_cast<size_t>(static_cast<double>(_rays.getValue())),
-        .duration    = std::chrono::duration<double>{static_cast<double>(_duration.getValue())},
-        .timeStep    = std::chrono::duration<double>{0.001},
-        .radius      = 0.0875,
     };
 
     auto const roomLayout      = _roomEditor.getRoomLayout();
@@ -111,8 +126,8 @@ auto StochasticRaytracingEditor::run() -> void
     }
 
     for (auto i{0U}; i < _result->size(); ++i) {
-        _plots[static_cast<int>(i)]
-            ->plot(juce::String(simulation.frequencies[i]) + "Hz", _result->at(i), simulation.duration, _maxGain);
+        auto const f = simulation.frequencies[i].numerical_value_in(si::hertz);
+        _plots[static_cast<int>(i)]->plot(juce::String(f) + "Hz", _result->at(i), simulation.duration, _maxGain);
     }
 
     repaint();
