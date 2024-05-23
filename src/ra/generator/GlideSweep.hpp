@@ -23,8 +23,8 @@ struct GlideSweep
     quantity<isq::frequency[si::hertz]> from{20.0 * si::hertz};
     quantity<isq::frequency[si::hertz]> to{20'000.0 * si::hertz};
     Curve curve{Curve::Linear};
-    std::chrono::milliseconds duration{1'000};
-    double sampleRate{44'100.0};
+    quantity<isq::duration[si::second]> duration{1.0 * si::second};
+    quantity<isq::frequency[si::hertz]> sampleRate{44'100.0 * si::hertz};
 };
 
 [[nodiscard]] auto generate(GlideSweep const& spec) -> std::vector<float>;
