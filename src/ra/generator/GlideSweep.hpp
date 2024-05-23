@@ -12,21 +12,21 @@ namespace ra {
 
 using namespace mp_units;
 
-enum struct SineSweepCurve
+struct GlideSweep
 {
-    Linear,
-    Logarithmic,
-};
+    enum struct Curve
+    {
+        Linear,
+        Logarithmic,
+    };
 
-struct SineSweep
-{
     quantity<isq::frequency[si::hertz]> from{20.0 * si::hertz};
     quantity<isq::frequency[si::hertz]> to{20'000.0 * si::hertz};
-    SineSweepCurve curve{SineSweepCurve::Linear};
+    Curve curve{Curve::Linear};
     std::chrono::milliseconds duration{1'000};
     double sampleRate{44'100.0};
 };
 
-[[nodiscard]] auto generate(SineSweep const& spec) -> std::vector<float>;
+[[nodiscard]] auto generate(GlideSweep const& spec) -> std::vector<float>;
 
 }  // namespace ra

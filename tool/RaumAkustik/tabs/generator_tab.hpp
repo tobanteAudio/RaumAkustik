@@ -29,7 +29,7 @@ private:
     juce::Rectangle<int> _spectrumBounds;
 
     juce::UndoManager* _undoManager{nullptr};
-    juce::ValueTree _valueTree{"SineSweep"};
+    juce::ValueTree _valueTree{"GlideSweep"};
 
     juce::CachedValue<double> _from{_valueTree, "from", _undoManager};
     juce::CachedValue<double> _to{_valueTree, "to", _undoManager};

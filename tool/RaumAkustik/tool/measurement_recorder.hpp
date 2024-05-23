@@ -1,6 +1,6 @@
 #pragma once
 
-#include <ra/generator/SineSweep.hpp>
+#include <ra/generator/GlideSweep.hpp>
 
 #include "widget/scrolling_waveform.hpp"
 

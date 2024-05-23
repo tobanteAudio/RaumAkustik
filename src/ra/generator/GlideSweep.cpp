@@ -1,4 +1,4 @@
-#include "SineSweep.hpp"
+#include "GlideSweep.hpp"
 
 #include <ra/generator/SineOscillator.hpp>
 
@@ -23,12 +23,12 @@ namespace ra {
 //     - f2 is the final frequency of the sweep.
 //     - n1 is the starting sample index of the sweep.
 //     - n2 is the ending sample index of the sweep.
-auto generate(SineSweep const& spec) -> std::vector<float>
+auto generate(GlideSweep const& spec) -> std::vector<float>
 {
     using Seconds = std::chrono::duration<double>;
 
     auto scaleFrequency = [curve = spec.curve](auto f1, auto f2, auto t) {
-        if (curve == SineSweepCurve::Logarithmic) {
+        if (curve == GlideSweep::Curve::Logarithmic) {
             return std::pow(f1 * (f2 / f1), t);
         }
         return std::lerp(f1, f2, t);
