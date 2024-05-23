@@ -9,13 +9,16 @@
 
 namespace ra {
 
-struct WaveEquation2DEditor final : juce::Component
+struct WaveEquation2DEditor final
+    : juce::Component
+    , juce::Timer
 {
     explicit WaveEquation2DEditor(RoomEditor& roomEditor);
     ~WaveEquation2DEditor() override = default;
 
     auto paint(juce::Graphics& g) -> void override;
     auto resized() -> void override;
+    auto timerCallback() -> void override;
 
 private:
     auto run() -> void;
@@ -32,6 +35,8 @@ private:
 
     std::mutex _frameMutex;
     stdex::mdarray<double, stdex::dextents<size_t, 2>> _frame;
+
+    juce::Image _frameImage{juce::Image::ARGB, 1, 1, true};
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(WaveEquation2DEditor)  // NOLINT
 };
