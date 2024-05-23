@@ -2,6 +2,7 @@
 
 #include <ra/acoustic/Room.hpp>
 #include <ra/math/vec3.hpp>
+#include <ra/unit/unit.hpp>
 
 #include <algorithm>
 #include <cassert>

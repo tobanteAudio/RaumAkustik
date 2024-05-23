@@ -4,8 +4,9 @@
 
 TEST_CASE("RaumAkustik: firstReflections", "")
 {
+    using ra::si::metre;
     static constexpr auto Room = ra::RoomLayout{
-        .dimensions     = ra::RoomDimensions{600, 365, 312},
+        .dimensions     = ra::RoomDimensions{6.00 * metre, 3.65 * metre, 3.12 * metre},
         .speakers       = {glm::dvec3(121, 160, 125), glm::dvec3(121 + 123, 160, 125)},
         .listenPosition = glm::dvec3(121 + 123 / 2.0, 160 + 123, 120),
     };

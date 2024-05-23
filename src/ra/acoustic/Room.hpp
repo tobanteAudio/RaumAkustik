@@ -1,6 +1,7 @@
 #pragma once
 
 #include <ra/math/vec3.hpp>
+#include <ra/unit/unit.hpp>
 
 #include <algorithm>
 #include <cmath>
@@ -22,9 +23,9 @@ enum struct RoomSurface : std::uint8_t
 
 struct RoomDimensions
 {
-    double length{0};
-    double width{0};
-    double height{0};
+    quantity<isq::length[si::metre]> length{};
+    quantity<isq::width[si::metre]> width{};
+    quantity<isq::height[si::metre]> height{};
 };
 
 struct RoomLayout

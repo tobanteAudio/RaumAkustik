@@ -41,7 +41,11 @@ RoomEditor::RoomEditor(juce::ValueTree vt, juce::UndoManager* um)
 
 auto RoomEditor::getRoomLayout() const -> RoomLayout
 {
-    auto const dim      = RoomDimensions{_roomLength, _roomWidth, _roomHeight};
+    auto const dim = RoomDimensions{
+        double{_roomLength} * si::metre,
+        double{_roomWidth} * si::metre,
+        double{_roomHeight} * si::metre,
+    };
     auto const listener = glm::dvec3(double{_listenX}, double{_listenY}, double{_listenZ});
     auto const speakers = std::array{
         glm::dvec3(double{_leftX}, double{_leftY}, double{_leftZ}),
@@ -62,14 +66,17 @@ void RoomEditor::paint(juce::Graphics& g)
     auto const iconSize = std::max<double>(_iconSize, 1.0);
     auto const iconRect = juce::Rectangle{0.0, 0.0, iconSize, iconSize};
 
-    auto const room = getRoomLayout();
-    if (room.dimensions.length == 0.0) {
+    auto const room       = getRoomLayout();
+    auto const roomLength = room.dimensions.length.numerical_value_in(si::metre);
+    auto const roomWidth  = room.dimensions.width.numerical_value_in(si::metre);
+    auto const roomHeight = room.dimensions.height.numerical_value_in(si::metre);
+    if (roomLength == 0.0) {
         return;
     }
-    if (room.dimensions.width == 0.0) {
+    if (roomWidth == 0.0) {
         return;
     }
-    if (room.dimensions.height == 0.0) {
+    if (roomHeight == 0.0) {
         return;
     }
 
@@ -81,9 +88,9 @@ void RoomEditor::paint(juce::Graphics& g)
     ///////////////////////////////////////// TOP
     auto const topViewArea  = totalArea.removeFromTop(totalArea.proportionOfHeight(0.66));
     auto const area         = topViewArea.toDouble();
-    auto const scaleFactor  = room.dimensions.length / (area.getHeight() * 0.9);
-    auto const roomLengthPx = room.dimensions.length / scaleFactor;
-    auto const roomWidthPx  = room.dimensions.width / scaleFactor;
+    auto const scaleFactor  = roomLength / (area.getHeight() * 0.9);
+    auto const roomLengthPx = roomLength / scaleFactor;
+    auto const roomWidthPx  = roomWidth / scaleFactor;
     auto const topViewRoom  = juce::Rectangle{area.getX(), area.getY(), roomWidthPx, roomLengthPx}.withCentre(
         topViewArea.getCentre().toDouble()
     );
@@ -108,7 +115,7 @@ void RoomEditor::paint(juce::Graphics& g)
 
     ///////////////////////////////////////// FRONT
     auto const frontArea    = totalArea.toDouble();
-    auto const roomHeightPx = room.dimensions.height / scaleFactor;
+    auto const roomHeightPx = roomHeight / scaleFactor;
     auto const frontView    = juce::Rectangle{0.0, 0.0, roomWidthPx, roomHeightPx}.withCentre(frontArea.getCentre());
     g.drawRect(frontView.toFloat(), 8.0F);
 

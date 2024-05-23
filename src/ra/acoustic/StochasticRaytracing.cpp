@@ -128,9 +128,9 @@ auto StochasticRaytracing::tarceRay(
 auto StochasticRaytracing::getImpactSurface(glm::dvec3 pos, glm::dvec3 direction) const
     -> std::pair<std::ptrdiff_t, glm::dvec3>
 {
-    auto const length = _room.dimensions.length;
-    auto const width  = _room.dimensions.width;
-    auto const height = _room.dimensions.height;
+    auto const length = _room.dimensions.length.numerical_value_in(si::metre);
+    auto const width  = _room.dimensions.width.numerical_value_in(si::metre);
+    auto const height = _room.dimensions.height.numerical_value_in(si::metre);
 
     auto surface      = static_cast<ptrdiff_t>(-1);
     auto displacement = 1000.0;

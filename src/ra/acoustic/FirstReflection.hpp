@@ -17,33 +17,36 @@ struct FirstReflection
 };
 
 namespace detail {
-inline auto
-firstReflectionSideWall(RoomDimensions dimensions, glm::dvec3 listenPosition, glm::dvec3 speaker, double x1) -> double
+inline auto firstReflectionSideWall(RoomDimensions room, glm::dvec3 receiver, glm::dvec3 source, double x1) -> double
 {
-    auto const y  = listenPosition.y - speaker.y;
-    auto const x2 = dimensions.width - listenPosition.x;
-    return listenPosition.y - (y * x2) / (x1 + x2);
+    auto const y  = receiver.y - source.y;
+    auto const x2 = room.width.numerical_value_in(si::centi<si::metre>) - receiver.x;
+    return receiver.y - (y * x2) / (x1 + x2);
 }
 
-inline auto
-firstReflectionFrontWall(RoomDimensions /*dimensions*/, glm::dvec3 listenPosition, glm::dvec3 speaker) -> double
+inline auto firstReflectionFrontWall(RoomDimensions /*room*/, glm::dvec3 receiver, glm::dvec3 source) -> double
 {
-    auto const y  = std::abs(speaker.x - listenPosition.x);
-    auto const x1 = speaker.y;
-    auto const x2 = listenPosition.y;
-    return listenPosition.x - (y * x2) / (x1 + x2);
+    auto const y  = std::abs(source.x - receiver.x);
+    auto const x1 = source.y;
+    auto const x2 = receiver.y;
+    return receiver.x - (y * x2) / (x1 + x2);
 }
 
 }  // namespace detail
 
 template<typename InIt, typename OutIt>
-auto firstReflections(InIt f, InIt l, OutIt o, RoomDimensions dimensions, glm::dvec3 listenPosition) -> void
+auto firstReflections(InIt f, InIt l, OutIt o, RoomDimensions room, glm::dvec3 receiver) -> void
 {
     while (f != l) {
         *o = FirstReflection{
-            detail::firstReflectionFrontWall(dimensions, listenPosition, *f),
-            detail::firstReflectionSideWall(dimensions, listenPosition, *f, f->x),
-            detail::firstReflectionSideWall(dimensions, listenPosition, *f, dimensions.width - f->x),
+            detail::firstReflectionFrontWall(room, receiver, *f),
+            detail::firstReflectionSideWall(room, receiver, *f, f->x),
+            detail::firstReflectionSideWall(
+                room,
+                receiver,
+                *f,
+                room.width.numerical_value_in(si::centi<si::metre>) - f->x
+            ),
         };
         ++f;
         ++o;

@@ -69,8 +69,8 @@ auto WaveEquation2DEditor::run() -> void
     auto const room = _roomEditor.getRoomLayout().dimensions;
 
     auto we = WaveEquation2D({
-        .Lx       = room.width * si::metre,
-        .Ly       = room.length * si::metre,
+        .Lx       = room.width,
+        .Ly       = room.length,
         .duration = static_cast<double>(_duration.getValue()) * si::second,
         .fmax     = static_cast<double>(_fmax.getValue()) * si::hertz,
         .ppw      = static_cast<double>(_ppw.getValue()),
