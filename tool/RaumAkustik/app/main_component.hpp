@@ -2,6 +2,7 @@
 
 #include "app/menu_bar.hpp"
 #include "look/look_and_feel.hpp"
+#include "tabs/WaveEquation2DEditor.hpp"
 #include "tabs/absorber_simulation_tab.hpp"
 #include "tabs/audio_input_tab.hpp"
 #include "tabs/generator_tab.hpp"
@@ -50,6 +51,7 @@ private:
     AudioInputEditor _audioInputEditor;
     GeberatorEditor _generatorEditor;
     std::unique_ptr<StochasticRaytracingEditor> _raytracingEditor;
+    std::unique_ptr<WaveEquation2DEditor> _waveEquationEditor;
     std::unique_ptr<PorousAbsorberSimulationEditor> _absorberSimulationEditor;
     std::unique_ptr<MaterialEditor> _materialEditor;
 

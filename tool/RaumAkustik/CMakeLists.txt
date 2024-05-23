@@ -60,6 +60,8 @@ target_sources(RaumAkustik
         "tabs/room_editor.hpp"
         "tabs/stochastic_raytracing_tab.cpp"
         "tabs/stochastic_raytracing_tab.hpp"
+        "tabs/WaveEquation2DEditor.cpp"
+        "tabs/WaveEquation2DEditor.hpp"
 
         "tool/latency_tester.cpp"
         "tool/latency_tester.hpp"

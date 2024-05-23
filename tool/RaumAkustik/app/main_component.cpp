@@ -213,10 +213,12 @@ auto MainComponent::reloadUI() -> void
     _materialEditor.reset();
     _absorberSimulationEditor.reset();
     _raytracingEditor.reset();
+    _waveEquationEditor.reset();
     _roomEditor.reset();
 
     _roomEditor               = std::make_unique<RoomEditor>(_valueTree, &_undoManager);
     _raytracingEditor         = std::make_unique<StochasticRaytracingEditor>(*_roomEditor);
+    _waveEquationEditor       = std::make_unique<WaveEquation2DEditor>(*_roomEditor);
     _absorberSimulationEditor = std::make_unique<PorousAbsorberSimulationEditor>(_valueTree, &_undoManager);
     _materialEditor           = std::make_unique<MaterialEditor>();
 
@@ -225,6 +227,7 @@ auto MainComponent::reloadUI() -> void
     _tabs.addTab("Audio Input", color, std::addressof(_audioInputEditor), false);
     _tabs.addTab("Generator", color, std::addressof(_generatorEditor), false);
     _tabs.addTab("Raytracing", color, _raytracingEditor.get(), false);
+    _tabs.addTab("Wave Equation 2D", color, _waveEquationEditor.get(), false);
     _tabs.addTab("Porous Absorber", color, _absorberSimulationEditor.get(), false);
     _tabs.addTab("Material", color, _materialEditor.get(), false);
     if (tabIndex > 0 and tabIndex <= _tabs.getNumTabs()) {

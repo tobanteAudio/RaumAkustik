@@ -33,6 +33,8 @@ target_sources(${PROJECT_NAME}
         "ra/acoustic/Room.hpp"
         "ra/acoustic/StochasticRaytracing.cpp"
         "ra/acoustic/StochasticRaytracing.hpp"
+        "ra/acoustic/WaveEquation2D.cpp"
+        "ra/acoustic/WaveEquation2D.hpp"
 
         "ra/acoustic/absorber/PorousAbsorber.cpp"
         "ra/acoustic/absorber/PorousAbsorber.hpp"
