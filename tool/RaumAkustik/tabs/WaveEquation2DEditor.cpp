@@ -66,7 +66,7 @@ auto WaveEquation2DEditor::paint(juce::Graphics& g) -> void
         }
     }
 
-    g.drawImage(_frameImage, area.toFloat(), juce::RectanglePlacement::centred);
+    g.drawImage(_frameImage, area.toFloat().reduced(8.0F), juce::RectanglePlacement::centred);
 }
 
 auto WaveEquation2DEditor::resized() -> void

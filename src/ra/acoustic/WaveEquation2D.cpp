@@ -41,19 +41,36 @@ auto WaveEquation2D::operator()(Callback const& callback) -> void
     auto uNext = uNextBuf.to_mdspan();
 
     // Source location and initial condition
-    u(Nx / 2, Ny / 2) = 1.0;
+    u(Nx / 4, Ny / 4)     = 1.0;
+    u(Nx / 4 * 3, Ny / 4) = -1.0;
 
     // Update equation function with Neumann boundary conditions
     auto const delta = std::pow(c * dt / dx, 2.0);
 
-    fmt::println("Wave: {}x{} Nt={} dx={} fs={} fmax={}", Nx, Ny, Nt, dx, fs, _spec.fmax.numerical_value_in(si::hertz));
+    fmt::println(
+        "Wave: {}x{} Nt={} dx={:.1f}mm fs={:.0f}Hz fmax={:.0f}Hz",
+        Nx,
+        Ny,
+        Nt,
+        dx * 1'000.0,
+        fs,
+        _spec.fmax.numerical_value_in(si::hertz)
+    );
 
-    for (auto t{1U}; t < Nt - 1U; ++t) {
+    for (auto t{0U}; t < Nt; ++t) {
         for (auto x{1U}; x < Nx - 1U; ++x) {
             for (auto y{1U}; y < Ny - 1U; ++y) {
-                uNext(x, y)
-                    = (2 * u(x, y) - uPrev(x, y) + delta * (u(x + 1, y) - 2 * u(x, y) + u(x - 1, y))
-                       + delta * (u(x, y + 1) - 2 * u(x, y) + u(x, y - 1)));
+                auto const prev   = uPrev(x, y);
+                auto const now    = u(x, y);
+                auto const right  = u(x + 1, y);
+                auto const left   = u(x - 1, y);
+                auto const top    = u(x, y + 1);
+                auto const bottom = u(x, y - 1);
+
+                uNext(x, y) = (2 * now - prev + delta * (right - 2 * now + left) + delta * (top - 2 * now + bottom));
+
+                // u0 = in_mask * (0.5*(right + left + top + bottom) - prev);
+                // uNext(x, y) = 0.5 * (right + left + top + bottom) - prev;
             }
         }
 
