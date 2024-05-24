@@ -52,7 +52,7 @@ add_subdirectory(3rd_party/dawn EXCLUDE_FROM_ALL)
 add_subdirectory(3rd_party/JUCE EXCLUDE_FROM_ALL)
 
 include(FetchContent)
-FetchContent_Declare(mdspan GIT_REPOSITORY "https://github.com/kokkos/mdspan" GIT_TAG "stable" GIT_SHALLOW TRUE)
+FetchContent_Declare(mdspan GIT_REPOSITORY "https://github.com/kokkos/mdspan" GIT_TAG "4409e8c94c2b37665003468d87015ff4c8b7ec91" GIT_SHALLOW TRUE)
 FetchContent_MakeAvailable(mdspan)
 
 set(NEO_ENABLE_APPLE_ACCELERATE ON)
