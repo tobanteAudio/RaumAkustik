@@ -97,7 +97,7 @@ target_link_libraries(RaumAkustik
         RaumAkustik_BinaryData
 
         juce::juce_recommended_config_flags
-        juce::juce_recommended_lto_flags
+        # juce::juce_recommended_lto_flags
         juce::juce_recommended_warning_flags
 )
 

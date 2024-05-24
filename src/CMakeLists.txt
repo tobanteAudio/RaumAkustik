@@ -13,6 +13,7 @@ target_include_directories(${PROJECT_NAME}
 target_link_libraries(${PROJECT_NAME}
     PRIVATE
         juce::juce_recommended_warning_flags
+
     PUBLIC
         glm::glm
         mp-units::mp-units
@@ -20,9 +21,6 @@ target_link_libraries(${PROJECT_NAME}
 
         webgpu_cpp
         webgpu_dawn
-
-        juce::juce_recommended_config_flags
-        juce::juce_recommended_lto_flags
 )
 
 target_sources(${PROJECT_NAME}
