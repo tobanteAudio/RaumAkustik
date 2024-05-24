@@ -5,6 +5,7 @@ mp-units/2.2.0@mpusz/testing
 xsimd/13.0.0
 
 [options]
+mp-units/*:std_format=False
 
 [generators]
 CMakeDeps
