@@ -1,8 +1,8 @@
-#include "main_component.hpp"
+#include "MainComponent.hpp"
 
+#include "app/CommandIDs.hpp"
 #include "app/application.hpp"
-#include "app/command_ids.hpp"
-#include "tool/audio_file.hpp"
+#include "tool/AudioFile.hpp"
 
 namespace ra {
 
@@ -219,7 +219,7 @@ auto MainComponent::reloadUI() -> void
     _roomEditor               = std::make_unique<RoomEditor>(_valueTree, &_undoManager);
     _raytracingEditor         = std::make_unique<StochasticRaytracingEditor>(*_roomEditor);
     _waveEquationEditor       = std::make_unique<WaveEquation2DEditor>(*_roomEditor);
-    _absorberSimulationEditor = std::make_unique<PorousAbsorberSimulationEditor>(_valueTree, &_undoManager);
+    _absorberSimulationEditor = std::make_unique<PorousAbsorberEditor>(_valueTree, &_undoManager);
     _materialEditor           = std::make_unique<MaterialEditor>();
 
     auto const color = getLookAndFeel().findColour(juce::ResizableWindow::backgroundColourId);

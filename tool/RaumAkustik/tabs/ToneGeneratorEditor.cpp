@@ -1,4 +1,4 @@
-#include "generator_tab.hpp"
+#include "ToneGeneratorEditor.hpp"
 
 #include <ra/generator/GlideSweep.hpp>
 
@@ -113,7 +113,7 @@ getSpectrumPath(juce::AudioBuffer<float> const& in, double fs, juce::Rectangle<i
 }
 }  // namespace
 
-GeberatorEditor::GeberatorEditor(juce::AudioDeviceManager& deviceManager) : _recorder{deviceManager}
+ToneGeneratorEditor::ToneGeneratorEditor(juce::AudioDeviceManager& deviceManager) : _recorder{deviceManager}
 {
     _valueTree.setProperty("from", 20.0, nullptr);
     _valueTree.setProperty("to", 20'000.0, nullptr);
@@ -147,7 +147,7 @@ GeberatorEditor::GeberatorEditor(juce::AudioDeviceManager& deviceManager) : _rec
     // handleAsyncUpdate();
 }
 
-auto GeberatorEditor::paint(juce::Graphics& g) -> void
+auto ToneGeneratorEditor::paint(juce::Graphics& g) -> void
 {
     g.setColour(juce::Colours::black);
     g.fillRect(_thumbnailBounds);
@@ -187,7 +187,7 @@ auto GeberatorEditor::paint(juce::Graphics& g) -> void
     g.strokePath(_spectrumPath, juce::PathStrokeType{1.0F});
 }
 
-auto GeberatorEditor::resized() -> void
+auto ToneGeneratorEditor::resized() -> void
 {
     auto area = getLocalBounds();
 
@@ -201,7 +201,7 @@ auto GeberatorEditor::resized() -> void
     handleAsyncUpdate();
 }
 
-auto GeberatorEditor::handleAsyncUpdate() -> void
+auto ToneGeneratorEditor::handleAsyncUpdate() -> void
 {
     // auto const spec = GlideSweep{
     //     .from       = static_cast<double>(_from)*si::hertz,
@@ -220,9 +220,10 @@ auto GeberatorEditor::handleAsyncUpdate() -> void
     // _spectrumPath = getSpectrumPath(sweep, spec.sampleRate, _spectrumBounds);
 }
 
-auto GeberatorEditor::changeListenerCallback(juce::ChangeBroadcaster* /*source*/) -> void { repaint(); }
+auto ToneGeneratorEditor::changeListenerCallback(juce::ChangeBroadcaster* /*source*/) -> void { repaint(); }
 
-auto GeberatorEditor::valueTreePropertyChanged(juce::ValueTree& /*tree*/, juce::Identifier const& /*property*/) -> void
+auto ToneGeneratorEditor::valueTreePropertyChanged(juce::ValueTree& /*tree*/, juce::Identifier const& /*property*/)
+    -> void
 {
     triggerAsyncUpdate();
 }

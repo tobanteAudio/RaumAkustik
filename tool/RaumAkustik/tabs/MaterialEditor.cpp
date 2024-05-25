@@ -1,6 +1,6 @@
-#include "material_editor.hpp"
+#include "MaterialEditor.hpp"
 
-#include "look/color.hpp"
+#include "look/Colors.hpp"
 
 namespace ra {
 

@@ -1,16 +1,16 @@
 #pragma once
 
-#include "app/menu_bar.hpp"
-#include "look/look_and_feel.hpp"
+#include "app/MenuBar.hpp"
+#include "look/LookAndFeel.hpp"
+#include "tabs/AudioInterfaceEditor.hpp"
+#include "tabs/MaterialEditor.hpp"
+#include "tabs/PorousAbsorberEditor.hpp"
+#include "tabs/RoomEditor.hpp"
+#include "tabs/StochasticRaytracingEditor.hpp"
+#include "tabs/ToneGeneratorEditor.hpp"
 #include "tabs/WaveEquation2DEditor.hpp"
-#include "tabs/absorber_simulation_tab.hpp"
-#include "tabs/audio_input_tab.hpp"
-#include "tabs/generator_tab.hpp"
-#include "tabs/material_editor.hpp"
-#include "tabs/room_editor.hpp"
-#include "tabs/stochastic_raytracing_tab.hpp"
-#include "widget/level_meter.hpp"
-#include "widget/scrolling_waveform.hpp"
+#include "widget/LevelMeter.hpp"
+#include "widget/ScrollingWaveform.hpp"
 
 #include <juce_gui_extra/juce_gui_extra.h>
 
@@ -48,11 +48,11 @@ private:
     juce::TabbedComponent _tabs{juce::TabbedButtonBar::TabsAtTop};
 
     std::unique_ptr<RoomEditor> _roomEditor;
-    AudioInputEditor _audioInputEditor;
-    GeberatorEditor _generatorEditor;
+    AudioInterfaceEditor _audioInputEditor;
+    ToneGeneratorEditor _generatorEditor;
     std::unique_ptr<StochasticRaytracingEditor> _raytracingEditor;
     std::unique_ptr<WaveEquation2DEditor> _waveEquationEditor;
-    std::unique_ptr<PorousAbsorberSimulationEditor> _absorberSimulationEditor;
+    std::unique_ptr<PorousAbsorberEditor> _absorberSimulationEditor;
     std::unique_ptr<MaterialEditor> _materialEditor;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(MainComponent)  // NOLINT

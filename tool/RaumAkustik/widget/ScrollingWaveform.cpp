@@ -1,4 +1,4 @@
-#include "scrolling_waveform.hpp"
+#include "ScrollingWaveform.hpp"
 
 #include <juce_dsp/juce_dsp.h>
 

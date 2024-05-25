@@ -1,4 +1,4 @@
-#include "noise_generator.hpp"
+#include "NoiseGenerator.hpp"
 
 namespace ra {
 

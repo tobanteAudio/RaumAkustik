@@ -1,4 +1,4 @@
-#include "room_editor.hpp"
+#include "RoomEditor.hpp"
 
 #include <ra/acoustic/Room.hpp>
 

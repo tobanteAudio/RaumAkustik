@@ -1,8 +1,8 @@
-#include "audio_input_tab.hpp"
+#include "AudioInterfaceEditor.hpp"
 
 namespace ra {
 
-AudioInputEditor::AudioInputEditor(juce::AudioDeviceManager& deviceManager)
+AudioInterfaceEditor::AudioInterfaceEditor(juce::AudioDeviceManager& deviceManager)
     : _deviceManager{deviceManager}
     , _deviceSelector{deviceManager, 0, 256, 0, 256, true, true, true, false}
 {
@@ -15,15 +15,15 @@ AudioInputEditor::AudioInputEditor(juce::AudioDeviceManager& deviceManager)
     _deviceManager.addAudioCallback(&_noise);
 }
 
-AudioInputEditor::~AudioInputEditor()
+AudioInterfaceEditor::~AudioInterfaceEditor()
 {
     _deviceManager.removeAudioCallback(&_spectogram);
     _deviceManager.removeAudioCallback(&_noise);
 }
 
-auto AudioInputEditor::paint(juce::Graphics& /*g*/) -> void {}
+auto AudioInterfaceEditor::paint(juce::Graphics& /*g*/) -> void {}
 
-auto AudioInputEditor::resized() -> void
+auto AudioInterfaceEditor::resized() -> void
 {
     auto area = getLocalBounds();
 

@@ -1,7 +1,7 @@
 #pragma once
 
-#include "tool/latency_tester.hpp"
-#include "tool/noise_generator.hpp"
+#include "tool/LatencyTester.hpp"
+#include "tool/NoiseGenerator.hpp"
 #include "widget/spectogram.hpp"
 
 #include <juce_audio_devices/juce_audio_devices.h>
@@ -10,10 +10,10 @@
 
 namespace ra {
 
-struct AudioInputEditor final : juce::Component
+struct AudioInterfaceEditor final : juce::Component
 {
-    explicit AudioInputEditor(juce::AudioDeviceManager& deviceManager);
-    ~AudioInputEditor() override;
+    explicit AudioInterfaceEditor(juce::AudioDeviceManager& deviceManager);
+    ~AudioInterfaceEditor() override;
 
     auto paint(juce::Graphics& g) -> void override;
     auto resized() -> void override;
@@ -25,7 +25,7 @@ private:
     Spectogram _spectogram;
     NoiseGenerator _noise;
 
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(AudioInputEditor)  // NOLINT
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(AudioInterfaceEditor)  // NOLINT
 };
 
 }  // namespace ra

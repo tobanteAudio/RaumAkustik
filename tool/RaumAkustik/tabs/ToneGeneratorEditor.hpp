@@ -1,20 +1,20 @@
 #pragma once
 
-#include "tool/measurement_recorder.hpp"
+#include "tool/MeasurementRecorder.hpp"
 
 #include <juce_audio_utils/juce_audio_utils.h>
 #include <juce_gui_basics/juce_gui_basics.h>
 
 namespace ra {
 
-struct GeberatorEditor final
+struct ToneGeneratorEditor final
     : juce::Component
     , juce::AsyncUpdater
     , juce::ChangeListener
     , juce::ValueTree::Listener
 {
-    explicit GeberatorEditor(juce::AudioDeviceManager& audioDeviceManager);
-    ~GeberatorEditor() override = default;
+    explicit ToneGeneratorEditor(juce::AudioDeviceManager& audioDeviceManager);
+    ~ToneGeneratorEditor() override = default;
 
     auto paint(juce::Graphics& g) -> void override;
     auto resized() -> void override;

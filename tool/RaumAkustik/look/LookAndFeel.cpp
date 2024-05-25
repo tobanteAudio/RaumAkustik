@@ -1,4 +1,4 @@
-#include "look_and_feel.hpp"
+#include "LookAndFeel.hpp"
 
 namespace ra {
 LookAndFeel::LookAndFeel() { setColour(juce::TabbedButtonBar::tabOutlineColourId, juce::Colours::transparentBlack); }

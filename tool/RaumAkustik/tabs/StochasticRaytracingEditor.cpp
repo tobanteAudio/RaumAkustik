@@ -1,4 +1,4 @@
-#include "stochastic_raytracing_tab.hpp"
+#include "StochasticRaytracingEditor.hpp"
 
 #include <iostream>
 #include <juce_audio_basics/juce_audio_basics.h>

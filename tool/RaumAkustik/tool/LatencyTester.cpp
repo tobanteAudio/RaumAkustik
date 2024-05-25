@@ -1,4 +1,4 @@
-#include "latency_tester.hpp"
+#include "LatencyTester.hpp"
 
 #include <juce_dsp/juce_dsp.h>
 
