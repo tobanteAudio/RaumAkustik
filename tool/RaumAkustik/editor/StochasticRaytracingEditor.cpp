@@ -120,23 +120,28 @@ auto StochasticRaytracingEditor::run() -> void
         .receiver   = roomLayout.listenPosition,
     };
 
-    auto raytracer = StochasticRaytracing{room};
+    _threadPool.addJob([simulation, room, this] {
+        auto raytracer = StochasticRaytracing{room};
 
-    auto start = std::chrono::steady_clock::now();
-    _result    = raytracer(simulation);
-    auto stop  = std::chrono::steady_clock::now();
-    std::cout << std::chrono::duration_cast<std::chrono::duration<double>>(stop - start).count() << "s\n";
+        auto start  = std::chrono::steady_clock::now();
+        auto result = raytracer(simulation);
+        auto stop   = std::chrono::steady_clock::now();
+        std::cout << std::chrono::duration_cast<std::chrono::duration<double>>(stop - start).count() << "s\n";
 
-    for (auto const& frequency : *_result) {
-        _maxGain = std::max(_maxGain, *std::max_element(frequency.begin(), frequency.end()));
-    }
+        juce::MessageManager::callAsync([simulation, result, this] {
+            _result = std::move(result);
+            for (auto const& frequency : *_result) {
+                _maxGain = std::max(_maxGain, *std::max_element(frequency.begin(), frequency.end()));
+            }
 
-    for (auto i{0U}; i < _result->size(); ++i) {
-        auto const f = simulation.frequencies[i].numerical_value_in(si::hertz);
-        _plots[static_cast<int>(i)]->plot(juce::String(f) + "Hz", _result->at(i), simulation.duration, _maxGain);
-    }
+            for (auto i{0U}; i < _result->size(); ++i) {
+                auto const f = simulation.frequencies[i].numerical_value_in(si::hertz);
+                _plots[int(i)]->plot(juce::String(f) + "Hz", _result->at(i), simulation.duration, _maxGain);
+            }
 
-    repaint();
+            repaint();
+        });
+    });
 }
 
 auto StochasticRaytracingEditor::Plot::plot(
