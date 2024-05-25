@@ -48,6 +48,9 @@ target_sources(RaumAkustik
         "look/LookAndFeel.cpp"
         "look/LookAndFeel.hpp"
 
+        "project/ProjectTreeViewRoot.cpp"
+        "project/ProjectTreeViewRoot.hpp"
+
         "tabs/PorousAbsorberEditor.cpp"
         "tabs/PorousAbsorberEditor.hpp"
         "tabs/AudioInterfaceEditor.cpp"
@@ -85,6 +88,7 @@ target_compile_definitions(RaumAkustik
     PRIVATE
         JUCE_WEB_BROWSER=0
         JUCE_USE_CURL=0
+        JUCE_MODAL_LOOPS_PERMITTED=1
         JUCE_APPLICATION_NAME_STRING="$<TARGET_PROPERTY:${PROJECT_NAME},JUCE_PRODUCT_NAME>"
         JUCE_APPLICATION_VERSION_STRING="$<TARGET_PROPERTY:${PROJECT_NAME},JUCE_VERSION>"
 )

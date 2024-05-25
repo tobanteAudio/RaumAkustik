@@ -2,6 +2,7 @@
 
 #include "app/MenuBar.hpp"
 #include "look/LookAndFeel.hpp"
+#include "project/ProjectTreeViewRoot.hpp"
 #include "tabs/AudioInterfaceEditor.hpp"
 #include "tabs/MaterialEditor.hpp"
 #include "tabs/PorousAbsorberEditor.hpp"
@@ -44,6 +45,10 @@ private:
     LookAndFeel _lnf;
 
     MenuBar _menuBar{_commandManager};
+
+    ProjectTreeViewRoot _treeViewRoot;
+    juce::TreeView _projectTree;
+
     LevelMeter _levelMeter;
     ScrollingWaveform _waveform;
     juce::TabbedComponent _tabs{juce::TabbedButtonBar::TabsAtTop};

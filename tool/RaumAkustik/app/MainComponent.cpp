@@ -32,7 +32,10 @@ MainComponent::MainComponent()
 
     _valueTree.appendChild(room, nullptr);
 
+    _projectTree.setRootItem(&_treeViewRoot);
+
     addAndMakeVisible(_menuBar);
+    addAndMakeVisible(_projectTree);
     addAndMakeVisible(_levelMeter);
     addAndMakeVisible(_waveform);
     addAndMakeVisible(_tabs);
@@ -68,13 +71,17 @@ auto MainComponent::paint(juce::Graphics& g) -> void
 auto MainComponent::resized() -> void
 {
     auto area = getLocalBounds();
+
     _menuBar.setBounds(area.removeFromTop(juce::LookAndFeel::getDefaultLookAndFeel().getDefaultMenuBarHeight()));
+
     if (_waveform.isVisible()) {
         _waveform.setBounds(area.removeFromTop(area.proportionOfHeight(0.075)));
     }
     if (_levelMeter.isVisible()) {
         _levelMeter.setBounds(area.removeFromRight(area.proportionOfWidth(0.075)));
     }
+
+    _projectTree.setBounds(area.removeFromLeft(area.proportionOfWidth(0.125)));
     _tabs.setBounds(area.reduced(10));
 }
 
