@@ -170,7 +170,7 @@ auto StochasticRaytracingEditor::Plot::paint(juce::Graphics& g) -> void
     g.drawRect(area, 1.0F);
 
     // title
-    g.setFont(juce::Font{}.withPointHeight(14.0F));
+    g.setFont(juce::FontOptions{}.withPointHeight(14.0F));
     g.drawText(_title, title, juce::Justification::centred);
 
     // grid
