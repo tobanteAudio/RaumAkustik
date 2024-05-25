@@ -55,6 +55,7 @@ MainComponent::~MainComponent()
     DBG(_valueTree.toXmlString());
     raumAkusticApplication().deviceManager().removeAudioCallback(&_levelMeter);
     raumAkusticApplication().deviceManager().removeAudioCallback(&_waveform);
+    _threadPool.removeAllJobs(true, 500, nullptr);
     setLookAndFeel(nullptr);
 }
 
@@ -217,8 +218,8 @@ auto MainComponent::reloadUI() -> void
     _roomEditor.reset();
 
     _roomEditor               = std::make_unique<RoomEditor>(_valueTree, &_undoManager);
-    _raytracingEditor         = std::make_unique<StochasticRaytracingEditor>(*_roomEditor);
-    _waveEquationEditor       = std::make_unique<WaveEquation2DEditor>(*_roomEditor);
+    _raytracingEditor         = std::make_unique<StochasticRaytracingEditor>(_threadPool, *_roomEditor);
+    _waveEquationEditor       = std::make_unique<WaveEquation2DEditor>(_threadPool, *_roomEditor);
     _absorberSimulationEditor = std::make_unique<PorousAbsorberEditor>(_valueTree, &_undoManager);
     _materialEditor           = std::make_unique<MaterialEditor>();
 

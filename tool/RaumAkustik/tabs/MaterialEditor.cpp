@@ -59,8 +59,6 @@ MaterialEditor::MaterialEditor()
     _table.updateContent();
 
     addAndMakeVisible(_table);
-
-    DBG(CividisColorMap.size());
 }
 
 auto MaterialEditor::paint(juce::Graphics& g) -> void

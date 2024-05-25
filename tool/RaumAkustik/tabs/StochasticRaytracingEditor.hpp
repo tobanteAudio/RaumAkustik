@@ -10,7 +10,7 @@ namespace ra {
 
 struct StochasticRaytracingEditor final : juce::Component
 {
-    explicit StochasticRaytracingEditor(RoomEditor& roomEditor);
+    StochasticRaytracingEditor(juce::ThreadPool& threadPool, RoomEditor& roomEditor);
     ~StochasticRaytracingEditor() override = default;
 
     auto paint(juce::Graphics& g) -> void override;
@@ -41,6 +41,7 @@ private:
 
     auto run() -> void;
 
+    juce::ThreadPool& _threadPool;
     RoomEditor& _roomEditor;
 
     std::optional<StochasticRaytracing::Result> _result;

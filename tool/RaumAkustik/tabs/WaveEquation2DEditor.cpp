@@ -10,7 +10,9 @@
 
 namespace ra {
 
-WaveEquation2DEditor::WaveEquation2DEditor(RoomEditor& roomEditor) : _roomEditor{roomEditor}
+WaveEquation2DEditor::WaveEquation2DEditor(juce::ThreadPool& threadPool, RoomEditor& roomEditor)
+    : _threadPool{threadPool}
+    , _roomEditor{roomEditor}
 {
     using juce::SliderPropertyComponent;
     using std::make_unique;

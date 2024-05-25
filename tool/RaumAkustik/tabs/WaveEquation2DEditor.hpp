@@ -13,7 +13,7 @@ struct WaveEquation2DEditor final
     : juce::Component
     , juce::Timer
 {
-    explicit WaveEquation2DEditor(RoomEditor& roomEditor);
+    WaveEquation2DEditor(juce::ThreadPool& threadPool, RoomEditor& roomEditor);
     ~WaveEquation2DEditor() override = default;
 
     auto paint(juce::Graphics& g) -> void override;
@@ -23,8 +23,8 @@ struct WaveEquation2DEditor final
 private:
     auto run() -> void;
 
+    juce::ThreadPool& _threadPool;
     RoomEditor& _roomEditor;
-    juce::ThreadPool _threadPool;
 
     juce::Value _duration{juce::var(2.0)};
     juce::Value _fmax{juce::var(2000.0)};

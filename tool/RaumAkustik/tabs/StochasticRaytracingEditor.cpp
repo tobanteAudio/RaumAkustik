@@ -5,8 +5,12 @@
 
 namespace ra {
 
-StochasticRaytracingEditor::StochasticRaytracingEditor(RoomEditor& roomEditor) : _roomEditor{roomEditor}
+StochasticRaytracingEditor::StochasticRaytracingEditor(juce::ThreadPool& threadPool, RoomEditor& roomEditor)
+    : _threadPool{threadPool}
+    , _roomEditor{roomEditor}
 {
+    juce::ignoreUnused(_threadPool);
+
     _properties.addProperties(juce::Array<juce::PropertyComponent*>{
         std::make_unique<juce::SliderPropertyComponent>(_rays, "Rays", 1'000.0, 100'000.0, 1.0).release(),
         std::make_unique<juce::SliderPropertyComponent>(_duration, "Duration", 1.0, 10.0, 0.1).release(),

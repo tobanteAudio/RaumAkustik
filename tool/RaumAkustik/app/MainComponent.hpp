@@ -37,6 +37,7 @@ private:
     auto reloadUI() -> void;
     auto toggleFullscreen() -> void;
 
+    juce::ThreadPool _threadPool;
     juce::ApplicationCommandManager _commandManager;
     juce::UndoManager _undoManager;
     juce::ValueTree _valueTree{"RaumAkustik"};
