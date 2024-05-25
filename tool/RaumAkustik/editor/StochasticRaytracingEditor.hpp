@@ -1,6 +1,6 @@
 #pragma once
 
-#include "tabs/RoomEditor.hpp"
+#include "editor/RoomEditor.hpp"
 
 #include <ra/acoustic/StochasticRaytracing.hpp>
 

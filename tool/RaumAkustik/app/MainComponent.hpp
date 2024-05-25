@@ -1,15 +1,15 @@
 #pragma once
 
 #include "app/MenuBar.hpp"
+#include "editor/AudioInterfaceEditor.hpp"
+#include "editor/MaterialEditor.hpp"
+#include "editor/PorousAbsorberEditor.hpp"
+#include "editor/RoomEditor.hpp"
+#include "editor/StochasticRaytracingEditor.hpp"
+#include "editor/ToneGeneratorEditor.hpp"
+#include "editor/WaveEquation2DEditor.hpp"
 #include "look/LookAndFeel.hpp"
 #include "project/ProjectTreeViewRoot.hpp"
-#include "tabs/AudioInterfaceEditor.hpp"
-#include "tabs/MaterialEditor.hpp"
-#include "tabs/PorousAbsorberEditor.hpp"
-#include "tabs/RoomEditor.hpp"
-#include "tabs/StochasticRaytracingEditor.hpp"
-#include "tabs/ToneGeneratorEditor.hpp"
-#include "tabs/WaveEquation2DEditor.hpp"
 #include "widget/LevelMeter.hpp"
 #include "widget/ScrollingWaveform.hpp"
 
