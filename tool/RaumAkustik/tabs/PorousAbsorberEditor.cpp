@@ -191,9 +191,9 @@ auto PorousAbsorberEditor::updateSimulation() -> void
     _props.clear();
 
     auto const specs = PorousAbsorberSpecs{
-        static_cast<double>(_absorberThickness) * si::metre,
+        static_cast<double>(_absorberThickness) * si::milli<si::metre>,
         static_cast<double>(_absorberFlowResisitivity),
-        static_cast<double>(_absorberAirGap) * si::metre,
+        static_cast<double>(_absorberAirGap) * si::milli<si::metre>,
     };
 
     auto const angle = static_cast<double>(_absorberAngleOfIncidence);
