@@ -11,3 +11,6 @@
 [submodule "3rd_party/neo"]
 	path = 3rd_party/neo
 	url = https://github.com/neo-sonar/neo
+[submodule "3rd_party/neo-juce"]
+	path = 3rd_party/neo-juce
+	url = git@github.com:neo-sonar/neo-juce.git

@@ -95,8 +95,12 @@ target_link_libraries(RaumAkustik
         juce::juce_audio_utils
         juce::juce_dsp
         juce::juce_gui_extra
+        neo::neo_gui_extra
 
         ra::acoustics
+        Boost::headers
+        concurrentqueue::concurrentqueue
+
         RaumAkustik_BinaryData
 
         juce::juce_recommended_config_flags

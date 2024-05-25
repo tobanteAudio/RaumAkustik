@@ -1,10 +1,13 @@
 [requires]
+boost/1.85.0
 catch2/3.6.0
+concurrentqueue/1.0.4
 glm/1.0.1
 mp-units/2.2.0@mpusz/testing
 xsimd/13.0.0
 
 [options]
+boost/*:header_only=True
 mp-units/*:std_format=False
 
 [generators]

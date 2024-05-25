@@ -61,4 +61,9 @@ set(NEO_ENABLE_XSIMD ON)
 add_subdirectory(3rd_party/neo/src EXCLUDE_FROM_ALL)
 
 add_subdirectory(src)
+
+find_package(Boost 1.85 REQUIRED COMPONENTS boost)
+find_package(concurrentqueue REQUIRED)
+find_package(fmt REQUIRED)
+add_subdirectory(3rd_party/neo-juce/modules EXCLUDE_FROM_ALL)
 add_subdirectory(tool/RaumAkustik)
