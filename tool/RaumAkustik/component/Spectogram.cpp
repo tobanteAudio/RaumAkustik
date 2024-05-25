@@ -1,4 +1,4 @@
-#include "spectogram.hpp"
+#include "Spectogram.hpp"
 
 namespace ra {
 
