@@ -1,6 +1,7 @@
 #include "StochasticRaytracing.hpp"
 
 #include <array>
+#include <future>
 #include <utility>
 
 namespace ra {
@@ -13,12 +14,24 @@ auto StochasticRaytracing::operator()(Simulation const& sim) const -> Result
 
     auto const rays         = randomRaysOnSphere(sim.rays, rng);
     auto const numTimeSteps = static_cast<std::size_t>((sim.duration / sim.timeStep).numerical_value_in(one));
+    auto const numBands     = sim.frequencies.size();
 
-    auto histogram = std::vector(sim.frequencies.size(), std::vector<double>(numTimeSteps));
-    for (auto frequency{0UL}; frequency < histogram.size(); ++frequency) {
-        for (auto const& ray : rays) {
-            tarceRay(sim, ray, histogram[frequency], frequency, rng);
-        }
+    auto tasks = std::vector<std::future<std::vector<double>>>(numBands);
+
+    for (auto frequency{0UL}; frequency < numBands; ++frequency) {
+        tasks[frequency] = std::async(std::launch::async, [=, this] {
+            auto random = std::mt19937{std::random_device{}()};
+            auto hist   = std::vector<double>(numTimeSteps);
+            for (auto const& ray : rays) {
+                tarceRay(sim, ray, hist, frequency, random);
+            }
+            return hist;
+        });
+    }
+
+    auto histogram = std::vector<std::vector<double>>(numBands);
+    for (auto frequency{0UL}; frequency < numBands; ++frequency) {
+        histogram[frequency] = tasks[frequency].get();
     }
 
     return histogram;

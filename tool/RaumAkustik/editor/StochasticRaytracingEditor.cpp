@@ -14,7 +14,7 @@ StochasticRaytracingEditor::StochasticRaytracingEditor(juce::ThreadPool& threadP
     juce::ignoreUnused(_threadPool);
 
     _properties.addProperties(juce::Array<juce::PropertyComponent*>{
-        makeProperty<juce::SliderPropertyComponent>(_rays, "Rays", 1'000.0, 100'000.0, 1.0),
+        makeProperty<juce::SliderPropertyComponent>(_rays, "Rays", 1'000.0, 1'000'000.0, 1.0),
         makeProperty<juce::SliderPropertyComponent>(_duration, "Duration", 1.0, 10.0, 0.1),
     });
 
