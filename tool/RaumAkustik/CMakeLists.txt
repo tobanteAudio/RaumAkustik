@@ -36,14 +36,21 @@ juce_add_gui_app(RaumAkustik
 
 target_sources(RaumAkustik
     PRIVATE
-        "app/application.cpp"
-        "app/application.hpp"
-        "app/CommandIDs.hpp"
-        "app/MainComponent.cpp"
-        "app/MainComponent.hpp"
-        "app/main.cpp"
-        "app/MenuBar.cpp"
-        "app/MenuBar.hpp"
+        "application/Application.cpp"
+        "application/Application.hpp"
+        "application/CommandIDs.hpp"
+        "application/MainComponent.cpp"
+        "application/MainComponent.hpp"
+        "application/Main.cpp"
+        "application/MenuBar.cpp"
+        "application/MenuBar.hpp"
+
+        "component/LevelMeter.cpp"
+        "component/LevelMeter.hpp"
+        "component/ScrollingWaveform.cpp"
+        "component/ScrollingWaveform.hpp"
+        "component/Spectogram.cpp"
+        "component/Spectogram.hpp"
 
         "look/LookAndFeel.cpp"
         "look/LookAndFeel.hpp"
@@ -75,13 +82,6 @@ target_sources(RaumAkustik
         "tool/PropertyComponent.hpp"
 
         "utility/ValueTree.hpp"
-
-        "widget/LevelMeter.cpp"
-        "widget/LevelMeter.hpp"
-        "widget/ScrollingWaveform.cpp"
-        "widget/ScrollingWaveform.hpp"
-        "widget/spectogram.cpp"
-        "widget/spectogram.hpp"
 )
 
 target_compile_definitions(RaumAkustik

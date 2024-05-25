@@ -1,6 +1,8 @@
 #pragma once
 
-#include "app/MenuBar.hpp"
+#include "application/MenuBar.hpp"
+#include "component/LevelMeter.hpp"
+#include "component/ScrollingWaveform.hpp"
 #include "editor/AudioInterfaceEditor.hpp"
 #include "editor/MaterialEditor.hpp"
 #include "editor/PorousAbsorberEditor.hpp"
@@ -10,8 +12,6 @@
 #include "editor/WaveEquation2DEditor.hpp"
 #include "look/LookAndFeel.hpp"
 #include "project/ProjectTreeViewRoot.hpp"
-#include "widget/LevelMeter.hpp"
-#include "widget/ScrollingWaveform.hpp"
 
 #include <juce_gui_extra/juce_gui_extra.h>
 

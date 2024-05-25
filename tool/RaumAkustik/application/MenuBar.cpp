@@ -1,6 +1,6 @@
 #include "MenuBar.hpp"
 
-#include "app/CommandIDs.hpp"
+#include "application/CommandIDs.hpp"
 
 #include "BinaryData.hpp"
 

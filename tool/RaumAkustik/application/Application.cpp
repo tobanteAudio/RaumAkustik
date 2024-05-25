@@ -1,6 +1,6 @@
-#include "application.hpp"
+#include "Application.hpp"
 
-#include "app/MainComponent.hpp"
+#include "application/MainComponent.hpp"
 
 namespace ra
 {

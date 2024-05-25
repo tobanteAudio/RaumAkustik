@@ -1,7 +1,7 @@
 #include "MainComponent.hpp"
 
-#include "app/CommandIDs.hpp"
-#include "app/application.hpp"
+#include "application/Application.hpp"
+#include "application/CommandIDs.hpp"
 #include "tool/AudioFile.hpp"
 #include "utility/ValueTree.hpp"
 

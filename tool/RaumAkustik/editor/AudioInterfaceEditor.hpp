@@ -1,8 +1,8 @@
 #pragma once
 
+#include "component/Spectogram.hpp"
 #include "tool/LatencyTester.hpp"
 #include "tool/NoiseGenerator.hpp"
-#include "widget/spectogram.hpp"
 
 #include <juce_audio_devices/juce_audio_devices.h>
 #include <juce_audio_utils/juce_audio_utils.h>
