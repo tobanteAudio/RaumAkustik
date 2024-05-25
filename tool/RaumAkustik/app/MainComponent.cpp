@@ -217,10 +217,12 @@ auto MainComponent::reloadUI() -> void
     _waveEquationEditor.reset();
     _roomEditor.reset();
 
+    auto absorberTree = PorousAbsorberEditor::createDefault(_valueTree, &_undoManager);
+
     _roomEditor               = std::make_unique<RoomEditor>(_valueTree, &_undoManager);
     _raytracingEditor         = std::make_unique<StochasticRaytracingEditor>(_threadPool, *_roomEditor);
     _waveEquationEditor       = std::make_unique<WaveEquation2DEditor>(_threadPool, *_roomEditor);
-    _absorberSimulationEditor = std::make_unique<PorousAbsorberEditor>(_valueTree, &_undoManager);
+    _absorberSimulationEditor = std::make_unique<PorousAbsorberEditor>(absorberTree, &_undoManager);
     _materialEditor           = std::make_unique<MaterialEditor>();
 
     auto const color = getLookAndFeel().findColour(juce::ResizableWindow::backgroundColourId);

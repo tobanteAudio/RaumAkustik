@@ -16,11 +16,53 @@ auto positionForFrequency(quantity<isq::frequency[si::hertz]> const freq) noexce
 
 }  // namespace
 
+auto PorousAbsorberEditor::createDefault(juce::ValueTree parent, juce::UndoManager* um) -> juce::ValueTree
+{
+    auto tree = parent.getOrCreateChildWithName(IDs::type, um);
+
+    // atmosphere
+    if (not tree.hasProperty(IDs::temperature)) {
+        tree.setProperty(IDs::temperature, 20.0, nullptr);
+    }
+    if (not tree.hasProperty(IDs::pressure)) {
+        tree.setProperty(IDs::pressure, 1.0, nullptr);
+    }
+
+    // absorber
+    if (not tree.hasProperty(IDs::absorberThickness)) {
+        tree.setProperty(IDs::absorberThickness, 50.0, nullptr);
+    }
+    if (not tree.hasProperty(IDs::absorberFlowResisitivity)) {
+        tree.setProperty(IDs::absorberFlowResisitivity, 10'000.0, nullptr);
+    }
+    if (not tree.hasProperty(IDs::absorberAngleOfIncidence)) {
+        tree.setProperty(IDs::absorberAngleOfIncidence, 0.0, nullptr);
+    }
+    if (not tree.hasProperty(IDs::absorberAirGap)) {
+        tree.setProperty(IDs::absorberAirGap, 25.0, nullptr);
+    }
+
+    // plot
+    if (not tree.hasProperty(IDs::plotNumPoints)) {
+        tree.setProperty(IDs::plotNumPoints, 256.0, nullptr);
+    }
+    if (not tree.hasProperty(IDs::plotStartFrequency)) {
+        tree.setProperty(IDs::plotStartFrequency, 31.0, nullptr);
+    }
+    if (not tree.hasProperty(IDs::plotOctaveSubdivision)) {
+        tree.setProperty(IDs::plotOctaveSubdivision, 12.0, nullptr);
+    }
+
+    return tree;
+}
+
 PorousAbsorberEditor::PorousAbsorberEditor(juce::ValueTree vt, juce::UndoManager* um)
     : _undoManager{um}
-    , _valueTree{vt.getOrCreateChildWithName("PorousAbsorber", um)}
+    , _valueTree{std::move(vt)}
 {
     using juce::SliderPropertyComponent;
+
+    jassert(_valueTree.hasType(IDs::type));
 
     addAndMakeVisible(_table);
     addAndMakeVisible(_absorberSpecs);
@@ -50,7 +92,7 @@ PorousAbsorberEditor::PorousAbsorberEditor(juce::ValueTree vt, juce::UndoManager
     _absorberSpecs.addSection(
         "Plot",
         juce::Array<juce::PropertyComponent*>{
-            makeProperty<SliderPropertyComponent>(_plotNumPoints, "Num Points", 0.0, 256.0, 1.0),
+            makeProperty<SliderPropertyComponent>(_plotNumPoints, "Num Points", 0.0, 512.0, 1.0),
             makeProperty<SliderPropertyComponent>(_plotStartFrequency, "Start Frequency", 0.0, 60.0, 1.0),
             makeProperty<SliderPropertyComponent>(_plotOctaveSubdivision, "Octave Subdivisions", 0.0, 12.0, 1.0),
         }
@@ -134,39 +176,39 @@ auto PorousAbsorberEditor::getNumRows() -> int { return static_cast<int>(_props.
 
 auto PorousAbsorberEditor::paintRowBackground(
     juce::Graphics& g,
-    int rowNumber,
+    int row,
     int /*width*/,
     int /*height*/,
-    bool rowIsSelected
+    bool isSelected
 ) -> void
 {
     auto alternateColour = getLookAndFeel()
                                .findColour(juce::ListBox::backgroundColourId)
                                .interpolatedWith(getLookAndFeel().findColour(juce::ListBox::textColourId), 0.03F);
-    if (rowIsSelected) {
+    if (isSelected) {
         g.fillAll(juce::Colours::lightblue);
-    } else if ((rowNumber % 2) != 0) {
+    } else if (row % 2 != 0) {
         g.fillAll(alternateColour);
     }
 }
 
-auto PorousAbsorberEditor::
-    paintCell(juce::Graphics& g, int row, int columnId, int width, int height, bool /*rowIsSelected*/) -> void
+auto PorousAbsorberEditor::paintCell(juce::Graphics& g, int row, int column, int width, int height, bool /*isSelected*/)
+    -> void
 {
     g.setColour(getLookAndFeel().findColour(juce::ListBox::textColourId));
     g.setFont(16.0F);
 
-    if (columnId == 1) {
+    if (column == 1) {
         auto const frequency = juce::String{_props[static_cast<size_t>(row)].first.numerical_value_in(si::hertz)};
         g.drawText(frequency, 2, 0, width - 4, height, juce::Justification::centredLeft, true);
     }
 
-    if (columnId == 2) {
+    if (column == 2) {
         auto const absorptionFactor = juce::String{_props[static_cast<size_t>(row)].second.absorptionFactorNoAirGap};
         g.drawText(absorptionFactor, 2, 0, width - 4, height, juce::Justification::centredLeft, true);
     }
 
-    if (columnId == 3) {
+    if (column == 3) {
         auto const absorptionFactor = juce::String{_props[static_cast<size_t>(row)].second.absorptionFactorWithAirGap};
         g.drawText(absorptionFactor, 2, 0, width - 4, height, juce::Justification::centredLeft, true);
     }
@@ -180,9 +222,9 @@ auto PorousAbsorberEditor::updateSimulation() -> void
     _props.clear();
 
     auto const specs = PorousAbsorberSpecs{
-        static_cast<double>(_absorberThickness) * si::milli<si::metre>,
-        static_cast<double>(_absorberFlowResisitivity),
-        static_cast<double>(_absorberAirGap) * si::milli<si::metre>,
+        double{_absorberThickness} * si::milli<si::metre>,
+        double{_absorberFlowResisitivity},
+        double{_absorberAirGap} * si::milli<si::metre>,
     };
 
     auto const angle = static_cast<double>(_absorberAngleOfIncidence);
