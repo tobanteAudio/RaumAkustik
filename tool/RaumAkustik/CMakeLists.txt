@@ -69,6 +69,7 @@ target_sources(RaumAkustik
         "tool/MeasurementRecorder.hpp"
         "tool/NoiseGenerator.cpp"
         "tool/NoiseGenerator.hpp"
+        "tool/PropertyComponent.hpp"
 
         "widget/LevelMeter.cpp"
         "widget/LevelMeter.hpp"

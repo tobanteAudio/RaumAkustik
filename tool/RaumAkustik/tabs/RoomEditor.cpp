@@ -1,5 +1,7 @@
 #include "RoomEditor.hpp"
 
+#include "tool/PropertyComponent.hpp"
+
 #include <ra/acoustic/Room.hpp>
 
 namespace ra {
@@ -174,17 +176,17 @@ auto RoomEditor::buildProperties() -> void
     _roomProperties.addSection(
         "General",
         juce::Array<juce::PropertyComponent*>{
-            new juce::SliderPropertyComponent{_iconSize.getPropertyAsValue(), "Icon Size", 0.0, 100.0, 1.0},
-    }
+            makeProperty<juce::SliderPropertyComponent>(_iconSize, "Icon Size", 0.0, 100.0, 1.0),
+        }
     );
 
     _roomProperties.addSection(
         "Room Dimensions",
         juce::Array<juce::PropertyComponent*>{
-            new juce::SliderPropertyComponent{_roomLength.getPropertyAsValue(), "Length", 0.0, 10.0, 0.01},
-            new juce::SliderPropertyComponent{ _roomWidth.getPropertyAsValue(),  "Width", 0.0, 10.0, 0.01},
-            new juce::SliderPropertyComponent{_roomHeight.getPropertyAsValue(), "Height", 0.0, 10.0, 0.01},
-    }
+            makeProperty<juce::SliderPropertyComponent>(_roomLength, "Length", 0.0, 10.0, 0.01),
+            makeProperty<juce::SliderPropertyComponent>(_roomWidth, "Width", 0.0, 10.0, 0.01),
+            makeProperty<juce::SliderPropertyComponent>(_roomHeight, "Height", 0.0, 10.0, 0.01),
+        }
     );
 
     _roomProperties.addSection("Surfaces", surfaces);
@@ -192,36 +194,36 @@ auto RoomEditor::buildProperties() -> void
     _roomProperties.addSection(
         "Listen Position",
         juce::Array<juce::PropertyComponent*>{
-            new juce::SliderPropertyComponent{_listenX.getPropertyAsValue(), "X", 0.0, 10.0, 0.01},
-            new juce::SliderPropertyComponent{_listenY.getPropertyAsValue(), "Y", 0.0, 10.0, 0.01},
-            new juce::SliderPropertyComponent{_listenZ.getPropertyAsValue(), "Z", 0.0, 10.0, 0.01},
-    }
+            makeProperty<juce::SliderPropertyComponent>(_listenX, "X", 0.0, 10.0, 0.01),
+            makeProperty<juce::SliderPropertyComponent>(_listenY, "Y", 0.0, 10.0, 0.01),
+            makeProperty<juce::SliderPropertyComponent>(_listenZ, "Z", 0.0, 10.0, 0.01),
+        }
     );
 
     _roomProperties.addSection(
         "Left Speaker",
         juce::Array<juce::PropertyComponent*>{
-            new juce::SliderPropertyComponent{_leftX.getPropertyAsValue(), "X", 0.0, 10.0, 0.01},
-            new juce::SliderPropertyComponent{_leftY.getPropertyAsValue(), "Y", 0.0, 10.0, 0.01},
-            new juce::SliderPropertyComponent{_leftZ.getPropertyAsValue(), "Z", 0.0, 10.0, 0.01},
-    }
+            makeProperty<juce::SliderPropertyComponent>(_leftX, "X", 0.0, 10.0, 0.01),
+            makeProperty<juce::SliderPropertyComponent>(_leftY, "Y", 0.0, 10.0, 0.01),
+            makeProperty<juce::SliderPropertyComponent>(_leftZ, "Z", 0.0, 10.0, 0.01),
+        }
     );
 
     _roomProperties.addSection(
         "Right Speaker",
         juce::Array<juce::PropertyComponent*>{
-            new juce::SliderPropertyComponent{_rightX.getPropertyAsValue(), "X", 0.0, 10.0, 0.01},
-            new juce::SliderPropertyComponent{_rightY.getPropertyAsValue(), "Y", 0.0, 10.0, 0.01},
-            new juce::SliderPropertyComponent{_rightZ.getPropertyAsValue(), "Z", 0.0, 10.0, 0.01},
-    }
+            makeProperty<juce::SliderPropertyComponent>(_rightX, "X", 0.0, 10.0, 0.01),
+            makeProperty<juce::SliderPropertyComponent>(_rightY, "Y", 0.0, 10.0, 0.01),
+            makeProperty<juce::SliderPropertyComponent>(_rightZ, "Z", 0.0, 10.0, 0.01),
+        }
     );
 
     _renderProperties.addSection(
         "First Reflections",
         juce::Array<juce::PropertyComponent*>{
-            new juce::BooleanPropertyComponent{ _renderLeftReflections.getPropertyAsValue(),  "Left", "Draw"},
-            new juce::BooleanPropertyComponent{_renderRightReflections.getPropertyAsValue(), "Right", "Draw"},
-    }
+            makeProperty<juce::BooleanPropertyComponent>(_renderLeftReflections, "Left", "Draw"),
+            makeProperty<juce::BooleanPropertyComponent>(_renderRightReflections, "Right", "Draw"),
+        }
     );
 }
 

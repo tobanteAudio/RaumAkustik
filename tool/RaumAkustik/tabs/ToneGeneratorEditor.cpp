@@ -1,5 +1,7 @@
 #include "ToneGeneratorEditor.hpp"
 
+#include "tool/PropertyComponent.hpp"
+
 #include <ra/generator/GlideSweep.hpp>
 
 #include <juce_dsp/juce_dsp.h>
@@ -124,23 +126,30 @@ ToneGeneratorEditor::ToneGeneratorEditor(juce::AudioDeviceManager& deviceManager
     _valueTree.addListener(this);
     _thumbnail.addChangeListener(this);
 
+    auto const sampleRates = juce::Array<juce::var>{
+        juce::var{44100.0},
+        juce::var{48000.0},
+        juce::var{88200.0},
+        juce::var{96000.0},
+        juce::var{176400.0},
+        juce::var{192000.0}
+    };
+
+    auto const sampleRateNames = juce::StringArray{
+        "44100",
+        "48000",
+        "88200",
+        "96000",
+        "176400",
+        "192000",
+    };
+
     _sweepSpecPanel.addProperties(juce::Array<juce::PropertyComponent*>{
-        new juce::SliderPropertyComponent{_from.getPropertyAsValue(), "From (Hz)", 0.0, 20'000.0, 1.0},
-        new juce::SliderPropertyComponent{_to.getPropertyAsValue(), "To (Hz)", 0.0, 20'000.0, 1.0},
-        new juce::BooleanPropertyComponent{_curve.getPropertyAsValue(), "Curve", "Lin/Log"},
-        new juce::SliderPropertyComponent{_duration.getPropertyAsValue(), "Duration (ms)", 0.0, 20'000.0, 1.0},
-        new juce::ChoicePropertyComponent{
-                                          _sampleRate.getPropertyAsValue(),
-                                          "Sample-rate (Hz)", juce::StringArray{"44100", "48000", "88200", "96000", "176400", "192000"},
-                                          juce::Array<juce::var>{
-                juce::var{44100.0},
-                juce::var{48000.0},
-                juce::var{88200.0},
-                juce::var{96000.0},
-                juce::var{176400.0},
-                juce::var{192000.0}
-            }
-        },
+        makeProperty<juce::SliderPropertyComponent>(_from, "From (Hz)", 0.0, 20'000.0, 1.0),
+        makeProperty<juce::SliderPropertyComponent>(_to, "To (Hz)", 0.0, 20'000.0, 1.0),
+        makeProperty<juce::BooleanPropertyComponent>(_curve, "Curve", "Lin/Log"),
+        makeProperty<juce::SliderPropertyComponent>(_duration, "Duration (ms)", 0.0, 20'000.0, 1.0),
+        makeProperty<juce::ChoicePropertyComponent>(_sampleRate, "Sample-rate (Hz)", sampleRateNames, sampleRates),
     });
     addAndMakeVisible(_sweepSpecPanel);
     addAndMakeVisible(_recorder);

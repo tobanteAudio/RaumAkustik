@@ -1,5 +1,7 @@
 #include "PorousAbsorberEditor.hpp"
 
+#include "tool/PropertyComponent.hpp"
+
 #include <ra/unit/frequency.hpp>
 #include <ra/unit/pressure.hpp>
 #include <ra/unit/temperature.hpp>
@@ -18,6 +20,8 @@ PorousAbsorberEditor::PorousAbsorberEditor(juce::ValueTree vt, juce::UndoManager
     : _undoManager{um}
     , _valueTree{vt.getOrCreateChildWithName("PorousAbsorber", um)}
 {
+    using juce::SliderPropertyComponent;
+
     addAndMakeVisible(_table);
     addAndMakeVisible(_absorberSpecs);
 
@@ -28,43 +32,28 @@ PorousAbsorberEditor::PorousAbsorberEditor(juce::ValueTree vt, juce::UndoManager
     _absorberSpecs.addSection(
         "Atmospheric Environment",
         juce::Array<juce::PropertyComponent*>{
-            new juce::SliderPropertyComponent{_temperature.getPropertyAsValue(), "Temperature (C)", 0.0, 100.0,  1.0},
-            new juce::SliderPropertyComponent{   _pressure.getPropertyAsValue(),  "Pressure (Bar)", 0.0,   2.0, 0.01},
-    }
+            makeProperty<SliderPropertyComponent>(_temperature, "Temperature (C)", 0.0, 100.0, 1.0),
+            makeProperty<SliderPropertyComponent>(_pressure, "Pressure (Bar)", 0.0, 2.0, 0.01),
+        }
     );
 
     _absorberSpecs.addSection(
         "Absorber Dimensions",
         juce::Array<juce::PropertyComponent*>{
-            new juce::SliderPropertyComponent{
-                                              _absorberThickness.getPropertyAsValue(),
-                                              "Thickness (mm)", 0.0,
-                                              1000.0, 1.0                                                                     },
-            new juce::SliderPropertyComponent{
-                                              _absorberFlowResisitivity.getPropertyAsValue(),
-                                              "Flow Resisitivity", 0.0,
-                                              40'000.0, 1.0                                                                   },
-            new juce::SliderPropertyComponent{
-                                              _absorberAngleOfIncidence.getPropertyAsValue(),
-                                              "Angle Of Incidence", 0.0,
-                                              90.0, 1.0                                                                       },
-            new juce::SliderPropertyComponent{          _absorberAirGap.getPropertyAsValue(), "Air Gap (mm)", 0.0, 1000.0, 1.0},
-    }
+            makeProperty<SliderPropertyComponent>(_absorberThickness, "Thickness (mm)", 0.0, 1000.0, 1.0),
+            makeProperty<SliderPropertyComponent>(_absorberFlowResisitivity, "Flow Resisitivity", 0.0, 40'000.0, 1.0),
+            makeProperty<SliderPropertyComponent>(_absorberAngleOfIncidence, "Angle Of Incidence", 0.0, 90.0, 1.0),
+            makeProperty<SliderPropertyComponent>(_absorberAirGap, "Air Gap (mm)", 0.0, 1000.0, 1.0),
+        }
     );
 
     _absorberSpecs.addSection(
         "Plot",
         juce::Array<juce::PropertyComponent*>{
-            new juce::SliderPropertyComponent{_plotNumPoints.getPropertyAsValue(),"Num Points", 0.0,256.0, 1.0                             },
-            new juce::SliderPropertyComponent{
-                                              _plotStartFrequency.getPropertyAsValue(),
-                                              "Start Frequency", 0.0,
-                                              60.0, 1.0},
-            new juce::SliderPropertyComponent{
-                                              _plotOctaveSubdivision.getPropertyAsValue(),
-                                              "Octave Subdivisions", 0.0,
-                                              12.0, 1.0},
-    }
+            makeProperty<SliderPropertyComponent>(_plotNumPoints, "Num Points", 0.0, 256.0, 1.0),
+            makeProperty<SliderPropertyComponent>(_plotStartFrequency, "Start Frequency", 0.0, 60.0, 1.0),
+            makeProperty<SliderPropertyComponent>(_plotOctaveSubdivision, "Octave Subdivisions", 0.0, 12.0, 1.0),
+        }
     );
 
     _temperature.getValueTree().addListener(this);

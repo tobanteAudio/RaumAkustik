@@ -1,5 +1,7 @@
 #include "StochasticRaytracingEditor.hpp"
 
+#include "tool/PropertyComponent.hpp"
+
 #include <iostream>
 #include <juce_audio_basics/juce_audio_basics.h>
 
@@ -12,8 +14,8 @@ StochasticRaytracingEditor::StochasticRaytracingEditor(juce::ThreadPool& threadP
     juce::ignoreUnused(_threadPool);
 
     _properties.addProperties(juce::Array<juce::PropertyComponent*>{
-        std::make_unique<juce::SliderPropertyComponent>(_rays, "Rays", 1'000.0, 100'000.0, 1.0).release(),
-        std::make_unique<juce::SliderPropertyComponent>(_duration, "Duration", 1.0, 10.0, 0.1).release(),
+        makeProperty<juce::SliderPropertyComponent>(_rays, "Rays", 1'000.0, 100'000.0, 1.0),
+        makeProperty<juce::SliderPropertyComponent>(_duration, "Duration", 1.0, 10.0, 0.1),
     });
 
     _render.onClick = [this] { run(); };

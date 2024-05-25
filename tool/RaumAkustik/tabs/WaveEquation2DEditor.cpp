@@ -1,6 +1,7 @@
 #include "WaveEquation2DEditor.hpp"
 
 #include "look/Colors.hpp"
+#include "tool/PropertyComponent.hpp"
 
 #include <neo/algorithm/copy.hpp>
 
@@ -15,12 +16,11 @@ WaveEquation2DEditor::WaveEquation2DEditor(juce::ThreadPool& threadPool, RoomEdi
     , _roomEditor{roomEditor}
 {
     using juce::SliderPropertyComponent;
-    using std::make_unique;
 
     _properties.addProperties(juce::Array<juce::PropertyComponent*>{
-        make_unique<SliderPropertyComponent>(_duration, "Duration", 0.5, 10.0, 0.1).release(),
-        make_unique<SliderPropertyComponent>(_fmax, "Max Frequency", 200.0, 20'000.0, 1.0).release(),
-        make_unique<SliderPropertyComponent>(_ppw, "PPW", 1.0, 10.0, 1.0).release(),
+        makeProperty<SliderPropertyComponent>(_duration, "Duration", 0.5, 10.0, 0.1),
+        makeProperty<SliderPropertyComponent>(_fmax, "Max Frequency", 200.0, 20'000.0, 1.0),
+        makeProperty<SliderPropertyComponent>(_ppw, "PPW", 1.0, 10.0, 1.0),
     });
 
     _render.onClick = [this] {
