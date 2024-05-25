@@ -140,7 +140,7 @@ auto StochasticRaytracingEditor::run() -> void
 auto StochasticRaytracingEditor::Plot::plot(
     juce::String title,
     std::vector<double> const& data,
-    std::chrono::duration<double> duration,
+    quantity<isq::duration[si::second]> duration,
     double maxGain
 ) -> void
 {
@@ -189,9 +189,10 @@ auto StochasticRaytracingEditor::Plot::paint(juce::Graphics& g) -> void
     g.drawLine(juce::Line<float>(area.getBottomLeft().withY(dBm60), area.getBottomRight().withY(dBm60)));
 
     // time
-    auto const sec05 = juce::roundToInt(area.getX() + area.proportionOfWidth(0.5 / _duration.count()));
-    auto const sec1  = juce::roundToInt(area.getX() + area.proportionOfWidth(1.0 / _duration.count()));
-    auto const sec15 = juce::roundToInt(area.getX() + area.proportionOfWidth(1.5 / _duration.count()));
+    auto const duration = _duration.numerical_value_in(si::second);
+    auto const sec05    = juce::roundToInt(area.getX() + area.proportionOfWidth(0.5 / duration));
+    auto const sec1     = juce::roundToInt(area.getX() + area.proportionOfWidth(1.0 / duration));
+    auto const sec15    = juce::roundToInt(area.getX() + area.proportionOfWidth(1.5 / duration));
     g.drawVerticalLine(sec05, area.getY(), area.getBottom());
     g.drawVerticalLine(sec1, area.getY(), area.getBottom());
     g.drawVerticalLine(sec15, area.getY(), area.getBottom());

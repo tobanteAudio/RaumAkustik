@@ -81,7 +81,7 @@ void MeasurementRecorder::audioDeviceAboutToStart(juce::AudioIODevice* device)
         .from       = 20.0 * si::hertz,
         .to         = 20'000.0 * si::hertz,
         .curve      = GlideSweep::Curve::Logarithmic,
-        .duration   = std::chrono::milliseconds{10'000},
+        .duration   = 10 * si::second,
         .sampleRate = _sampleRate * si::hertz,
     });
 }

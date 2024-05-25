@@ -25,7 +25,7 @@ private:
         auto plot(
             juce::String title,
             std::vector<double> const& data,
-            std::chrono::duration<double> duration,
+            quantity<isq::duration[si::second]> duration,
             double maxGain
         ) -> void;
         auto paint(juce::Graphics& g) -> void override;
@@ -33,7 +33,7 @@ private:
     private:
         juce::String _title;
         std::vector<double> _data;
-        std::chrono::duration<double> _duration{};
+        quantity<isq::duration[si::second]> _duration{};
         double _maxGain{};
 
         JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(Plot)  // NOLINT
