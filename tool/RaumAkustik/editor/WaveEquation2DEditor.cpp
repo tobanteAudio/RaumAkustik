@@ -1,6 +1,6 @@
 #include "WaveEquation2DEditor.hpp"
 
-#include "look/Colors.hpp"
+#include "look/ColorMap.hpp"
 #include "tool/PropertyComponent.hpp"
 
 #include <neo/algorithm/copy.hpp>

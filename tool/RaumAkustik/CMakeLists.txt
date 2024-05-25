@@ -52,6 +52,8 @@ target_sources(RaumAkustik
         "component/Spectogram.cpp"
         "component/Spectogram.hpp"
 
+        "look/ColorMap.hpp"
+        "look/ColorRGB.hpp"
         "look/LookAndFeel.cpp"
         "look/LookAndFeel.hpp"
 

@@ -1,7 +1,5 @@
 #include "MaterialEditor.hpp"
 
-#include "look/Colors.hpp"
-
 namespace ra {
 
 namespace {
