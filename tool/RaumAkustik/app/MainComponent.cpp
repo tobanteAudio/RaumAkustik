@@ -3,6 +3,7 @@
 #include "app/CommandIDs.hpp"
 #include "app/application.hpp"
 #include "tool/AudioFile.hpp"
+#include "utility/ValueTree.hpp"
 
 namespace ra {
 
@@ -11,23 +12,23 @@ MainComponent::MainComponent()
     , _generatorEditor{raumAkusticApplication().deviceManager()}
 {
     auto room = juce::ValueTree{"Room"};
-    room.setProperty("icon_size", 50.0, nullptr);
+    setPropertyIfNotExist(room, "icon_size", 50.0);
 
-    room.setProperty("length", 6.0, nullptr);
-    room.setProperty("width", 3.65, nullptr);
-    room.setProperty("height", 3.12, nullptr);
+    setPropertyIfNotExist(room, "length", 6.0);
+    setPropertyIfNotExist(room, "width", 3.65);
+    setPropertyIfNotExist(room, "height", 3.12);
 
-    room.setProperty("listen_x", 1.83, nullptr);
-    room.setProperty("listen_y", 2.00, nullptr);
-    room.setProperty("listen_z", 1.00, nullptr);
+    setPropertyIfNotExist(room, "listen_x", 1.83);
+    setPropertyIfNotExist(room, "listen_y", 2.00);
+    setPropertyIfNotExist(room, "listen_z", 1.00);
 
-    room.setProperty("left_x", 1.33, nullptr);
-    room.setProperty("left_y", 1.00, nullptr);
-    room.setProperty("left_z", 1.20, nullptr);
+    setPropertyIfNotExist(room, "left_x", 1.33);
+    setPropertyIfNotExist(room, "left_y", 1.00);
+    setPropertyIfNotExist(room, "left_z", 1.20);
 
-    room.setProperty("right_x", 2.33, nullptr);
-    room.setProperty("right_y", 1.00, nullptr);
-    room.setProperty("right_z", 1.20, nullptr);
+    setPropertyIfNotExist(room, "right_x", 2.33);
+    setPropertyIfNotExist(room, "right_y", 1.00);
+    setPropertyIfNotExist(room, "right_z", 1.20);
 
     _valueTree.appendChild(room, nullptr);
 

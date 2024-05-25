@@ -1,6 +1,7 @@
 #include "ToneGeneratorEditor.hpp"
 
 #include "tool/PropertyComponent.hpp"
+#include "utility/ValueTree.hpp"
 
 #include <ra/generator/GlideSweep.hpp>
 
@@ -117,11 +118,11 @@ getSpectrumPath(juce::AudioBuffer<float> const& in, double fs, juce::Rectangle<i
 
 ToneGeneratorEditor::ToneGeneratorEditor(juce::AudioDeviceManager& deviceManager) : _recorder{deviceManager}
 {
-    _valueTree.setProperty("from", 20.0, nullptr);
-    _valueTree.setProperty("to", 20'000.0, nullptr);
-    _valueTree.setProperty("curve", false, nullptr);
-    _valueTree.setProperty("duration", 1000.0, nullptr);
-    _valueTree.setProperty("sampleRate", 44100.0, nullptr);
+    setPropertyIfNotExist(_valueTree, "from", 20.0);
+    setPropertyIfNotExist(_valueTree, "to", 20'000.0);
+    setPropertyIfNotExist(_valueTree, "curve", false);
+    setPropertyIfNotExist(_valueTree, "duration", 1000.0);
+    setPropertyIfNotExist(_valueTree, "sampleRate", 44100.0);
 
     _valueTree.addListener(this);
     _thumbnail.addChangeListener(this);

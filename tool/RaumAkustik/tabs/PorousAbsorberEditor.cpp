@@ -1,6 +1,7 @@
 #include "PorousAbsorberEditor.hpp"
 
 #include "tool/PropertyComponent.hpp"
+#include "utility/ValueTree.hpp"
 
 #include <ra/unit/frequency.hpp>
 #include <ra/unit/pressure.hpp>
@@ -21,37 +22,19 @@ auto PorousAbsorberEditor::createDefault(juce::ValueTree parent, juce::UndoManag
     auto tree = parent.getOrCreateChildWithName(IDs::type, um);
 
     // atmosphere
-    if (not tree.hasProperty(IDs::temperature)) {
-        tree.setProperty(IDs::temperature, 20.0, nullptr);
-    }
-    if (not tree.hasProperty(IDs::pressure)) {
-        tree.setProperty(IDs::pressure, 1.0, nullptr);
-    }
+    setPropertyIfNotExist(tree, IDs::temperature, 20.0);
+    setPropertyIfNotExist(tree, IDs::pressure, 1.0);
 
     // absorber
-    if (not tree.hasProperty(IDs::absorberThickness)) {
-        tree.setProperty(IDs::absorberThickness, 50.0, nullptr);
-    }
-    if (not tree.hasProperty(IDs::absorberFlowResisitivity)) {
-        tree.setProperty(IDs::absorberFlowResisitivity, 10'000.0, nullptr);
-    }
-    if (not tree.hasProperty(IDs::absorberAngleOfIncidence)) {
-        tree.setProperty(IDs::absorberAngleOfIncidence, 0.0, nullptr);
-    }
-    if (not tree.hasProperty(IDs::absorberAirGap)) {
-        tree.setProperty(IDs::absorberAirGap, 25.0, nullptr);
-    }
+    setPropertyIfNotExist(tree, IDs::absorberThickness, 50.0);
+    setPropertyIfNotExist(tree, IDs::absorberFlowResisitivity, 10'000.0);
+    setPropertyIfNotExist(tree, IDs::absorberAngleOfIncidence, 0.0);
+    setPropertyIfNotExist(tree, IDs::absorberAirGap, 25.0);
 
     // plot
-    if (not tree.hasProperty(IDs::plotNumPoints)) {
-        tree.setProperty(IDs::plotNumPoints, 256.0, nullptr);
-    }
-    if (not tree.hasProperty(IDs::plotStartFrequency)) {
-        tree.setProperty(IDs::plotStartFrequency, 31.0, nullptr);
-    }
-    if (not tree.hasProperty(IDs::plotOctaveSubdivision)) {
-        tree.setProperty(IDs::plotOctaveSubdivision, 12.0, nullptr);
-    }
+    setPropertyIfNotExist(tree, IDs::plotNumPoints, 256.0);
+    setPropertyIfNotExist(tree, IDs::plotStartFrequency, 31.0);
+    setPropertyIfNotExist(tree, IDs::plotOctaveSubdivision, 12.0);
 
     return tree;
 }

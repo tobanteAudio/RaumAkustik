@@ -71,6 +71,8 @@ target_sources(RaumAkustik
         "tool/NoiseGenerator.hpp"
         "tool/PropertyComponent.hpp"
 
+        "utility/ValueTree.hpp"
+
         "widget/LevelMeter.cpp"
         "widget/LevelMeter.hpp"
         "widget/ScrollingWaveform.cpp"
