@@ -19,7 +19,7 @@ auto StochasticRaytracing::operator()(Simulation const& sim) const -> Result
     auto tasks = std::vector<std::future<std::vector<double>>>(numBands);
 
     for (auto frequency{0UL}; frequency < numBands; ++frequency) {
-        tasks[frequency] = std::async(std::launch::async, [=, this] {
+        tasks[frequency] = std::async(std::launch::async, [numTimeSteps, &rays, &sim, frequency, this] {
             auto random = std::mt19937{std::random_device{}()};
             auto hist   = std::vector<double>(numTimeSteps);
             for (auto const& ray : rays) {

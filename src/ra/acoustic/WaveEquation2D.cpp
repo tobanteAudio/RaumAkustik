@@ -11,7 +11,7 @@ namespace ra {
 
 WaveEquation2D::WaveEquation2D(Spec const& spec) : _spec{spec} {}
 
-auto WaveEquation2D::operator()(Callback const& callback) -> void
+auto WaveEquation2D::operator()(Callback const& callback) const -> void
 {
     // Speed of sound (m/s)
     static constexpr auto const c = 343.0;
@@ -98,8 +98,6 @@ auto WaveEquation2D::operator()(Callback const& callback) -> void
             callback(u);
         }
     }
-
-    return;
 }
 
 }  // namespace ra

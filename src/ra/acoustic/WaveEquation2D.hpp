@@ -25,7 +25,7 @@ struct WaveEquation2D
 
     explicit WaveEquation2D(Spec const& spec);
 
-    auto operator()(Callback const& callback) -> void;
+    auto operator()(Callback const& callback) const -> void;
 
 private:
     Spec _spec;

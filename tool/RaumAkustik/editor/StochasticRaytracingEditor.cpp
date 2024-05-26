@@ -128,8 +128,8 @@ auto StochasticRaytracingEditor::run() -> void
         auto stop   = std::chrono::steady_clock::now();
         std::cout << std::chrono::duration_cast<std::chrono::duration<double>>(stop - start).count() << "s\n";
 
-        juce::MessageManager::callAsync([simulation, result, this] {
-            _result = std::move(result);
+        juce::MessageManager::callAsync([simulation, r = std::move(result), this]() mutable {
+            _result = std::move(r);
             for (auto const& frequency : *_result) {
                 _maxGain = std::max(_maxGain, *std::max_element(frequency.begin(), frequency.end()));
             }

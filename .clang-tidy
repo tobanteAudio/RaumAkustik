@@ -22,6 +22,7 @@ Checks: >
   -cppcoreguidelines-avoid-const-or-ref-data-members,
   -cppcoreguidelines-pro-bounds-constant-array-index,
   -cppcoreguidelines-pro-bounds-pointer-arithmetic,
+  -cppcoreguidelines-pro-type-union-access,
 
   hicpp-*,
 
@@ -71,4 +72,4 @@ CheckOptions:
   - key: readability-identifier-naming.UnionCase
     value: CamelCase
   - key: readability-identifier-naming.VariableCase
-    value: camelBack
+    value: aNy_CasE
