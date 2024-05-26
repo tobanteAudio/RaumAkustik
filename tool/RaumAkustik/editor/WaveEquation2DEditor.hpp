@@ -30,11 +30,15 @@ private:
     juce::Value _fmax{juce::var(2000.0)};
     juce::Value _ppw{juce::var(6.0)};
 
+    juce::Label _title;
+    juce::Rectangle<float> _plot;
     juce::PropertyPanel _properties;
     juce::TextButton _render{"Render"};
 
     std::mutex _frameMutex;
     stdex::mdarray<double, stdex::dextents<size_t, 2>> _frame;
+    std::vector<double> _readOut;
+    bool _needsRepaint{true};
 
     juce::Image _frameImage{juce::Image::ARGB, 1, 1, true};
 

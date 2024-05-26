@@ -6,6 +6,7 @@
 #include <neo/algorithm/copy.hpp>
 
 #include <juce_audio_basics/juce_audio_basics.h>
+#include <neo_core/neo_core.hpp>
 
 #include <iostream>
 
@@ -17,6 +18,12 @@ WaveEquation2DEditor::WaveEquation2DEditor(juce::ThreadPool& threadPool, RoomEdi
 {
     using juce::SliderPropertyComponent;
 
+    _title.setJustificationType(juce::Justification::centred);
+    _title.setFont(juce::FontOptions().withPointHeight(16.0));
+    _title.setColour(juce::Label::ColourIds::backgroundColourId, juce::Colours::white);
+    _title.setColour(juce::Label::ColourIds::textColourId, juce::Colours::black);
+    _title.setColour(juce::Label::ColourIds::outlineColourId, juce::Colours::transparentBlack);
+
     _properties.addProperties(juce::Array<juce::PropertyComponent*>{
         makeProperty<SliderPropertyComponent>(_duration, "Duration", 0.5, 10.0, 0.1),
         makeProperty<SliderPropertyComponent>(_fmax, "Max Frequency", 200.0, 20'000.0, 1.0),
@@ -24,21 +31,26 @@ WaveEquation2DEditor::WaveEquation2DEditor(juce::ThreadPool& threadPool, RoomEdi
     });
 
     _render.onClick = [this] {
+        _readOut.clear();
         _threadPool.addJob([this] { run(); });
         startTimerHz(30);
     };
 
+    addAndMakeVisible(_title);
     addAndMakeVisible(_properties);
     addAndMakeVisible(_render);
 }
 
 auto WaveEquation2DEditor::paint(juce::Graphics& g) -> void
 {
-    auto const area = getLocalBounds().withTrimmedRight(_render.getWidth()).reduced((4));
-
     g.setColour(juce::Colours::white);
-    g.fillRect(area);
+    g.fillRect(_plot);
 
+    auto plot       = _plot;
+    auto imgArea    = plot.removeFromLeft(plot.proportionOfWidth(0.5)).reduced(4.0F);
+    auto signalArea = plot.reduced(4.0F, plot.proportionOfHeight(0.2));
+
+    auto path = juce::Path{};
     {
         auto lock = std::scoped_lock{_frameMutex};
 
@@ -66,9 +78,25 @@ auto WaveEquation2DEditor::paint(juce::Graphics& g) -> void
                 _frameImage.setPixelAt(x, y, color);
             }
         }
+
+        if (not _readOut.empty()) {
+            auto deltaX  = signalArea.getWidth() / static_cast<float>(_readOut.size());
+            auto absLess = [](auto l, auto r) { return std::abs(l) < std::abs(r); };
+            auto peak    = static_cast<float>(std::abs(*std::max_element(_readOut.begin(), _readOut.end(), absLess)));
+
+            path.startNewSubPath(signalArea.getBottomLeft().withY(signalArea.getCentreY()));
+            for (auto i{0U}; i < _readOut.size(); ++i) {
+                auto val = static_cast<float>(_readOut[i]);
+                auto x   = signalArea.getX() + deltaX * static_cast<float>(i);
+                auto y   = juce::jmap(val, -peak, peak, signalArea.getBottom(), signalArea.getY());
+                path.lineTo({x, y});
+            }
+        }
     }
 
-    g.drawImage(_frameImage, area.toFloat().reduced(8.0F), juce::RectanglePlacement::centred);
+    g.setColour(juce::Colours::black);
+    g.strokePath(path, juce::PathStrokeType(1.0F));
+    g.drawImage(_frameImage, imgArea, juce::RectanglePlacement::centred);
 }
 
 auto WaveEquation2DEditor::resized() -> void
@@ -78,9 +106,17 @@ auto WaveEquation2DEditor::resized() -> void
     auto panel = area.removeFromRight(area.proportionOfWidth(0.175));
     _properties.setBounds(panel.removeFromTop(panel.proportionOfHeight(0.9)));
     _render.setBounds(panel);
+
+    _title.setBounds(area.removeFromTop(area.proportionOfHeight(0.05)));
+    _plot = area.toFloat();
 }
 
-auto WaveEquation2DEditor::timerCallback() -> void { repaint(); }
+auto WaveEquation2DEditor::timerCallback() -> void
+{
+    if (std::exchange(_needsRepaint, false)) {
+        repaint();
+    }
+}
 
 auto WaveEquation2DEditor::run() -> void
 {
@@ -94,7 +130,7 @@ auto WaveEquation2DEditor::run() -> void
         .ppw      = static_cast<double>(_ppw.getValue()),
     });
 
-    auto iterations = 0L;
+    auto iterations = 0UL;
 
     auto start = std::chrono::steady_clock::now();
     we([&](auto frame) {
@@ -106,16 +142,27 @@ auto WaveEquation2DEditor::run() -> void
                 _frame = stdex::mdarray<double, stdex::dextents<size_t, 2>>{frame.extents()};
             }
 
+            _readOut.push_back(_frame(_frame.extent(0) / 2U, _frame.extent(1) / 2U));
             neo::copy(frame, _frame.to_mdspan());
+            _needsRepaint = true;
         }
     });
     auto stop = std::chrono::steady_clock::now();
 
-    auto const sec = std::chrono::duration_cast<std::chrono::duration<double>>(stop - start);
-    std::cout << iterations << " iterations in " << sec.count() << " seconds\n";
-    std::cout << 1000 * 1000 * iterations / sec.count() / 1'000'000.0 << " Megavoxel per seconds\n";
+    juce::MessageManager::callAsync([this, t = stop - start, iterations] {
+        auto const sec  = std::chrono::duration_cast<std::chrono::duration<double>>(t).count();
+        auto const x    = _frame.extent(0);
+        auto const y    = _frame.extent(1);
+        auto const mvox = x * y * iterations / sec / 1'000'000.0;
 
-    juce::MessageManager::callAsync([this] { stopTimer(); });
+        _title.setText(
+            neo::jformat("Grid: {}x{} with {} frames in {:.2f} s ({:.2f} Mvox/s)", x, y, iterations, sec, mvox),
+            juce::sendNotification
+        );
+
+        stopTimer();
+        repaint();
+    });
 }
 
 }  // namespace ra
