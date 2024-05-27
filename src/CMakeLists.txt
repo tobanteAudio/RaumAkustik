@@ -29,6 +29,7 @@ target_sources(${PROJECT_NAME}
         "ra/acoustic/Air.hpp"
         "ra/acoustic/FirstReflection.hpp"
         "ra/acoustic/Room.hpp"
+        "ra/acoustic/SchroederFrequency.hpp"
         "ra/acoustic/StochasticRaytracing.cpp"
         "ra/acoustic/StochasticRaytracing.hpp"
         "ra/acoustic/WaveEquation2D.cpp"
@@ -58,6 +59,7 @@ target_sources("${PROJECT_NAME}_Tests"
     PRIVATE
         "ra/acoustic/Air.test.cpp"
         "ra/acoustic/FirstReflection.test.cpp"
+        "ra/acoustic/SchroederFrequency.test.cpp"
         "ra/acoustic/absorber/PorousAbsorber.test.cpp"
         "ra/unit/frequency.test.cpp"
 )
