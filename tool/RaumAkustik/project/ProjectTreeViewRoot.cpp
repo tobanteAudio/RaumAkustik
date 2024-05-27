@@ -1,5 +1,7 @@
 #include "ProjectTreeViewRoot.hpp"
 
+#include "look/LookAndFeel.hpp"
+
 namespace ra {
 
 auto ProjectTreeViewRoot::mightContainSubItems() -> bool { return true; }
@@ -17,7 +19,7 @@ auto ProjectTreeViewRoot::itemOpennessChanged(bool isNowOpen) -> void
 auto ProjectTreeViewRoot::paintItem(juce::Graphics& g, int width, int height) -> void
 {
     auto const bounds = juce::Rectangle{0, 0, width, height}.toFloat();
-    g.setColour(juce::Colours::white);
+    g.setColour(getSchemeDefaultTextColour());
     g.drawText("Project", bounds, juce::Justification::centred);
 }
 

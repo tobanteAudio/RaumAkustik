@@ -2,6 +2,8 @@
 
 #include "tool/MeasurementRecorder.hpp"
 
+#include <neo/fft.hpp>
+
 #include <juce_audio_utils/juce_audio_utils.h>
 #include <juce_gui_basics/juce_gui_basics.h>
 
@@ -43,6 +45,7 @@ private:
     juce::AudioThumbnail _thumbnail{32, _formatManager, _thumbnailCache};
 
     juce::Path _spectrumPath;
+    std::unique_ptr<neo::fft::rfft_plan<float>> _fft;
 };
 
 }  // namespace ra

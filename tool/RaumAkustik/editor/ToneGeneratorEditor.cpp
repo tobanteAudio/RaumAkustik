@@ -213,21 +213,23 @@ auto ToneGeneratorEditor::resized() -> void
 
 auto ToneGeneratorEditor::handleAsyncUpdate() -> void
 {
-    // auto const spec = GlideSweep{
-    //     .from       = static_cast<double>(_from)*si::hertz,
-    //     .to         = static_cast<double>(_to)*si::hertz,
-    //     .curve      = static_cast<bool>(_curve) ? GlideSweep::Curve::Logarithmic : GlideSweep::Curve::Linear,
-    //     .duration   = std::chrono::milliseconds{juce::roundToInt(static_cast<double>(_duration))},
-    //     .sampleRate = static_cast<double>(_sampleRate),
-    // };
+    auto const sampleRate = double{_sampleRate};
 
-    // auto const sweep = toAudioBuffer(generate(spec));
-    // _thumbnailBuffer.makeCopyOf(sweep);
-    // _thumbnail.clear();
-    // _thumbnail.reset(1, spec.sampleRate, 1);
-    // _thumbnail.addBlock(0, _thumbnailBuffer, 0, _thumbnailBuffer.getNumSamples());
+    auto const spec = GlideSweep{
+        .from       = double{_from} * si::hertz,
+        .to         = double{_to} * si::hertz,
+        .curve      = bool{_curve} ? GlideSweep::Curve::Logarithmic : GlideSweep::Curve::Linear,
+        .duration   = double{_duration} * si::milli<si::second>,
+        .sampleRate = sampleRate * si::hertz,
+    };
 
-    // _spectrumPath = getSpectrumPath(sweep, spec.sampleRate, _spectrumBounds);
+    auto const sweep = toAudioBuffer(generate(spec));
+    _thumbnailBuffer.makeCopyOf(sweep);
+    _thumbnail.clear();
+    _thumbnail.reset(1, sampleRate, 1);
+    _thumbnail.addBlock(0, _thumbnailBuffer, 0, _thumbnailBuffer.getNumSamples());
+
+    _spectrumPath = getSpectrumPath(sweep, sampleRate, _spectrumBounds);
 }
 
 auto ToneGeneratorEditor::changeListenerCallback(juce::ChangeBroadcaster* /*source*/) -> void { repaint(); }
