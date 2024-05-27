@@ -175,6 +175,7 @@ auto MainComponent::perform(juce::ApplicationCommandTarget::InvocationInfo const
         case CommandIDs::saveAs: saveProject(); break;
         case CommandIDs::undo: _undoManager.undo(); break;
         case CommandIDs::redo: _undoManager.redo(); break;
+        case CommandIDs::settings: showSettingsWindow(); break;
         case CommandIDs::fullscreen: toggleFullscreen(); break;
         case CommandIDs::toggleLevelMeter:
             _levelMeter.setVisible(not _levelMeter.isVisible());
@@ -212,6 +213,12 @@ auto MainComponent::loadProject() -> void
     auto stream = juce::FileInputStream{file};
     _valueTree  = juce::ValueTree::fromXml(stream.readEntireStreamAsString());
     reloadUI();
+}
+
+auto MainComponent::showSettingsWindow() -> void
+{
+    auto const background = getLookAndFeel().findColour(juce::ResizableWindow::backgroundColourId);
+    _settingsWindow.showInDialogBox("Settings", 640, 400, background);
 }
 
 auto MainComponent::reloadUI() -> void

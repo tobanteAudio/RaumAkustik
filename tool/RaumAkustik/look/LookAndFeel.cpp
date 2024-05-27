@@ -2,7 +2,7 @@
 
 namespace ra {
 
-LookAndFeel::LookAndFeel() : juce::LookAndFeel_V4{getDarkColorScheme()} {}
+LookAndFeel::LookAndFeel() : juce::LookAndFeel_V4{getLightColorScheme()} {}
 
 auto getDarkColorScheme() -> juce::LookAndFeel_V4::ColourScheme
 {

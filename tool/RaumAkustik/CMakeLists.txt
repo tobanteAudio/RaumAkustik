@@ -44,6 +44,8 @@ target_sources(RaumAkustik
         "application/Main.cpp"
         "application/MenuBar.cpp"
         "application/MenuBar.hpp"
+        "application/Settings.hpp"
+        "application/Settings.cpp"
 
         "component/LevelMeter.cpp"
         "component/LevelMeter.hpp"

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "application/MenuBar.hpp"
+#include "application/Settings.hpp"
 #include "component/LevelMeter.hpp"
 #include "component/ScrollingWaveform.hpp"
 #include "editor/AudioInterfaceEditor.hpp"
@@ -35,6 +36,7 @@ private:
     auto showAboutMessage() -> void;
     auto saveProject() -> void;
     auto loadProject() -> void;
+    auto showSettingsWindow() -> void;
     auto reloadUI() -> void;
     auto toggleFullscreen() -> void;
 
@@ -45,6 +47,7 @@ private:
     LookAndFeel _lnf;
 
     MenuBar _menuBar{_commandManager};
+    SettingsWindow _settingsWindow{_commandManager};
 
     ProjectTreeViewRoot _treeViewRoot;
     juce::TreeView _projectTree;
