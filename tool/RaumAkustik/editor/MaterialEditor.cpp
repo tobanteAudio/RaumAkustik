@@ -43,7 +43,7 @@ constexpr auto Bands = std::array<char const*, 22>{
 }  // namespace
 
 MaterialEditor::MaterialEditor()
-    : _materials{loadMaterials(juce::File("/Users/tobante/Developer/neo-sonar/neo-acoustic/material.json"))}
+    : _materials{loadMaterials(juce::File("/Users/tobante/Developer/tobanteAudio/RaumAkustik/data/material.json"))}
     , _sortedMaterials{_materials}
 {
     _table.getHeader().addColumn("Material", NameColumnIndex, 150, 150);

@@ -35,6 +35,7 @@ auto WaveEquation2D::operator()(Callback const& callback) const -> void
     auto uBuf     = stdex::mdarray<double, stdex::dextents<std::size_t, 2>>{Nx, Ny};
     auto uPrevBuf = stdex::mdarray<double, stdex::dextents<std::size_t, 2>>{Nx, Ny};
     auto uNextBuf = stdex::mdarray<double, stdex::dextents<std::size_t, 2>>{Nx, Ny};
+    auto Kib      = stdex::mdarray<std::uint8_t, stdex::dextents<std::size_t, 2>>{Nx, Ny};
 
     auto u     = uBuf.to_mdspan();
     auto uPrev = uPrevBuf.to_mdspan();
