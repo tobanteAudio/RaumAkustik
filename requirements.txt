@@ -1,7 +1,9 @@
 
 autopep8
 conan
+jupyter
 librosa
 matplotlib
 pre-commit
 pylint
+sympy

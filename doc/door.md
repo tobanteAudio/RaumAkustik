@@ -1,0 +1,4 @@
+- <https://endlich-sicher.de/begriffserklaerung/tuerschliesserstaerke-en-klasse>
+- <https://endlich-sicher.de/begriffserklaerung/montagearten-tuerschliesser>
+- <https://schliessershop.com/Tuerschliesser-Dorma-TS-93-N-EN-5-7-B/43520011.64010011>
+- <https://www.amazon.de/YAVIS-Elektromagnetisches-Magnetschloss-Elektrisches-Hostcontroller/dp/B07MWC38LT/ref=pd_day0fbt_d_sccl_1/257-3756093-6007019?pd_rd_w=sn3Bx&content-id=amzn1.sym.a448a60d-171e-41b3-a693-2dc17f9728e0&pf_rd_p=a448a60d-171e-41b3-a693-2dc17f9728e0&pf_rd_r=HY8GAFHY6CZGH9TVP2RB&pd_rd_wg=3YdDR&pd_rd_r=f7ca32b6-b21b-4917-8a00-a5866536c0f5&pd_rd_i=B07MWBHQNM&th=1>

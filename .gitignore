@@ -1,3 +1,6 @@
+# Project
+/data
+
 # Editors
 .atom
 .idea
@@ -49,3 +52,6 @@ CMakeUserPresets.json
 .env
 .venv
 venv
+
+# macOS
+.DS_Store

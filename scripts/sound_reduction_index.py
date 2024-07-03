@@ -2,8 +2,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 # Constants
-rho = 2500  # mass density in kg/m^3
-h = 150.0/1000.0  # thickness in meters
+rho = 680  # mass density in kg/m^3
+h = 37.5/1000.0  # thickness in meters
 theta = 0  # angle of incidence in degrees
 Z0 = 408  # characteristic impedance of air in kg/m^2/s
 

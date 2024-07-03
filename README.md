@@ -90,3 +90,29 @@
 |                [Global estimate of reverberation](https://www.youtube.com/watch?v=hJyaBBuaqKM)                |         |
 |                   [Source Directivity Editor](https://www.youtube.com/watch?v=w2G1BqO53Qw)                    |         |
 |                 [Ray tracing and hybrid methods](https://www.youtube.com/watch?v=vkDHgH00MFQ)                 |         |
+
+### Absorber
+
+|                                                                                                    Link                                                                                                    | Comment |
+| :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------: | :-----: |
+|                                                          [Potential of microperforated panel absorber](https://hal.science/hal-04161348/document)                                                          |         |
+| [Multi-chamber micro-perforated panel absorbers optimised for high amplitude broadband absorption using a two-point impedance method](https://www.sciencedirect.com/science/article/pii/S0022460X22007106) |         |
+
+### Impact Absorber
+
+- <https://www.getzner.com/en/products/sylomer>
+- <https://www.spillner-ssb.de/sylomer/pads.html>
+- <https://www.123baustoffe.de/shop/sylomer/>
+- <https://baubedarf-spezialartikel.de/produkt-kategorie/schwingungstechnik>
+- <https://acoustics.regupol.de>
+- <https://www.dachbaustoffe.de/itemservice/show.htm?q=regupol>
+- <https://www.dachbaustoffe.de/itemservice/show.htm?q=regufoam>
+- <https://www.mecanocaucho.com/de/produktkatalog>
+
+### Diffusor
+
+- <http://arqen.com/acoustics/acoustic-diffusers>
+
+### Sound Transmission
+
+- <https://www.sekon.cc/acoustics/SoundTransmission/index.htm>
